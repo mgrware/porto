@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Using RGB values for Tailwind opacity support (/80 etc) */
+:root {
+  --background: 251 253 248;
+  --on-background: 25 28 25;
+  --surface: 251 253 248;
+  --surface-dim: 217 219 214;
+  --surface-bright: 251 253 248;
+  --surface-container-lowest: 255 255 255;
+  --surface-container-low: 243 245 239;
+  --surface-container: 237 238 244;
+  --surface-container-high: 231 233 227;
+  --surface-container-highest: 225 227 221;
+  --on-surface: 25 28 25;
+  --on-surface-variant: 66 73 64;
+  --outline: 114 121 111;
+  --outline-variant: 194 201 189;
+  --primary: 0 110 28;
+  --on-primary: 255 255 255;
+  --primary-container: 156 255 147;
+  --on-primary-container: 0 34 3;
+  --secondary: 0 104 122;
+  --on-secondary: 255 255 255;
+  --secondary-container: 172 236 255;
+  --on-secondary-container: 0 30 38;
+  --tertiary: 112 93 0;
+  --on-tertiary: 255 255 255;
+  --tertiary-container: 255 225 109;
+  --on-tertiary-container: 34 27 0;
+  --error: 186 26 26;
+  --on-error: 255 255 255;
+  --error-container: 255 218 214;
+  --on-error-container: 65 0 2;
+}
+
+.dark {
+  --background: 12 14 18;
+  --on-background: 246 246 252;
+  --surface: 12 14 18;
+  --surface-dim: 12 14 18;
+  --surface-bright: 41 44 51;
+  --surface-container-lowest: 0 0 0;
+  --surface-container-low: 17 19 24;
+  --surface-container: 23 26 31;
+  --surface-container-high: 29 32 37;
+  --surface-container-highest: 35 38 44;
+  --on-surface: 246 246 252;
+  --on-surface-variant: 170 171 176;
+  --outline: 116 117 122;
+  --outline-variant: 70 72 77;
+  --primary: 156 255 147;
+  --on-primary: 0 100 19;
+  --primary-container: 0 252 64;
+  --on-primary-container: 0 90 16;
+  --secondary: 0 207 252;
+  --on-secondary: 0 64 80;
+  --secondary-container: 0 103 127;
+  --on-secondary-container: 238 249 255;
+  --tertiary: 255 221 124;
+  --on-tertiary: 99 77 0;
+  --tertiary-container: 254 203 0;
+  --on-tertiary-container: 88 69 0;
+  --error: 255 115 81;
+  --on-error: 69 9 0;
+  --error-container: 185 41 2;
+  --on-error-container: 255 210 200;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-background font-body transition-colors duration-300;
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+.text-mono {
+  font-family: 'Space Grotesk', monospace;
+}
