@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/color-mode'
+    '@nuxtjs/color-mode',
+    '@nuxtjs/supabase'
   ],
   css: ['~/assets/css/main.css'],
   app: {
@@ -17,5 +18,8 @@ export default defineNuxtConfig({
   },
   colorMode: {
     classSuffix: ''
+  },
+  supabase: {
+    redirect: false
   }
 })

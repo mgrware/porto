@@ -1,33 +1,44 @@
 <template>
   <aside class="fixed left-0 top-0 h-full w-20 flex flex-col items-center py-8 bg-background border-r border-surface-container-high z-40 hidden md:flex">
     <div class="mt-20 flex flex-col gap-10 items-center">
-      <div 
+      <NuxtLink 
         v-for="item in sideItems" 
         :key="item.icon"
-        @click="scrollToSection(item.href)"
+        :to="item.href.startsWith('#') ? '/' + item.href : item.href"
         :class="[
           'group cursor-pointer flex flex-col items-center gap-1 p-2 w-full transition-all duration-200',
-          activeSection === item.href.replace('#', '') ? 'text-primary border-l-4 border-primary bg-surface-container' : 'text-outline hover:text-secondary'
+          (item.href.startsWith('#') ? activeSection === item.href.replace('#', '') : $route.path === item.href) 
+            ? 'text-primary border-l-4 border-primary bg-surface-container' 
+            : 'text-outline hover:text-secondary'
         ]"
       >
-        <BaseIcon :filled="activeSection === item.href.replace('#', '')">{{ item.icon }}</BaseIcon>
-      </div>
+        <BaseIcon :filled="(item.href.startsWith('#') ? activeSection === item.href.replace('#', '') : $route.path === item.href)">{{ item.icon }}</BaseIcon>
+      </NuxtLink>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
 import BaseIcon from '../atoms/BaseIcon.vue'
 
-const activeSection = ref('architecture')
+const { user } = useAuthActions()
+const activeSection = ref('')
 
-const sideItems = [
-  { icon: 'terminal', href: '#terminal' },
-  { icon: 'memory', href: '#tech-stack' },
-  { icon: 'account_tree', href: '#experience' },
-  { icon: 'alternate_email', href: '#architecture' },
-]
+const sideItems = computed(() => {
+  const items = [
+    { icon: 'terminal', href: '#terminal' },
+    { icon: 'memory', href: '#tech-stack' },
+    { icon: 'account_tree', href: '#experience' },
+    { icon: 'alternate_email', href: '#architecture' },
+    { icon: 'article', href: '/blog' },
+  ]
+
+  if (user.value) {
+    items.push({ icon: 'dashboard', href: '/dashboard' })
+  }
+
+  return items
+})
 
 const scrollToSection = (href: string) => {
   const id = href.replace('#', '')

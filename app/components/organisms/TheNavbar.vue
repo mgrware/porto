@@ -4,20 +4,27 @@
     
     <div class="hidden md:flex gap-8 items-center">
       <template v-for="item in navItems" :key="item.label">
-        <a 
-          :href="item.href"
-          @click.prevent="scrollToSection(item.href)"
+        <NuxtLink 
+          :to="item.href.startsWith('#') ? '/' + item.href : item.href"
           :class="[
             'font-headline uppercase tracking-widest text-xs transition-colors',
-            activeSection === item.href.replace('#', '') ? 'text-primary border-l-2 border-primary pl-2' : 'text-on-surface-variant hover:text-primary'
+            (item.href.startsWith('#') ? activeSection === item.href.replace('#', '') : $route.path === item.href) 
+              ? 'text-primary border-l-2 border-primary pl-2' 
+              : 'text-on-surface-variant hover:text-primary'
           ]"
         >
           {{ item.label }}
-        </a>
+        </NuxtLink>
       </template>
     </div>
 
     <div class="flex items-center gap-4">
+      <NuxtLink v-if="user" to="/dashboard" class="text-xs font-mono uppercase tracking-widest text-primary border border-primary/20 px-3 py-1 rounded-lg hover:bg-primary/10 transition-colors">
+        DASHBOARD
+      </NuxtLink>
+      <button v-if="user" @click="logout" class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">
+        logout
+      </button>
       <ThemeToggle />
       <a 
         href="/uploads/CV Gilang_Ramadan_-_Senior_Backend_Developer.pdf" 
@@ -36,14 +43,15 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import BaseButton from '../atoms/BaseButton.vue'
 import ThemeToggle from '../molecules/ThemeToggle.vue'
 
-const activeSection = ref('architecture')
+const { user, logout } = useAuthActions()
+const activeSection = ref('')
 
 const navItems = [
-  { label: 'TERMINAL', href: '#terminal' },
-  { label: 'TECH_STACK', href: '#tech-stack' },
-  { label: 'EXPERIENCE', href: '#experience' },
   { label: 'ARCHITECTURE', href: '#architecture' },
- 
+  { label: 'EXPERIENCE', href: '#experience' },
+  { label: 'TECH_STACK', href: '#tech-stack' },
+  { label: 'TERMINAL', href: '#terminal' },
+  { label: 'BLOG', href: '/blog' },
 ]
 
 const scrollToSection = (href: string) => {

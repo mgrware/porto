@@ -1,7 +1,10 @@
 <template>
   <span 
     class="material-symbols-outlined"
-    :style="filled ? 'font-variation-settings: \'FILL\' 1;' : ''"
+    :style="[
+      filled ? 'font-variation-settings: \'FILL\' 1;' : '',
+      'font-family: \'Material Symbols Outlined\';'
+    ]"
   >
     <slot />
   </span>
