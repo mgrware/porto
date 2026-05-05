@@ -47,10 +47,10 @@ const { user, logout } = useAuthActions()
 const activeSection = ref('')
 
 const navItems = [
-  { label: 'ARCHITECTURE', href: '#architecture' },
-  { label: 'EXPERIENCE', href: '#experience' },
-  { label: 'TECH_STACK', href: '#tech-stack' },
   { label: 'TERMINAL', href: '#terminal' },
+  { label: 'TECH_STACK', href: '#tech-stack' },
+  { label: 'EXPERIENCE', href: '#experience' },
+  { label: 'ARCHITECTURE', href: '#architecture' },
   { label: 'BLOG', href: '/blog' },
 ]
 
