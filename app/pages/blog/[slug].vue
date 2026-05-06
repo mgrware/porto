@@ -23,12 +23,21 @@
 
     <article v-else class="animate-in fade-in slide-in-from-bottom-4 duration-700">
       <header class="mb-12">
-        <div class="flex items-center gap-4 mb-6">
-          <span class="text-xs font-mono bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest">
-            {{ new Date(post.created_at).toLocaleDateString() }}
-          </span>
-          <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
-          <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest">5 MIN READ</span>
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-4">
+            <span class="text-xs font-mono bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest">
+              {{ new Date(post.created_at).toLocaleDateString() }}
+            </span>
+            <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
+            <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest">5 MIN READ</span>
+          </div>
+          
+          <NuxtLink v-if="user" :to="`/dashboard/edit/${post.id}`">
+            <button class="bg-surface-container-high hover:bg-primary/20 text-primary px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-colors">
+              <span class="material-symbols-outlined text-sm">edit</span>
+              EDIT_ENTRY
+            </button>
+          </NuxtLink>
         </div>
         
         <h1 class="text-4xl md:text-6xl font-bold font-headline mb-8 tracking-tighter leading-[0.9]">
@@ -49,7 +58,9 @@
 
       <footer class="mt-20 pt-12 border-t border-surface-container-high">
         <div class="bg-surface-container p-8 rounded-3xl border border-surface-container-high flex flex-col md:flex-row items-center gap-8">
-          <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-on-primary text-2xl font-bold">GR</div>
+          <div class="w-20 h-20 bg-surface rounded-full overflow-hidden border-2 border-surface-container-highest shrink-0 shadow-lg">
+            <img src="~/assets/images/avatar.jpg" alt="Gilang Ramadan" class="w-full h-full object-cover" />
+          </div>
           <div>
             <h3 class="text-xl font-bold mb-2">Written by Gilang Ramadan</h3>
             <p class="text-on-surface-variant text-sm">
@@ -63,6 +74,9 @@
 </template>
 
 <script setup lang="ts">
+import hljs from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark.css'
+
 const route = useRoute()
 const { fetchBlogBySlug } = useBlogActions()
 const user = useSupabaseUser()
@@ -80,11 +94,19 @@ watchEffect(() => {
       title: `${post.value.title} | Gilang Ramadan`,
       description: post.value.excerpt || undefined
     })
+
+    if (import.meta.client) {
+      nextTick(() => {
+        document.querySelectorAll('pre.ql-syntax, pre code').forEach((block) => {
+          hljs.highlightElement(block as HTMLElement)
+        })
+      })
+    }
   }
 })
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 :deep(.prose h2) {
   @apply text-2xl font-bold mt-12 mb-6 font-headline tracking-tight text-primary;
 }
@@ -93,5 +115,11 @@ watchEffect(() => {
 }
 :deep(.prose ul) {
   @apply list-disc list-inside mb-6 space-y-2;
+}
+:deep(.prose pre) {
+  @apply bg-[#282c34] border border-outline-variant p-6 my-8 overflow-x-auto text-mono text-sm leading-relaxed !important;
+}
+:deep(.prose code:not(pre code):not(pre.ql-syntax)) {
+  @apply bg-surface-container px-2 py-1 text-primary text-mono text-sm border border-surface-container-high;
 }
 </style>

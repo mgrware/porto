@@ -86,8 +86,10 @@
   direction: ltr;
 }
 
-.text-mono {
-  font-family: 'Space Grotesk', monospace;
+@layer utilities {
+  .text-mono {
+    font-family: 'Space Grotesk', monospace;
+  }
 }
 
 /* Quill Editor Dark Mode Overrides */
