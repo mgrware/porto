@@ -30,6 +30,11 @@
             </span>
             <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
             <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest">5 MIN READ</span>
+            <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
+            <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest flex items-center gap-1" title="Views">
+              <span class="material-symbols-outlined text-sm">visibility</span>
+              {{ post.views || 0 }}
+            </span>
           </div>
           
           <NuxtLink v-if="user" :to="`/dashboard/edit/${post.id}`">
@@ -78,7 +83,7 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 
 const route = useRoute()
-const { fetchBlogBySlug } = useBlogActions()
+const { fetchBlogBySlug, incrementBlogViews } = useBlogActions()
 const user = useSupabaseUser()
 
 const { data: post, pending, error } = await useAsyncData(`blog-${route.params.slug}`, () => 
@@ -88,6 +93,11 @@ const { data: post, pending, error } = await useAsyncData(`blog-${route.params.s
 const isPreview = computed(() => post.value && post.value.status !== 'published')
 const isAllowed = computed(() => !isPreview.value || user.value)
 
+const viewedBlogs = useCookie<number[]>('viewed_blogs', {
+  default: () => [],
+  maxAge: 60 * 60 * 24 * 365
+})
+
 watchEffect(() => {
   if (post.value && isAllowed.value) {
     useSeoMeta({
@@ -96,6 +106,19 @@ watchEffect(() => {
     })
 
     if (import.meta.client) {
+      const viewsArray = viewedBlogs.value || []
+      const currentPost = post.value
+      
+      if (currentPost?.id && !viewsArray.includes(currentPost.id)) {
+        incrementBlogViews(currentPost.id).then(() => {
+          viewsArray.push(currentPost.id)
+          viewedBlogs.value = viewsArray
+          if (post.value) {
+            post.value.views = (post.value.views || 0) + 1
+          }
+        })
+      }
+
       nextTick(() => {
         document.querySelectorAll('pre.ql-syntax, pre code').forEach((block) => {
           hljs.highlightElement(block as HTMLElement)

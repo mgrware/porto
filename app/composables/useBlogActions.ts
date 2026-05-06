@@ -6,6 +6,7 @@ export interface BlogPost {
   image_url?: string | null
   excerpt?: string | null
   status?: string
+  views?: number
   created_at: string
 }
 
@@ -109,6 +110,13 @@ export const useBlogActions = () => {
     return data as BlogPost
   }
 
+  const incrementBlogViews = async (id: number) => {
+    const { error } = await (client.rpc as any)('increment_blog_views', { blog_id: id })
+    if (error) {
+      console.error('Failed to increment views:', error)
+    }
+  }
+
   const toggleBlogStatus = async (post: any, onSuccess?: () => void) => {
     const newStatus = post.status === 'published' ? 'draft' : 'published'
     try {
@@ -176,5 +184,6 @@ export const useBlogActions = () => {
     deleteBlog,
     toggleBlogStatus,
     deleteBlogWithConfirm,
+    incrementBlogViews,
   }
 }

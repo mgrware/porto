@@ -23,6 +23,7 @@
           <tr class="bg-surface-container-high/50 border-b border-surface-container-high">
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">TITLE</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">STATUS</th>
+            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">VIEWS</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">CREATED_AT</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant text-right">ACTIONS</th>
           </tr>
@@ -40,6 +41,12 @@
               >
                 {{ post.status || 'draft' }}
               </span>
+            </td>
+            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
+              <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">visibility</span>
+                {{ post.views || 0 }}
+              </div>
             </td>
             <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
               {{ new Date(post.created_at).toLocaleDateString() }}
