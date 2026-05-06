@@ -117,9 +117,11 @@ watchEffect(() => {
   @apply list-disc list-inside mb-6 space-y-2;
 }
 :deep(.prose pre) {
-  @apply bg-[#282c34] border border-outline-variant p-6 my-8 overflow-x-auto text-mono text-sm leading-relaxed !important;
+  @apply bg-[#282c34] border border-outline-variant p-6 my-8 overflow-x-auto text-sm leading-relaxed !important;
+  font-family: 'Space Grotesk', monospace;
 }
 :deep(.prose code:not(pre code):not(pre.ql-syntax)) {
-  @apply bg-surface-container px-2 py-1 text-primary text-mono text-sm border border-surface-container-high;
+  @apply bg-surface-container px-2 py-1 text-primary text-sm border border-surface-container-high;
+  font-family: 'Space Grotesk', monospace;
 }
 </style>
