@@ -89,3 +89,23 @@
 .text-mono {
   font-family: 'Space Grotesk', monospace;
 }
+
+/* Quill Editor Dark Mode Overrides */
+.dark .ql-toolbar.ql-snow {
+  border-color: rgb(var(--surface-container-high));
+  background-color: rgb(var(--surface-container));
+}
+.dark .ql-toolbar.ql-snow .ql-stroke {
+  stroke: rgb(var(--on-surface));
+}
+.dark .ql-toolbar.ql-snow .ql-fill {
+  fill: rgb(var(--on-surface));
+}
+.dark .ql-toolbar.ql-snow .ql-picker {
+  color: rgb(var(--on-surface));
+}
+.dark .ql-container.ql-snow {
+  border-color: rgb(var(--surface-container-high));
+  background-color: rgb(var(--background));
+  color: rgb(var(--on-background));
+}

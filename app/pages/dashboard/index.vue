@@ -22,6 +22,7 @@
         <thead>
           <tr class="bg-surface-container-high/50 border-b border-surface-container-high">
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">TITLE</th>
+            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">STATUS</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">CREATED_AT</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant text-right">ACTIONS</th>
           </tr>
@@ -32,22 +33,46 @@
               <div class="font-bold text-on-background">{{ post.title }}</div>
               <div class="text-xs text-on-surface-variant font-mono mt-1">/blog/{{ post.slug }}</div>
             </td>
+            <td class="px-6 py-5">
+              <span 
+                class="px-2 py-1 rounded text-[10px] font-mono uppercase tracking-widest font-bold"
+                :class="post.status === 'published' ? 'bg-primary/20 text-primary' : 'bg-on-surface-variant/10 text-on-surface-variant'"
+              >
+                {{ post.status || 'draft' }}
+              </span>
+            </td>
             <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
               {{ new Date(post.created_at).toLocaleDateString() }}
             </td>
             <td class="px-6 py-5 text-right space-x-2">
+              <button 
+                @click="toggleBlogStatus(post, refresh)" 
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none align-middle mr-2"
+                :class="post.status === 'published' ? 'bg-primary' : 'bg-surface-container-highest'"
+                :title="post.status === 'published' ? 'Unpublish' : 'Publish'"
+              >
+                <span 
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                  :class="post.status === 'published' ? 'translate-x-6' : 'translate-x-1'"
+                />
+              </button>
+              <NuxtLink :to="`/blog/${post.slug}`" target="_blank">
+                <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Preview">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+              </NuxtLink>
               <NuxtLink :to="`/dashboard/edit/${post.id}`">
-                <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit">
                   <span class="material-symbols-outlined">edit</span>
                 </button>
               </NuxtLink>
-              <button @click="handleDelete(post.id)" class="p-2 text-error hover:bg-error/10 rounded-lg transition-colors">
+              <button @click="deleteBlogWithConfirm(post.id, refresh)" class="p-2 text-error hover:bg-error/10 rounded-lg transition-colors" title="Delete">
                 <span class="material-symbols-outlined">delete</span>
               </button>
             </td>
           </tr>
           <tr v-if="posts?.length === 0">
-            <td colspan="3" class="px-6 py-20 text-center text-on-surface-variant font-mono">
+            <td colspan="4" class="px-6 py-20 text-center text-on-surface-variant font-mono">
               NO_ENTRIES_FOUND_IN_DATABASE
             </td>
           </tr>
@@ -58,20 +83,9 @@
 </template>
 
 <script setup lang="ts">
-const { fetchBlogs, deleteBlog } = useBlogActions()
+const { fetchBlogs, toggleBlogStatus, deleteBlogWithConfirm } = useBlogActions()
 
 const { data: posts, pending, refresh } = await useAsyncData('dashboard-blogs', () => fetchBlogs())
-
-const handleDelete = async (id: number) => {
-  if (confirm('Are you sure you want to delete this post?')) {
-    try {
-      await deleteBlog(id)
-      await refresh()
-    } catch (e: any) {
-      alert('Error deleting post: ' + e.message)
-    }
-  }
-}
 
 definePageMeta({
   middleware: 'auth',

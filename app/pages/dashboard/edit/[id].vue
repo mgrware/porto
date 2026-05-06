@@ -13,8 +13,8 @@
     </div>
 
     <form v-else @submit.prevent="handleSubmit" class="space-y-8 bg-surface-container border border-surface-container-high p-8 rounded-3xl shadow-xl">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="space-y-2">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="space-y-2 md:col-span-1">
           <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">ENTRY_TITLE</label>
           <input 
             v-model="form.title" 
@@ -25,7 +25,7 @@
           />
         </div>
 
-        <div class="space-y-2">
+        <div class="space-y-2 md:col-span-1">
           <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">ENTRY_SLUG</label>
           <input 
             v-model="form.slug" 
@@ -34,6 +34,18 @@
             class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
             required
           />
+        </div>
+
+        <div class="space-y-2 md:col-span-1">
+          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">ENTRY_STATUS</label>
+          <select 
+            v-model="form.status" 
+            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors appearance-none"
+            required
+          >
+            <option value="draft">DRAFT</option>
+            <option value="published">PUBLISHED</option>
+          </select>
         </div>
       </div>
 
@@ -68,13 +80,21 @@
 
       <div class="space-y-2">
         <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">ENTRY_CONTENT (HTML_SUPPORTED)</label>
-        <textarea 
-          v-model="form.content" 
-          rows="12"
-          placeholder="<p>Full content goes here...</p>"
-          class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors font-mono text-sm"
-          required
-        ></textarea>
+        <ClientOnly>
+          <QuillEditor 
+            v-model:content="form.content" 
+            contentType="html" 
+            theme="snow"
+            toolbar="full"
+            placeholder="<p>Full content goes here...</p>"
+            style="min-height: 300px;"
+          />
+          <template #fallback>
+            <div class="w-full h-[300px] bg-background border border-surface-container-high rounded-xl flex items-center justify-center text-on-surface-variant font-mono text-sm">
+              LOADING_EDITOR...
+            </div>
+          </template>
+        </ClientOnly>
       </div>
 
       <div v-if="errorMsg" class="text-error text-xs font-mono bg-error/10 p-4 rounded-xl border border-error/20">
@@ -85,6 +105,12 @@
         <NuxtLink to="/dashboard">
           <button type="button" class="px-8 py-4 rounded-xl font-mono tracking-widest text-xs uppercase hover:bg-surface-container-high transition-colors">
             CANCEL_CHANGES
+          </button>
+        </NuxtLink>
+        <NuxtLink :to="`/blog/${form.slug}`" target="_blank" v-if="form.slug">
+          <button type="button" class="px-8 py-4 rounded-xl font-mono tracking-widest text-xs uppercase border border-primary text-primary hover:bg-primary/10 transition-colors flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">visibility</span>
+            PREVIEW_DRAFT
           </button>
         </NuxtLink>
         <button 
@@ -110,7 +136,8 @@ const form = ref({
   title: '',
   slug: '',
   content: '',
-  image_url: ''
+  image_url: '',
+  status: 'draft'
 })
 
 const loading = ref(false)
@@ -137,7 +164,8 @@ const { pending } = await useAsyncData(`edit-blog-${id}`, async () => {
     title: data.title,
     slug: data.slug,
     content: data.content,
-    image_url: data.image_url || ''
+    image_url: data.image_url || '',
+    status: data.status || 'draft'
   }
   return data
 })

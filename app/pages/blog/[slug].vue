@@ -1,4 +1,8 @@
 <template>
+  <div v-if="isPreview && isAllowed" class="bg-surface-container-high border-b border-outline-variant p-3 text-center text-xs font-mono tracking-widest text-on-surface-variant flex justify-center items-center gap-2">
+    <span class="material-symbols-outlined text-sm">visibility</span>
+    PREVIEW_MODE - DRAFT
+  </div>
   <div class="max-w-4xl mx-auto px-6 py-12">
     <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-12 group">
       <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
@@ -9,7 +13,7 @@
       <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
     </div>
 
-    <div v-else-if="error || !post" class="text-center py-20">
+    <div v-else-if="error || !post || !isAllowed" class="text-center py-20">
       <h1 class="text-3xl font-bold mb-4">Post Not Found</h1>
       <p class="text-on-surface-variant mb-8">The requested blog post could not be found or there was an error.</p>
       <NuxtLink to="/blog">
@@ -61,13 +65,17 @@
 <script setup lang="ts">
 const route = useRoute()
 const { fetchBlogBySlug } = useBlogActions()
+const user = useSupabaseUser()
 
 const { data: post, pending, error } = await useAsyncData(`blog-${route.params.slug}`, () => 
   fetchBlogBySlug(route.params.slug as string)
 )
 
+const isPreview = computed(() => post.value && post.value.status !== 'published')
+const isAllowed = computed(() => !isPreview.value || user.value)
+
 watchEffect(() => {
-  if (post.value) {
+  if (post.value && isAllowed.value) {
     useSeoMeta({
       title: `${post.value.title} | Gilang Ramadan`,
       description: post.value.excerpt || undefined

@@ -59,7 +59,7 @@
 <script setup lang="ts">
 const { fetchBlogs } = useBlogActions()
 
-const { data: posts, pending, error } = await useAsyncData('blogs', () => fetchBlogs())
+const { data: posts, pending, error } = await useAsyncData('blogs', () => fetchBlogs(true))
 
 useSeoMeta({
   title: 'Blog | Gilang Ramadan',
