@@ -10,6 +10,7 @@ export interface BlogPost {
   created_at: string
 }
 
+import imageCompression from 'browser-image-compression'
 import Swal from 'sweetalert2'
 
 const MySwal = Swal.mixin({
@@ -43,11 +44,11 @@ export const useBlogActions = () => {
 
   const fetchBlogs = async (publishedOnly = false) => {
     let query = client.from('blogs').select('*').order('created_at', { ascending: false })
-    
+
     if (publishedOnly) {
       query = query.eq('status', 'published')
     }
-    
+
     const { data, error } = await (query as any)
     if (error) throw error
     return data as BlogPost[]
@@ -63,18 +64,36 @@ export const useBlogActions = () => {
   }
 
   const uploadImage = async (file: File) => {
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${Math.random()}.${fileExt}`
-    const filePath = `blog-images/${fileName}`
+    try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      }
 
-    const { error: uploadError } = await client.storage
-      .from('blogs')
-      .upload(filePath, file)
+      const compressedBlob = await imageCompression(file, options)
+      // Recreate File object to ensure name and type are preserved
+      const compressedFile = new File([compressedBlob], file.name, {
+        type: compressedBlob.type,
+        lastModified: Date.now()
+      })
 
-    if (uploadError) throw uploadError
+      const fileExt = compressedFile.name.split('.').pop()
+      const fileName = `${Math.random()}.${fileExt}`
+      const filePath = `blog-images/${fileName}`
 
-    const { data } = client.storage.from('blogs').getPublicUrl(filePath)
-    return data.publicUrl
+      const { error: uploadError } = await client.storage
+        .from('blogs')
+        .upload(filePath, compressedFile)
+
+      if (uploadError) throw uploadError
+
+      const { data } = client.storage.from('blogs').getPublicUrl(filePath)
+      return data.publicUrl
+    } catch (error) {
+      console.error('Error compressing/uploading image:', error)
+      throw error
+    }
   }
 
   const createBlog = async (post: { title: string; slug: string; content: string; image_url?: string; excerpt?: string; status?: string }) => {

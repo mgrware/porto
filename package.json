@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxtjs/supabase": "^2.0.6",
     "@vueup/vue-quill": "^1.2.0",
+    "browser-image-compression": "^2.0.2",
     "highlight.js": "^11.11.1",
     "nuxt": "^4.4.2",
     "sweetalert2": "^11.26.24",
