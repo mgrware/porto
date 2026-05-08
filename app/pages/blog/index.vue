@@ -9,6 +9,16 @@
       </p>
     </header>
 
+    <div class="mb-12 relative max-w-xl">
+      <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+      <input 
+        v-model="searchQuery" 
+        type="text" 
+        placeholder="Search articles by title, content, or tags..."
+        class="w-full bg-surface-container border border-surface-container-high rounded-2xl pl-12 pr-4 py-4 text-on-background focus:outline-none focus:border-primary transition-colors shadow-sm"
+      />
+    </div>
+
     <div v-if="pending" class="flex justify-center py-20">
       <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
     </div>
@@ -19,7 +29,7 @@
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <NuxtLink 
-        v-for="post in posts" 
+        v-for="post in filteredPosts" 
         :key="post.id"
         :to="`/blog/${post.slug}`"
         class="group bg-surface-container border border-surface-container-high rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 flex flex-col"
@@ -41,6 +51,12 @@
           <p class="text-on-surface-variant text-sm line-clamp-3 mb-4">
             {{ post.excerpt }}
           </p>
+
+          <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-2">
+            <span v-for="tag in post.tags" :key="tag" class="text-[9px] font-mono bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded border border-outline-variant/30 uppercase tracking-widest">
+              #{{ tag }}
+            </span>
+          </div>
         </div>
 
         <div class="px-6 py-4 border-t border-surface-container-high flex justify-between items-center bg-surface-container-high/30">
@@ -50,8 +66,8 @@
       </NuxtLink>
     </div>
 
-    <div v-if="!pending && posts?.length === 0" class="text-center py-20 bg-surface-container rounded-2xl border border-dashed border-surface-container-high">
-      <p class="text-on-surface-variant">No blog posts found. Check back later!</p>
+    <div v-if="!pending && filteredPosts.length === 0" class="text-center py-20 bg-surface-container rounded-2xl border border-dashed border-surface-container-high">
+      <p class="text-on-surface-variant">No blog posts found matching your search. Check back later!</p>
     </div>
   </div>
 </template>
@@ -60,6 +76,18 @@
 const { fetchBlogs } = useBlogActions()
 
 const { data: posts, pending, error } = await useAsyncData('blogs', () => fetchBlogs(true))
+
+const searchQuery = ref('')
+const filteredPosts = computed(() => {
+  if (!posts.value) return []
+  if (!searchQuery.value) return posts.value
+  const query = searchQuery.value.toLowerCase()
+  return posts.value.filter(post => 
+    post.title.toLowerCase().includes(query) || 
+    (post.content && post.content.toLowerCase().includes(query)) ||
+    post.tags?.some(tag => tag.toLowerCase().includes(query))
+  )
+})
 
 useSeoMeta({
   title: 'Blog | Gilang Ramadan',

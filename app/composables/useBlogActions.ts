@@ -7,6 +7,7 @@ export interface BlogPost {
   excerpt?: string | null
   status?: string
   views?: number
+  tags?: string[]
   created_at: string
 }
 
@@ -96,7 +97,7 @@ export const useBlogActions = () => {
     }
   }
 
-  const createBlog = async (post: { title: string; slug: string; content: string; image_url?: string; excerpt?: string; status?: string }) => {
+  const createBlog = async (post: { title: string; slug: string; content: string; image_url?: string; excerpt?: string; status?: string; tags?: string[] }) => {
     const { data, error } = await (client.from('blogs') as any)
       .insert([post])
       .select()
@@ -104,7 +105,7 @@ export const useBlogActions = () => {
     return data
   }
 
-  const updateBlog = async (id: string | number, updates: { title?: string; slug?: string; content?: string; image_url?: string; excerpt?: string; status?: string }) => {
+  const updateBlog = async (id: string | number, updates: { title?: string; slug?: string; content?: string; image_url?: string; excerpt?: string; status?: string; tags?: string[] }) => {
     const { data, error } = await (client.from('blogs') as any)
       .update(updates)
       .eq('id', id)
@@ -134,6 +135,22 @@ export const useBlogActions = () => {
     if (error) {
       console.error('Failed to increment views:', error)
     }
+  }
+
+  const searchTags = async (query: string) => {
+    const { data, error } = await (client.from('tags') as any)
+      .select('name')
+      .ilike('name', `%${query}%`)
+      .limit(10)
+    if (error) throw error
+    return (data as any[]).map(t => t.name) as string[]
+  }
+
+  const ensureTagsExist = async (tagNames: string[]) => {
+    if (!tagNames.length) return
+    const { error } = await (client.from('tags') as any)
+      .upsert(tagNames.map(name => ({ name })), { onConflict: 'name' })
+    if (error) console.error('Error ensuring tags exist:', error)
   }
 
   const toggleBlogStatus = async (post: any, onSuccess?: () => void) => {
@@ -204,5 +221,7 @@ export const useBlogActions = () => {
     toggleBlogStatus,
     deleteBlogWithConfirm,
     incrementBlogViews,
+    searchTags,
+    ensureTagsExist,
   }
 }

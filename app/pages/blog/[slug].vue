@@ -48,6 +48,12 @@
         <h1 class="text-4xl md:text-6xl font-bold font-headline mb-8 tracking-tighter leading-[0.9]">
           {{ post.title }}
         </h1>
+
+        <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-2 mb-8">
+          <span v-for="tag in post.tags" :key="tag" class="px-3 py-1 bg-surface-container text-on-surface-variant font-mono text-[10px] rounded-full uppercase tracking-widest border border-outline-variant">
+            #{{ tag }}
+          </span>
+        </div>
         
         <div v-if="post.image_url" class="aspect-video w-full bg-surface-container rounded-3xl mb-12 overflow-hidden border border-surface-container-high relative">
           <img :src="post.image_url" class="w-full h-full object-cover" />

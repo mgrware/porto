@@ -46,6 +46,10 @@
         </div>
       </div>
 
+      <div class="space-y-2">
+        <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">ENTRY_TAGS (MULTI_SELECT)</label>
+        <MoleculesTagInput v-model="form.tags" />
+      </div>
 
       <div class="space-y-2">
         <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">ENTRY_IMAGE</label>
@@ -113,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-const { createBlog, uploadImage } = useBlogActions()
+const { createBlog, uploadImage, ensureTagsExist } = useBlogActions()
 const router = useRouter()
 
 const form = ref({
@@ -121,7 +125,8 @@ const form = ref({
   slug: '',
   content: '',
   image_url: '',
-  status: 'draft'
+  status: 'draft',
+  tags: [] as string[]
 })
 
 const loading = ref(false)
@@ -153,6 +158,10 @@ const handleSubmit = async () => {
   loading.value = true
   errorMsg.value = ''
   try {
+    if (form.value.tags.length) {
+      await ensureTagsExist(form.value.tags)
+    }
+
     if (selectedFile.value) {
       form.value.image_url = await uploadImage(selectedFile.value)
     }

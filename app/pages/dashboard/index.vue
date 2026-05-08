@@ -17,7 +17,18 @@
       <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
     </div>
 
-    <div v-else class="bg-surface-container border border-surface-container-high rounded-3xl overflow-hidden shadow-xl">
+    <div v-else class="space-y-6">
+      <div class="mb-8 relative max-w-md">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+        <input 
+          v-model="searchQuery" 
+          type="text" 
+          placeholder="SEARCH_BY_TITLE_OR_TAG..."
+          class="w-full bg-surface-container border border-surface-container-high rounded-2xl pl-12 pr-4 py-3 text-sm font-mono focus:outline-none focus:border-primary transition-colors"
+        />
+      </div>
+
+      <div class="bg-surface-container border border-surface-container-high rounded-3xl overflow-hidden shadow-xl">
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-surface-container-high/50 border-b border-surface-container-high">
@@ -29,10 +40,13 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-surface-container-high">
-          <tr v-for="post in posts" :key="post.id" class="hover:bg-surface-container-high/20 transition-colors">
+          <tr v-for="post in filteredPosts" :key="post.id" class="hover:bg-surface-container-high/20 transition-colors">
             <td class="px-6 py-5">
               <div class="font-bold text-on-background">{{ post.title }}</div>
               <div class="text-xs text-on-surface-variant font-mono mt-1">/blog/{{ post.slug }}</div>
+              <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-1 mt-2">
+                <span v-for="tag in post.tags" :key="tag" class="text-[9px] font-mono text-primary/70">#{{ tag }}</span>
+              </div>
             </td>
             <td class="px-6 py-5">
               <span 
@@ -78,21 +92,33 @@
               </button>
             </td>
           </tr>
-          <tr v-if="posts?.length === 0">
-            <td colspan="4" class="px-6 py-20 text-center text-on-surface-variant font-mono">
-              NO_ENTRIES_FOUND_IN_DATABASE
+          <tr v-if="filteredPosts.length === 0">
+            <td colspan="5" class="px-6 py-20 text-center text-on-surface-variant font-mono">
+              NO_ENTRIES_FOUND_MATCHING_YOUR_SEARCH
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
 const { fetchBlogs, toggleBlogStatus, deleteBlogWithConfirm } = useBlogActions()
 
 const { data: posts, pending, refresh } = await useAsyncData('dashboard-blogs', () => fetchBlogs())
+
+const searchQuery = ref('')
+const filteredPosts = computed(() => {
+  if (!posts.value) return []
+  if (!searchQuery.value) return posts.value
+  const query = searchQuery.value.toLowerCase()
+  return posts.value.filter(post => 
+    post.title.toLowerCase().includes(query) || 
+    post.tags?.some(tag => tag.toLowerCase().includes(query))
+  )
+})
 
 definePageMeta({
   middleware: 'auth',
