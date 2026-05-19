@@ -32,10 +32,12 @@
       </p>
 
       <div class="flex flex-wrap gap-4 pt-4">
-        <BaseButton variant="primary" size="lg">
-          VIEW PROJECTS
-          <BaseIcon>arrow_forward</BaseIcon>
-        </BaseButton>
+        <NuxtLink to="/projects">
+          <BaseButton variant="primary" size="lg">
+            VIEW PROJECTS
+            <BaseIcon>arrow_forward</BaseIcon>
+          </BaseButton>
+        </NuxtLink>
         <BaseButton variant="surface" size="lg">
           GET IN TOUCH
         </BaseButton>

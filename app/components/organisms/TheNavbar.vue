@@ -99,6 +99,7 @@ const navItems = [
   { label: 'TECH_STACK', href: '#tech-stack' },
   { label: 'EXPERIENCE', href: '#experience' },
   { label: 'ARCHITECTURE', href: '#architecture' },
+  { label: 'PROJECTS', href: '/projects' },
   { label: 'BLOG', href: '/blog' },
 ]
 

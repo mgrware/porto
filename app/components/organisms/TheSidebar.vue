@@ -30,6 +30,7 @@ const sideItems = computed(() => {
     { icon: 'memory', href: '#tech-stack' },
     { icon: 'account_tree', href: '#experience' },
     { icon: 'alternate_email', href: '#architecture' },
+    { icon: 'folder', href: '/projects' },
     { icon: 'article', href: '/blog' },
   ]
 

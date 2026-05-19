@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-4xl mx-auto px-6 py-12">
     <header class="mb-12">
-      <NuxtLink to="/dashboard" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-6 group">
+      <NuxtLink to="/dashboard/blogs" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-6 group">
         <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
         <span class="text-xs font-mono uppercase tracking-widest">RETURN_TO_PANEL</span>
       </NuxtLink>

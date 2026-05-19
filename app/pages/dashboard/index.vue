@@ -1,127 +1,71 @@
 <template>
   <div class="max-w-6xl mx-auto px-6 py-12">
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-      <div>
-        <h1 class="text-4xl font-bold font-headline tracking-tighter mb-2">CONTROL<span class="text-primary">_PANEL</span></h1>
-        <p class="text-on-surface-variant text-sm font-mono uppercase tracking-widest">BLOG_MANAGEMENT_MODULE</p>
-      </div>
-      <NuxtLink to="/dashboard/new">
-        <button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <span class="material-symbols-outlined text-sm">add</span>
-          <span class="font-mono tracking-widest">NEW_ENTRY</span>
-        </button>
-      </NuxtLink>
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold font-headline mb-4 tracking-tighter">CONTROL_PANEL</h1>
+      <p class="text-on-surface-variant text-lg font-mono tracking-wide">
+        SYSTEM MANAGEMENT MODULES
+      </p>
     </header>
 
-    <div v-if="pending" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Blog Management Card -->
+      <NuxtLink to="/dashboard/blogs" class="group block">
+        <div class="bg-surface-container border border-surface-container-high rounded-3xl p-8 hover:border-primary/50 transition-all duration-300 h-full flex flex-col relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div class="w-16 h-16 rounded-2xl bg-surface-container-highest border border-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform duration-500 relative z-10">
+            <span class="material-symbols-outlined text-3xl">article</span>
+          </div>
+          
+          <h2 class="text-2xl font-bold font-headline mb-3 text-on-surface group-hover:text-primary transition-colors relative z-10">
+            Blog Management
+          </h2>
+          
+          <p class="text-on-surface-variant mb-8 flex-grow relative z-10">
+            Create, edit, and manage blog posts. Handle markdown content, tags, and publication status.
+          </p>
+          
+          <div class="flex items-center gap-2 text-primary font-mono text-sm tracking-widest mt-auto relative z-10">
+            <span>ACCESS_MODULE</span>
+            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </div>
+        </div>
+      </NuxtLink>
 
-    <div v-else class="space-y-6">
-      <div class="mb-8 relative max-w-md">
-        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
-        <input 
-          v-model="searchQuery" 
-          type="text" 
-          placeholder="SEARCH_BY_TITLE_OR_TAG..."
-          class="w-full bg-surface-container border border-surface-container-high rounded-2xl pl-12 pr-4 py-3 text-sm font-mono focus:outline-none focus:border-primary transition-colors"
-        />
-      </div>
-
-      <div class="bg-surface-container border border-surface-container-high rounded-3xl overflow-hidden shadow-xl">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="bg-surface-container-high/50 border-b border-surface-container-high">
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">TITLE</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">STATUS</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">VIEWS</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">CREATED_AT</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant text-right">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-surface-container-high">
-          <tr v-for="post in filteredPosts" :key="post.id" class="hover:bg-surface-container-high/20 transition-colors">
-            <td class="px-6 py-5">
-              <div class="font-bold text-on-background">{{ post.title }}</div>
-              <div class="text-xs text-on-surface-variant font-mono mt-1">/blog/{{ post.slug }}</div>
-              <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-1 mt-2">
-                <span v-for="tag in post.tags" :key="tag" class="text-[9px] font-mono text-primary/70">#{{ tag }}</span>
-              </div>
-            </td>
-            <td class="px-6 py-5">
-              <span 
-                class="px-2 py-1 rounded text-[10px] font-mono uppercase tracking-widest font-bold"
-                :class="post.status === 'published' ? 'bg-primary/20 text-primary' : 'bg-on-surface-variant/10 text-on-surface-variant'"
-              >
-                {{ post.status || 'draft' }}
-              </span>
-            </td>
-            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
-              <div class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">visibility</span>
-                {{ post.views || 0 }}
-              </div>
-            </td>
-            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
-              {{ new Date(post.created_at).toLocaleDateString() }}
-            </td>
-            <td class="px-6 py-5 text-right space-x-2">
-              <button 
-                @click="toggleBlogStatus(post, refresh)" 
-                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none align-middle mr-2"
-                :class="post.status === 'published' ? 'bg-primary' : 'bg-surface-container-highest'"
-                :title="post.status === 'published' ? 'Unpublish' : 'Publish'"
-              >
-                <span 
-                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-                  :class="post.status === 'published' ? 'translate-x-6' : 'translate-x-1'"
-                />
-              </button>
-              <NuxtLink :to="`/blog/${post.slug}`" target="_blank">
-                <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Preview">
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
-              </NuxtLink>
-              <NuxtLink :to="`/dashboard/edit/${post.id}`">
-                <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit">
-                  <span class="material-symbols-outlined">edit</span>
-                </button>
-              </NuxtLink>
-              <button @click="deleteBlogWithConfirm(post.id, refresh)" class="p-2 text-error hover:bg-error/10 rounded-lg transition-colors" title="Delete">
-                <span class="material-symbols-outlined">delete</span>
-              </button>
-            </td>
-          </tr>
-          <tr v-if="filteredPosts.length === 0">
-            <td colspan="5" class="px-6 py-20 text-center text-on-surface-variant font-mono">
-              NO_ENTRIES_FOUND_MATCHING_YOUR_SEARCH
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Projects Management Card -->
+      <NuxtLink to="/dashboard/projects" class="group block">
+        <div class="bg-surface-container border border-surface-container-high rounded-3xl p-8 hover:primary/50 transition-all duration-300 h-full flex flex-col relative overflow-hidden group-hover:border-primary/50">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <div class="w-16 h-16 rounded-2xl bg-surface-container-highest border border-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform duration-500 relative z-10">
+            <span class="material-symbols-outlined text-3xl">folder</span>
+          </div>
+          
+          <h2 class="text-2xl font-bold font-headline mb-3 text-on-surface group-hover:text-primary transition-colors relative z-10">
+            Projects Management
+          </h2>
+          
+          <p class="text-on-surface-variant mb-8 flex-grow relative z-10">
+            Manage portfolio projects, including source code links, live demos, and tags.
+          </p>
+          
+          <div class="flex items-center gap-2 text-primary font-mono text-sm tracking-widest mt-auto relative z-10">
+            <span>ACCESS_MODULE</span>
+            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </div>
+        </div>
+      </NuxtLink>
     </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
-const { fetchBlogs, toggleBlogStatus, deleteBlogWithConfirm } = useBlogActions()
-
-const { data: posts, pending, refresh } = await useAsyncData('dashboard-blogs', () => fetchBlogs())
-
-const searchQuery = ref('')
-const filteredPosts = computed(() => {
-  if (!posts.value) return []
-  if (!searchQuery.value) return posts.value
-  const query = searchQuery.value.toLowerCase()
-  return posts.value.filter(post => 
-    post.title.toLowerCase().includes(query) || 
-    post.tags?.some(tag => tag.toLowerCase().includes(query))
-  )
+definePageMeta({
+  middleware: ['auth']
 })
 
-definePageMeta({
-  middleware: 'auth',
-  layout: 'default'
+useSeoMeta({
+  title: 'Control Panel | System',
+  description: 'Manage system modules.'
 })
 </script>

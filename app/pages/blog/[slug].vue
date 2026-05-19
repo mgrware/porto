@@ -37,7 +37,7 @@
             </span>
           </div>
           
-          <NuxtLink v-if="user" :to="`/dashboard/edit/${post.id}`">
+          <NuxtLink v-if="user" :to="`/dashboard/blogs/edit/${post.id}`">
             <button class="bg-surface-container-high hover:bg-primary/20 text-primary px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-colors">
               <span class="material-symbols-outlined text-sm">edit</span>
               EDIT_ENTRY
