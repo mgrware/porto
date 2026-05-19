@@ -11,11 +11,27 @@
     <form @submit.prevent="handleSubmit" class="space-y-8 bg-surface-container border border-surface-container-high p-8 rounded-3xl shadow-xl">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="space-y-2 md:col-span-2">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_TITLE</label>
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_TITLE</label>
+            <button type="button" @click="generateSlug" class="text-[10px] text-primary font-mono uppercase tracking-widest hover:underline">
+              AUTO-GENERATE SLUG
+            </button>
+          </div>
           <input 
             v-model="form.title" 
             type="text" 
             placeholder="e.g. E-Commerce Microservices Architecture"
+            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            required
+          />
+        </div>
+
+        <div class="space-y-2 md:col-span-2">
+          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_SLUG</label>
+          <input 
+            v-model="form.slug" 
+            type="text" 
+            placeholder="e-commerce-microservices-architecture"
             class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
             required
           />
@@ -164,6 +180,7 @@ const router = useRouter()
 
 const form = ref({
   title: '',
+  slug: '',
   description: '',
   year: '',
   icon: 'shopping_cart',
@@ -182,6 +199,13 @@ const previewUrl = ref('')
 
 const triggerFileInput = () => {
   fileInput.value?.click()
+}
+
+const generateSlug = () => {
+  form.value.slug = form.value.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)+/g, '')
 }
 
 const onFileSelected = (event: Event) => {

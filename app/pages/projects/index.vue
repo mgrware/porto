@@ -37,14 +37,14 @@
         </div>
         
         <div class="p-6 flex-grow flex flex-col">
-          <NuxtLink :to="`/projects/${project.id}`">
+          <NuxtLink :to="`/projects/${project.slug || project.id}`">
             <h2 class="text-2xl font-bold mb-3 group-hover:text-primary transition-colors leading-tight">
               {{ project.title }}
             </h2>
           </NuxtLink>
           <p class="text-on-surface-variant text-sm mb-6 flex-grow">
             {{ stripHtml(project.description)?.length > 500 ? stripHtml(project.description).substring(0, 500) + '...' : stripHtml(project.description) }}
-            <NuxtLink v-if="stripHtml(project.description)?.length > 500" :to="`/projects/${project.id}`" class="text-primary hover:underline ml-1 font-medium">
+            <NuxtLink v-if="stripHtml(project.description)?.length > 500" :to="`/projects/${project.slug || project.id}`" class="text-primary hover:underline ml-1 font-medium">
               Read more
             </NuxtLink>
           </p>
@@ -56,7 +56,7 @@
           </div>
           
           <div class="flex flex-wrap gap-3 mt-auto">
-            <NuxtLink :to="`/projects/${project.id}`" class="flex-1 min-w-[100px]">
+            <NuxtLink :to="`/projects/${project.slug || project.id}`" class="flex-1 min-w-[100px]">
               <BaseButton variant="surface" class="w-full text-xs">
                 DETAILS
                 <BaseIcon size="sm">arrow_forward</BaseIcon>

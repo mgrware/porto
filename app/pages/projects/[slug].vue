@@ -85,11 +85,11 @@ import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import { useProjectActions } from '~/composables/useProjectActions'
 
 const route = useRoute()
-const { fetchProjectById } = useProjectActions()
+const { fetchProjectBySlug } = useProjectActions()
 const user = useSupabaseUser()
 
-const { data: project, pending, error } = await useAsyncData(`project-detail-${route.params.id}`, () => 
-  fetchProjectById(route.params.id as string)
+const { data: project, pending, error } = await useAsyncData(`project-detail-${route.params.slug}`, () => 
+  fetchProjectBySlug(route.params.slug as string)
 )
 
 watchEffect(() => {

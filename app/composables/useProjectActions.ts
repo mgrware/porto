@@ -9,6 +9,7 @@ export interface Project {
   image_url?: string | null
   demo_link?: string
   repo_link?: string
+  slug: string
   created_at: string
 }
 
@@ -54,6 +55,15 @@ export const useProjectActions = () => {
     const { data, error } = await (client.from('projects') as any)
       .select('*')
       .eq('id', id)
+      .single()
+    if (error) throw error
+    return data as Project
+  }
+
+  const fetchProjectBySlug = async (slug: string) => {
+    const { data, error } = await (client.from('projects') as any)
+      .select('*')
+      .eq('slug', slug)
       .single()
     if (error) throw error
     return data as Project
@@ -154,6 +164,7 @@ export const useProjectActions = () => {
   return {
     fetchProjects,
     fetchProjectById,
+    fetchProjectBySlug,
     createProject,
     updateProject,
     deleteProject,
