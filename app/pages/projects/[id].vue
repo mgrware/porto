@@ -47,9 +47,11 @@
         </div>
         
         <div class="aspect-video w-full bg-surface-container-highest rounded-3xl mb-12 overflow-hidden border border-surface-container-high relative flex items-center justify-center">
-          <div :class="['absolute inset-0 bg-gradient-to-br opacity-80', project.color_class]"></div>
-          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CiAgPGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPgo8L3N2Zz4=')] opacity-30"></div>
-          <span class="material-symbols-outlined text-[120px] text-white/90 relative z-10">{{ project.icon || 'folder' }}</span>
+          <img v-if="project.image_url" :src="project.image_url" :alt="project.title" class="absolute inset-0 w-full h-full object-cover z-0" />
+          <div v-else :class="['absolute inset-0 bg-gradient-to-br opacity-80 z-0', project.color_class]"></div>
+          <div v-if="!project.image_url" class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CiAgPGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPgo8L3N2Zz4=')] opacity-30 z-0"></div>
+          <span v-if="!project.image_url" class="material-symbols-outlined text-[120px] text-white/90 relative z-10">{{ project.icon || 'folder' }}</span>
+          <div v-if="project.image_url" class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 z-10"></div>
         </div>
         
         <div class="flex flex-wrap gap-4 mb-12" v-if="project.demo_link || project.repo_link">

@@ -41,8 +41,9 @@
         <tbody class="divide-y divide-surface-container-high">
           <tr v-for="project in filteredProjects" :key="project.id" class="hover:bg-surface-container-high/20 transition-colors">
             <td class="px-6 py-5">
-              <div class="font-bold text-on-background flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm text-primary">{{ project.icon || 'folder' }}</span>
+              <div class="font-bold text-on-background flex items-center gap-3">
+                <img v-if="project.image_url" :src="project.image_url" class="w-10 h-10 rounded-lg object-cover border border-surface-container-high shrink-0" />
+                <span v-else class="material-symbols-outlined text-xl text-primary w-10 h-10 flex items-center justify-center bg-surface-container-high rounded-lg shrink-0">{{ project.icon || 'folder' }}</span>
                 {{ project.title }}
               </div>
               <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-1 mt-2">

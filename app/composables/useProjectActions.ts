@@ -6,11 +6,13 @@ export interface Project {
   tags?: string[]
   color_class: string
   icon: string
+  image_url?: string | null
   demo_link?: string
   repo_link?: string
   created_at: string
 }
 
+import imageCompression from 'browser-image-compression'
 import MySwal from 'sweetalert2'
 
 const SwalOptions = MySwal.mixin({
@@ -116,6 +118,39 @@ export const useProjectActions = () => {
     }
   }
 
+  const uploadImage = async (file: File) => {
+    try {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      }
+
+      const compressedBlob = await imageCompression(file, options)
+      // Recreate File object to ensure name and type are preserved
+      const compressedFile = new File([compressedBlob], file.name, {
+        type: compressedBlob.type,
+        lastModified: Date.now()
+      })
+
+      const fileExt = compressedFile.name.split('.').pop()
+      const fileName = `${Math.random()}.${fileExt}`
+      const filePath = `project-images/${fileName}`
+
+      const { error: uploadError } = await client.storage
+        .from('projects')
+        .upload(filePath, compressedFile)
+
+      if (uploadError) throw uploadError
+
+      const { data } = client.storage.from('projects').getPublicUrl(filePath)
+      return data.publicUrl
+    } catch (error) {
+      console.error('Error compressing/uploading image:', error)
+      throw error
+    }
+  }
+
   return {
     fetchProjects,
     fetchProjectById,
@@ -123,5 +158,6 @@ export const useProjectActions = () => {
     updateProject,
     deleteProject,
     deleteProjectWithConfirm,
+    uploadImage,
   }
 }

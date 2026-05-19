@@ -16,11 +16,18 @@
         class="group bg-surface-container border border-surface-container-high rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 flex flex-col"
       >
         <div class="aspect-video bg-surface-container-highest relative overflow-hidden flex items-center justify-center">
-          <div :class="['absolute inset-0 bg-gradient-to-br opacity-50 group-hover:opacity-80 transition-opacity duration-500', project.color_class]"></div>
-          <!-- Grid pattern overlay -->
-          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CiAgPGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPgo8L3N2Zz4=')] opacity-30"></div>
+          <!-- Image Background if available -->
+          <img v-if="project.image_url" :src="project.image_url" :alt="project.title" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0" />
           
-          <BaseIcon class="text-7xl text-white/70 relative z-10 group-hover:scale-110 transition-transform duration-500">{{ project.icon }}</BaseIcon>
+          <!-- Fallback Gradient Background -->
+          <div v-else :class="['absolute inset-0 bg-gradient-to-br opacity-50 group-hover:opacity-80 transition-opacity duration-500 z-0', project.color_class]"></div>
+          <!-- Grid pattern overlay -->
+          <div v-if="!project.image_url" class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CiAgPGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPgo8L3N2Zz4=')] opacity-30 z-0"></div>
+          
+          <BaseIcon v-if="!project.image_url" class="text-7xl text-white/70 relative z-10 group-hover:scale-110 transition-transform duration-500">{{ project.icon }}</BaseIcon>
+          
+          <!-- Overlay to ensure text readability if there's an image -->
+          <div v-if="project.image_url" class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 z-10"></div>
           
           <div class="absolute bottom-4 left-4 z-20">
             <span class="text-[10px] font-mono bg-background/50 backdrop-blur text-on-surface px-2 py-1 rounded uppercase tracking-widest border border-outline-variant/20 shadow-sm">

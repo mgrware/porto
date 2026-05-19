@@ -96,6 +96,34 @@
       </div>
 
       <div class="space-y-2">
+        <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_IMAGE</label>
+        <div class="flex flex-col gap-4">
+          <input 
+            type="file" 
+            accept="image/*"
+            class="hidden"
+            ref="fileInput"
+            @change="onFileSelected"
+          />
+          <div 
+            @click="triggerFileInput"
+            class="w-full h-48 border-2 border-dashed border-surface-container-high rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-all overflow-hidden bg-background/50 group"
+          >
+            <div v-if="previewUrl" class="w-full h-full relative">
+              <img :src="previewUrl" class="w-full h-full object-cover" />
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                <span class="material-symbols-outlined text-white">edit</span>
+              </div>
+            </div>
+            <div v-else class="flex flex-col items-center gap-2 text-on-surface-variant">
+              <span class="material-symbols-outlined text-4xl">add_photo_alternate</span>
+              <span class="text-[10px] font-mono uppercase tracking-widest">UPLOAD_PROJECT_IMAGE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
         <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_DESCRIPTION (HTML_SUPPORTED)</label>
         <ClientOnly>
           <QuillEditor 
@@ -135,7 +163,7 @@
 <script setup lang="ts">
 import { useProjectActions } from '~/composables/useProjectActions'
 
-const { fetchProjectById, updateProject } = useProjectActions()
+const { fetchProjectById, updateProject, uploadImage } = useProjectActions()
 const { ensureTagsExist } = useBlogActions()
 const route = useRoute()
 const router = useRouter()
@@ -148,11 +176,27 @@ const form = ref({
   color_class: 'from-blue-600 to-cyan-400',
   demo_link: '',
   repo_link: '',
+  image_url: '',
   tags: [] as string[]
 })
 
 const loading = ref(false)
 const errorMsg = ref('')
+const fileInput = ref<HTMLInputElement | null>(null)
+const selectedFile = ref<File | null>(null)
+const previewUrl = ref('')
+
+const triggerFileInput = () => {
+  fileInput.value?.click()
+}
+
+const onFileSelected = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files[0]) {
+    selectedFile.value = target.files[0]
+    previewUrl.value = URL.createObjectURL(selectedFile.value)
+  }
+}
 
 const { pending } = await useAsyncData(`project-${route.params.id}`, async () => {
   try {
@@ -165,8 +209,14 @@ const { pending } = await useAsyncData(`project-${route.params.id}`, async () =>
       color_class: data.color_class || 'from-blue-600 to-cyan-400',
       demo_link: data.demo_link || '',
       repo_link: data.repo_link || '',
+      image_url: data.image_url || '',
       tags: data.tags || []
     }
+    
+    if (data.image_url) {
+      previewUrl.value = data.image_url
+    }
+    
     return data
   } catch (e: any) {
     errorMsg.value = 'Failed to load project: ' + e.message
@@ -186,6 +236,10 @@ const handleSubmit = async () => {
     
     if (payload.tags.length) {
       await ensureTagsExist(payload.tags)
+    }
+
+    if (selectedFile.value) {
+      payload.image_url = await uploadImage(selectedFile.value)
     }
 
     await updateProject(route.params.id as string, payload as any)
