@@ -46,7 +46,7 @@ export const useProjectActions = () => {
   const client = useSupabaseClient()
 
   const fetchProjects = async () => {
-    const { data, error } = await client.from('projects').select('*').order('created_at', { ascending: false })
+    const { data, error } = await client.from('projects').select('*').order('year', { ascending: false }).order('created_at', { ascending: true })
     if (error) throw error
     return data as Project[]
   }
