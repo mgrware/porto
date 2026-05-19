@@ -3,8 +3,13 @@
     class="flex items-center justify-center p-2 rounded-none hover:bg-surface-container transition-all text-on-surface-variant hover:text-primary"
     @click="toggleTheme"
   >
-    <BaseIcon v-if="colorMode.value === 'dark'">light_mode</BaseIcon>
-    <BaseIcon v-else>dark_mode</BaseIcon>
+    <ClientOnly>
+      <BaseIcon v-if="colorMode.value === 'dark'">light_mode</BaseIcon>
+      <BaseIcon v-else>dark_mode</BaseIcon>
+      <template #fallback>
+        <BaseIcon>dark_mode</BaseIcon>
+      </template>
+    </ClientOnly>
   </button>
 
 </template>

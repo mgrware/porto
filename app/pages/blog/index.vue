@@ -39,7 +39,7 @@
           <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10"></div>
           <div class="absolute bottom-4 left-4 z-20">
             <span class="text-[10px] font-mono bg-primary/20 text-primary px-2 py-1 rounded uppercase tracking-widest">
-              {{ new Date(post.created_at).toLocaleDateString() }}
+              {{ new Date(post.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) }}
             </span>
           </div>
         </div>

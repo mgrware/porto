@@ -54,7 +54,7 @@
               {{ project.year }}
             </td>
             <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
-              {{ new Date(project.created_at).toLocaleDateString() }}
+              {{ new Date(project.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) }}
             </td>
             <td class="px-6 py-5 text-right space-x-2">
               <NuxtLink :to="project.demo_link || '#'" target="_blank">

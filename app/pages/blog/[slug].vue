@@ -26,7 +26,7 @@
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-4">
             <span class="text-xs font-mono bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest">
-              {{ new Date(post.created_at).toLocaleDateString() }}
+              {{ new Date(post.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) }}
             </span>
             <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
             <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest">5 MIN READ</span>
