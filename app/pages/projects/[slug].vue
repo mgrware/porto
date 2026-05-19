@@ -72,10 +72,52 @@
 
       <div class="prose prose-invert prose-primary max-w-none bg-surface-container border border-surface-container-high p-8 md:p-12 rounded-3xl shadow-xl">
         <h2 class="text-2xl font-bold font-headline tracking-tighter mb-6 text-primary">ABOUT_THE_PROJECT</h2>
-        <div class="text-on-background/80 leading-relaxed text-lg font-body" v-html="project.description">
+        <div class="text-on-background/80 leading-relaxed text-lg font-body" v-html="project.description" @click="handleContentClick">
         </div>
       </div>
     </article>
+
+    <Teleport to="body">
+      <div v-if="selectedImage" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 animate-in fade-in duration-200" @click="closeLightbox">
+        
+        <!-- Controls -->
+        <div class="absolute top-6 right-6 flex items-center gap-4 z-50">
+          <div class="flex items-center gap-2 bg-white/10 rounded-full p-1 backdrop-blur-sm" @click.stop>
+            <button @click="zoomOut" class="text-white hover:bg-white/20 p-2 rounded-full transition-colors flex items-center justify-center" :disabled="zoomLevel <= 0.5">
+              <BaseIcon>remove</BaseIcon>
+            </button>
+            <span class="text-white font-mono text-xs min-w-[3ch] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
+            <button @click="zoomIn" class="text-white hover:bg-white/20 p-2 rounded-full transition-colors flex items-center justify-center" :disabled="zoomLevel >= 3">
+              <BaseIcon>add</BaseIcon>
+            </button>
+          </div>
+
+          <button @click="closeLightbox" class="text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center backdrop-blur-sm">
+            <BaseIcon>close</BaseIcon>
+          </button>
+        </div>
+
+        <!-- Image Container -->
+        <div class="w-full h-full overflow-hidden flex items-center justify-center relative">
+          <img 
+            :src="selectedImage" 
+            :style="{ 
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoomLevel})`, 
+              transition: isDragging ? 'none' : 'transform 0.2s ease-out' 
+            }"
+            class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl origin-center" 
+            :class="zoomLevel > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'"
+            @click.stop 
+            @wheel.prevent="handleWheel"
+            @mousedown.prevent="startDrag"
+            @mousemove="onDrag"
+            @mouseup="stopDrag"
+            @mouseleave="stopDrag"
+            draggable="false"
+          />
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -100,6 +142,55 @@ watchEffect(() => {
     })
   }
 })
+
+const selectedImage = ref<string | null>(null)
+const zoomLevel = ref(1)
+const pan = ref({ x: 0, y: 0 })
+const isDragging = ref(false)
+const dragStart = ref({ x: 0, y: 0 })
+
+const closeLightbox = () => {
+  selectedImage.value = null
+  zoomLevel.value = 1
+  pan.value = { x: 0, y: 0 }
+}
+
+const zoomIn = () => {
+  zoomLevel.value = Math.min(zoomLevel.value + 0.25, 3)
+}
+
+const zoomOut = () => {
+  zoomLevel.value = Math.max(zoomLevel.value - 0.25, 0.5)
+}
+
+const handleWheel = (e: WheelEvent) => {
+  if (e.deltaY < 0) zoomIn()
+  else zoomOut()
+}
+
+const startDrag = (e: MouseEvent) => {
+  if (zoomLevel.value > 1) {
+    isDragging.value = true
+    dragStart.value = { x: e.clientX - pan.value.x, y: e.clientY - pan.value.y }
+  }
+}
+
+const onDrag = (e: MouseEvent) => {
+  if (isDragging.value) {
+    pan.value = { x: e.clientX - dragStart.value.x, y: e.clientY - dragStart.value.y }
+  }
+}
+
+const stopDrag = () => {
+  isDragging.value = false
+}
+
+const handleContentClick = (event: MouseEvent) => {
+  const target = event.target as HTMLElement
+  if (target.tagName.toLowerCase() === 'img') {
+    selectedImage.value = (target as HTMLImageElement).src
+  }
+}
 </script>
 
 <style scoped lang="postcss">
@@ -122,5 +213,8 @@ watchEffect(() => {
 :deep(.prose code:not(pre code):not(pre.ql-syntax)) {
   @apply bg-surface-container px-2 py-1 text-primary text-sm border border-surface-container-high;
   font-family: 'Space Grotesk', monospace;
+}
+:deep(.prose img) {
+  @apply cursor-zoom-in hover:opacity-90 transition-opacity rounded-xl border border-surface-container-high shadow-md my-8 mx-auto block;
 }
 </style>
