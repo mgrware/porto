@@ -9,7 +9,19 @@
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+    <div v-if="pending" class="flex justify-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    </div>
+
+    <div v-else-if="error" class="bg-error/10 border border-error text-error p-6 rounded-lg">
+      <p>Error loading projects: {{ error.message }}</p>
+    </div>
+
+    <div v-else-if="!projects || projects.length === 0" class="text-center py-20 bg-surface-container rounded-2xl border border-dashed border-surface-container-high">
+      <p class="text-on-surface-variant">No projects found. Check back later!</p>
+    </div>
+
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
       <div 
         v-for="project in projects" 
         :key="project.id"
@@ -96,7 +108,7 @@ import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import { useProjectActions } from '~/composables/useProjectActions'
 
 const { fetchProjects } = useProjectActions()
-const { data: projects, pending, error } = await useAsyncData('projects', () => fetchProjects())
+const { data: projects, pending, error } = useLazyAsyncData('projects', () => fetchProjects())
 
 const stripHtml = (html: string) => {
   if (!html) return ''

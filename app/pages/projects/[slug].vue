@@ -130,7 +130,7 @@ const route = useRoute()
 const { fetchProjectBySlug } = useProjectActions()
 const user = useSupabaseUser()
 
-const { data: project, pending, error } = await useAsyncData(`project-detail-${route.params.slug}`, () => 
+const { data: project, pending, error } = useLazyAsyncData(`project-detail-${route.params.slug}`, () => 
   fetchProjectBySlug(route.params.slug as string)
 )
 

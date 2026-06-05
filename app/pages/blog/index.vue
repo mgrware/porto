@@ -75,7 +75,7 @@
 <script setup lang="ts">
 const { fetchBlogs } = useBlogActions()
 
-const { data: posts, pending, error } = await useAsyncData('blogs', () => fetchBlogs(true))
+const { data: posts, pending, error } = useLazyAsyncData('blogs', () => fetchBlogs(true))
 
 const searchQuery = ref('')
 const filteredPosts = computed(() => {

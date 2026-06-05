@@ -92,7 +92,7 @@ const route = useRoute()
 const { fetchBlogBySlug, incrementBlogViews } = useBlogActions()
 const user = useSupabaseUser()
 
-const { data: post, pending, error } = await useAsyncData(`blog-${route.params.slug}`, () => 
+const { data: post, pending, error } = useLazyAsyncData(`blog-${route.params.slug}`, () => 
   fetchBlogBySlug(route.params.slug as string)
 )
 
