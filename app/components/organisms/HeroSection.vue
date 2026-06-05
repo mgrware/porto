@@ -28,7 +28,7 @@
       </h1>
 
       <p class="font-body text-on-surface-variant max-w-xl text-lg leading-relaxed">
-        An experienced programmer with a decade of experience in large scale projects especially using ruby on rails ones, My experience includes integrating third-party APIs, such as the Shopeepay  API, Stripe API, implementing AES-256 encryption  and meta programming for generate code dynamically and reducing redundancy code. In my free time, I also gained experience with Golang, Node.js, and PHP, which has broadened my understanding of backend development across multiple ecosystems.
+        Senior Backend Engineer with 10+ years architecting fintech-grade marketplace platforms on Ruby on Rails, Go, and PostgreSQL. Deep specialization in Stripe Connect payment infrastructure — split payments, escrow, subscriptions, and automated payouts — with end-to-end ownership from technical design to production. Previously Engineering Manager running a department behind a system that sustained 1,000 TPS at 99.9% uptime; most recently led the backend build for an early-stage rental and services marketplace from zero to production. Now focused on hands-on senior IC work, partnering with remote cross-functional teams to ship reliable, observable, and well-tested backend systems.
       </p>
 
       <div class="flex flex-wrap gap-4 pt-4">

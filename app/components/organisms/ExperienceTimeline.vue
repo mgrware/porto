@@ -74,13 +74,16 @@ const experiences = [
     icon: 'dns',
     active: true,
     description: [
-      'Architected and led the backend development of a large-scale Property Rental System from scratch using Ruby on Rails and PostgreSQL.',
-      'Led a team of backend developers, conducting code reviews via Git and providing technical mentorship to newcomers.',
-      'Reduced system downtime by 20% through proactive troubleshooting and implementing automated monitoring.',
-      'Optimized development workflow by breaking down complex business requirements into actionable technical tasks and leading daily scrum meetings.',
-      'Developed custom Metaprogramming modules that significantly improved code efficiency and reduced boilerplate across the system.',
-      'Managed end-to-end deployment cycles for staging and production environments, ensuring 99.9% system uptime.',
-      'Collaborated cross-functionally with QA, Business Analysts, and Project Managers to ensure on-time delivery of critical features.'
+      'Architected core domain layer using Interactor and Organizer patterns, decoupling business logic from Rails models and controllers — established a maintainable foundation that cut PR review time by ~30% and contained regression risk in payment-critical flows as the codebase grew.',
+      'Established the testing foundation from the ground up using RSpec, reaching 78% coverage across 13 service domains with CI-gated unit, integration, and request specs on all payment and auth paths.',
+      'Engineered end-to-end marketplace payment infrastructure on Stripe API and Stripe Connect, implementing destination charges, split payments, Connect Express onboarding, webhook idempotency, and dispute handling — production-ready for multi-party payouts at scale.',
+      'Built automated payout routing pipeline distributing rental payments from tenants to landlords with platform fee capture, eliminating manual reconciliation and providing a same-day payout SLA from day one of launch.',
+      'Designed escrow and subscription billing engine supporting recurring charges, hold-and-release flows, and KYC-gated activation for professional service bookings across multiple pricing tiers.',
+      'Implemented real-time messaging layer with AnyCable on Ruby on Rails for in-app chat and live notifications, benchmarked to sustain 1,000+ concurrent WebSocket connections at p95 <100ms — chosen over ActionCable to cut server memory footprint by ~60% and remove a known scaling ceiling before it became a problem.',
+      'Eliminated N+1 query patterns and refactored heavy ActiveRecord associations using includes, preload, and counter caches; combined with Redis caching and targeted PostgreSQL  indexing to drop p95 endpoint latency from 800ms to <150ms across core read paths.',
+      'Built backend framework for an internal social-graph engine — feed generation, listing publication, and portfolio surfacing — with cursor-based pagination and Redis-backed activity feeds designed to scale horizontally as content volume grows.',
+      'Containerized full application stack with Docker and Docker Compose, achieving dev/staging/production parity and cutting new-engineer onboarding from 2 days to under 4 hours.',
+      'Partnered with distributed cross-functional teams (Frontend, UI/UX, Product) across timezones using Git Flow, code review standards, and Agile/Scrum ceremonies; maintained a zero-rollback release record across the platform\'s first year in production.'
     ],
     tags: ['RUBY_ON_RAILS', 'POSTGRESQL', 'NODE_JS', 'MONGO_DB', 'GOLANG', 'CI/CD', 'DOCKER', 'JAVASCRIPT']
   },
@@ -91,11 +94,15 @@ const experiences = [
     icon: 'terminal',
     active: false,
     description: [
-      'Managed backend engineering for high-transaction platforms, including Payment Point Online Bank (PPOB) and Food Delivery systems, utilizing Ruby on Rails and MySQL.',
-      'Directed the end-to-end lifecycle of application development from initial skeleton design to production launch.',
-      'Enhanced transaction reliability and efficiency through the strategic integration of third-party payment and service APIs.',
-      'Bridged the gap between technical execution and business goals by reporting directly to the CTO and participating in strategic project discussions.',
-      'Facilitated team growth through structured training programs for new developers and rigorous code quality audits'
+      'Owned end-to-end engineering for a multi-rail fintech super-app spanning 7 core service domains and 21+ sub-services — bill payments (PPOB), ticketing, transfers & disbursement, e-money, QRIS, top-up/withdrawal, and school cashless — all behind a unified agent and consumer experience.',
+      'Hired and led an 8-person engineering org (5 backend developers, 2 QA, 1 system analyst), owning recruitment, technical interviews, performance reviews, and mentorship; built the team from the ground up to support a growing transaction volume.',
+      'Sustained 1,000 TPS at peak with 99.9% uptime during high-demand windows (utility payment cycles, ticketing rushes), through proactive bottleneck mitigation, load balancing on Nginx and AWS ALB, and horizontal scaling of stateless services.',
+      'Led the architectural migration from a legacy Rails monolith to a distributed microservices platform, decomposing tightly-coupled billing and ticketing flows into independently deployable services — improved fault isolation, eliminated cross-domain deploy contention, and unlocked parallel team velocity.',
+      'Architected and maintained 10+ third-party integrations powering the platform\'s revenue streams, including Finnet / Finpay (payment gateway, P2P), Tiket.com (rail and hotel), Aeroticket (airlines), Redbus (intercity bus), Indotama (rail), Infobip (SMS/OTP), OneSignal (push), and internal SSO/Cashless services across the Atozpay ecosystem — each with its own auth model, idempotency contract, and failure mode.',
+      'Designed automated dispatch and routing algorithms for a multi-sided ecosystem (Users, Merchant Partners, Drivers) optimized for high-density, short-distance delivery routes — reduced average dispatch latency and improved driver utilization across peak hours.',
+      'Established a predictable release cadence of one production deploy per sprint with code-review gates, staging validation, and rollback playbooks — turning deployments from risk events into routine operations.',
+      'Instituted Agile/Scrum ceremonies, sprint planning, and a code review culture across the engineering org; standardized SDLC practices from ticket grooming through post-deploy monitoring, lifting team velocity and on-time delivery of high-impact features.',
+      'Promoted from Senior Backend Developer to Engineering Manager after 2 year — given full ownership of the technology department, hiring authority, and architectural direction.'
     ],
     tags: ['RUBY_ON_RAILS', 'MYSQL', 'GOLANG', 'LARAVEL', 'CI/CD', 'JAVASCRIPT']
   },
