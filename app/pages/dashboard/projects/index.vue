@@ -34,6 +34,7 @@
           <tr class="bg-surface-container-high/50 border-b border-surface-container-high">
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">TITLE</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">YEAR</th>
+            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">PRIORITY</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">CREATED_AT</th>
             <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant text-right">ACTIONS</th>
           </tr>
@@ -52,6 +53,9 @@
             </td>
             <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
               {{ project.year }}
+            </td>
+            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
+              {{ project.priority !== undefined ? project.priority : 0 }}
             </td>
             <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
               {{ new Date(project.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) }}

@@ -68,6 +68,18 @@
           </div>
         </div>
 
+        <div class="space-y-2 md:col-span-1">
+          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PRIORITY</label>
+          <input 
+            v-model.number="form.priority" 
+            type="number" 
+            placeholder="e.g. 0"
+            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            min="0"
+            required
+          />
+        </div>
+
         <div class="space-y-2 md:col-span-2">
           <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">COLOR_THEME_CLASS</label>
           <select 
@@ -194,6 +206,7 @@ const form = ref({
   demo_link: '',
   repo_link: '',
   image_url: '',
+  priority: 0,
   tags: [] as string[]
 })
 
@@ -235,6 +248,7 @@ const { pending } = await useAsyncData(`project-${route.params.id}`, async () =>
       demo_link: data.demo_link || '',
       repo_link: data.repo_link || '',
       image_url: data.image_url || '',
+      priority: data.priority || 0,
       tags: data.tags || []
     }
     

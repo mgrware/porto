@@ -11,6 +11,7 @@ export interface Project {
   repo_link?: string
   slug: string
   created_at: string
+  priority?: number
 }
 
 import imageCompression from 'browser-image-compression'
@@ -46,7 +47,12 @@ export const useProjectActions = () => {
   const client = useSupabaseClient()
 
   const fetchProjects = async () => {
-    const { data, error } = await client.from('projects').select('*').order('year', { ascending: false }).order('created_at', { ascending: true })
+    const { data, error } = await client
+      .from('projects')
+      .select('*')
+      .order('priority', { ascending: false })
+      .order('year', { ascending: false })
+      .order('created_at', { ascending: true })
     if (error) throw error
     return data as Project[]
   }
