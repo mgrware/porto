@@ -9,9 +9,7 @@
       <span class="text-xs font-mono uppercase tracking-widest">BACK_TO_LOGS</span>
     </NuxtLink>
 
-    <div v-if="pending" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>
+    <BaseLoader v-if="pending" />
 
     <div v-else-if="error || !post || !isAllowed" class="text-center py-20">
       <h1 class="text-3xl font-bold mb-4">Post Not Found</h1>
@@ -87,6 +85,7 @@
 <script setup lang="ts">
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
+import BaseLoader from '~/components/atoms/BaseLoader.vue'
 
 const route = useRoute()
 const { fetchBlogBySlug, incrementBlogViews } = useBlogActions()

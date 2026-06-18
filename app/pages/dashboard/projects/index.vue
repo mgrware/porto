@@ -13,9 +13,7 @@
       </NuxtLink>
     </header>
 
-    <div v-if="pending" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>
+    <BaseLoader v-if="pending" />
 
     <div v-else class="space-y-6">
       <div class="mb-8 relative max-w-md">
@@ -89,6 +87,7 @@
 </template>
 
 <script setup lang="ts">
+import BaseLoader from '~/components/atoms/BaseLoader.vue'
 import { useProjectActions } from '~/composables/useProjectActions'
 
 const { fetchProjects, deleteProjectWithConfirm } = useProjectActions()

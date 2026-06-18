@@ -19,9 +19,7 @@
       />
     </div>
 
-    <div v-if="pending" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>
+    <BaseLoader v-if="pending" />
 
     <div v-else-if="error" class="bg-error/10 border border-error text-error p-6 rounded-lg">
       <p>Error loading blog posts: {{ error.message }}</p>
@@ -73,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+import BaseLoader from '~/components/atoms/BaseLoader.vue'
 const { fetchBlogs } = useBlogActions()
 
 const { data: posts, pending, error } = useLazyAsyncData('blogs', () => fetchBlogs(true))

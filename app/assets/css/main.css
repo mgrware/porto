@@ -111,3 +111,48 @@
   background-color: rgb(var(--background));
   color: rgb(var(--on-background));
 }
+
+/* Supabase Loader Animations */
+@keyframes spinCW {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinCCW {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-4px) scale(1.02); }
+}
+
+@keyframes pulseShadow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(62, 207, 142, 0.4)) drop-shadow(0 0 15px rgba(62, 207, 142, 0.15)); }
+  50% { filter: drop-shadow(0 0 20px rgba(62, 207, 142, 0.8)) drop-shadow(0 0 30px rgba(62, 207, 142, 0.4)); }
+}
+
+.animate-spin-cw {
+  animation: spinCW 25s linear infinite;
+  transform-origin: center;
+}
+
+.animate-spin-ccw {
+  animation: spinCCW 18s linear infinite;
+  transform-origin: center;
+}
+
+.animate-spin-fast {
+  animation: spinCW 8s linear infinite;
+  transform-origin: center;
+}
+
+.animate-logo-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-supabase-glow {
+  animation: pulseShadow 3s ease-in-out infinite;
+}
+

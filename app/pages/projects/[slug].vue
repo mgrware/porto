@@ -5,9 +5,7 @@
       <span class="text-xs font-mono uppercase tracking-widest">BACK_TO_PROJECTS</span>
     </NuxtLink>
 
-    <div v-if="pending" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>
+    <BaseLoader v-if="pending" />
 
     <div v-else-if="error || !project" class="text-center py-20">
       <h1 class="text-3xl font-bold mb-4">Project Not Found</h1>
@@ -125,6 +123,7 @@
 import BaseButton from '~/components/atoms/BaseButton.vue'
 import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import { useProjectActions } from '~/composables/useProjectActions'
+import BaseLoader from '~/components/atoms/BaseLoader.vue'
 
 const route = useRoute()
 const { fetchProjectBySlug } = useProjectActions()
