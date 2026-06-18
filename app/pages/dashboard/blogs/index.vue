@@ -5,7 +5,7 @@
         <h1 class="text-4xl font-bold font-headline tracking-tighter mb-2">CONTROL<span class="text-primary">_PANEL</span></h1>
         <p class="text-on-surface-variant text-sm font-mono uppercase tracking-widest">BLOG_MANAGEMENT_MODULE</p>
       </div>
-      <NuxtLink to="/dashboard/new">
+      <NuxtLink to="/dashboard/blogs/new">
         <button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
           <span class="material-symbols-outlined text-sm">add</span>
           <span class="font-mono tracking-widest">NEW_ENTRY</span>
@@ -82,7 +82,7 @@
                   <span class="material-symbols-outlined">visibility</span>
                 </button>
               </NuxtLink>
-              <NuxtLink :to="`/dashboard/edit/${post.id}`">
+              <NuxtLink :to="`/dashboard/blogs/edit/${post.id}`">
                 <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit">
                   <span class="material-symbols-outlined">edit</span>
                 </button>
