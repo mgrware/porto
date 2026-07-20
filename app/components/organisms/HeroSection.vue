@@ -18,7 +18,7 @@
       </div>
 
       <BaseBadge variant="primary">
-        FULLSTACK_SOFTWARE_ENGINEER // VERSION_1.0.4
+        GILANG_RAMADAN // SENIOR_BACKEND_ENGINEER
       </BaseBadge>
 
       <h1 class="font-headline text-5xl lg:text-7xl font-bold leading-none tracking-tighter uppercase">
