@@ -1,6 +1,6 @@
 <template>
   <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-16 bg-background/80 backdrop-blur-sm border-b border-surface-container-high">
-    <div class="text-xl font-bold tracking-tighter text-primary font-headline">ROOT@SYSTEM</div>
+    <div class="text-xl font-bold tracking-tighter text-primary font-headline">ROOT@GILANGR</div>
     
     <div class="hidden md:flex gap-8 items-center">
       <template v-for="item in navItems" :key="item.label">

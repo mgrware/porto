@@ -38,9 +38,6 @@
             <BaseIcon>arrow_forward</BaseIcon>
           </BaseButton>
         </NuxtLink>
-        <BaseButton variant="surface" size="lg">
-          GET IN TOUCH
-        </BaseButton>
       </div>
     </div>
 

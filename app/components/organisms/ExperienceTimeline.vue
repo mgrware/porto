@@ -68,6 +68,20 @@ import BaseBadge from '../atoms/BaseBadge.vue'
 
 const experiences = [
   {
+    period: 'Feb 2026 — present',
+    role: 'Founder & Lead Engineer',
+    company: 'PT GIRADIA SOLUSI DIGITAL',
+    icon: 'dns',
+    active: true,
+    description: [
+      'Founded and lead end-to-end architecture as sole engineer for Bati, an offline-first, multi-tenant POS SaaS platform for Indonesian SMEs (UMKM) — full-stack ownership across backend (NestJS, Prisma, PostgreSQL, Redis, BullMQ, Traefik), mobile (Flutter), and admin dashboard (React).',
+      'Designed an offline-first sync engine — outbox pattern with client-generated UUIDv7 idempotency keys and event-sourced inventory and cash ledgers — enabling reliable multi-cashier, multi-outlet operation with zero data loss under intermittent connectivity.',
+      'Architected a flexible entitlement and monetization system spanning Free/Pro tiers plus recurring and one-time à la carte add-ons across 40+ feature flags, unified through shared backend/mobile/admin gating contracts so pricing-model changes require no application logic rewrites.',
+      'Built and normalized a 56,000+ SKU master product catalog from multiple public retail datasets, powering barcode-scan product prefill to reduce merchant onboarding friction.'
+    ],
+    tags: ['RUBY_ON_RAILS', 'POSTGRESQL', 'NODE_JS', 'MONGO_DB', 'GOLANG', 'CI/CD', 'DOCKER', 'JAVASCRIPT']
+  },
+  {
     period: 'Mar 2022 — Feb 2026',
     role: 'Senior Backend Developer',
     company: 'VIRTUAL SPIRIT',
