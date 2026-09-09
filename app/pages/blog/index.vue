@@ -1,29 +1,28 @@
 <template>
   <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <div class="flex items-center gap-4 mb-7 lg:mb-11">
-      <span class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary">SHEET 05</span>
-      <span class="flex-1 h-px bg-outline-variant/45"></span>
-      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">LOG REGISTER — WRITTEN NOTES</span>
-    </div>
+    <SheetRule sheet="06" caption="REVISION LOG — FIELD NOTES" />
 
-    <div v-reveal class="flex flex-wrap items-end gap-x-6 gap-y-4 mb-8">
-      <h1 class="font-headline text-[clamp(1.75rem,3.2vw,2.5rem)] font-semibold -tracking-[0.02em] text-on-surface">Blog</h1>
-      <span class="flex-1 basis-24 h-px bg-outline-variant/45 mb-3"></span>
-      <p class="text-[0.9375rem] text-outline max-w-sm mb-1">
-        Notes on software architecture, backend engineering, and systems that stay up.
+    <div v-reveal class="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
+      <h1 class="font-headline text-[clamp(2.25rem,4.6vw,3.5rem)] font-semibold -tracking-[0.03em] leading-[1.05] text-on-surface">Blog</h1>
+      <p class="text-[1.0625rem] leading-[1.6] text-on-surface-variant max-w-[34rem] mb-1.5">
+        Notes on software architecture, backend engineering, and building high-performance systems.
       </p>
     </div>
 
-    <div v-reveal class="flex items-center gap-3 border border-outline-variant/55 bg-surface-container/40 px-4 mb-10 max-w-xl">
-      <span class="text-mono text-[0.8125rem] text-primary">/</span>
+    <div v-reveal class="flex items-center gap-3 border border-outline-variant/60 bg-surface-container/50 px-3.5 max-w-[34rem] mb-7">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="text-outline shrink-0" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" />
+      </svg>
       <input
         v-model="searchQuery"
-        type="text"
-        placeholder="filter by title, content, or tag"
-        aria-label="Search articles"
-        class="w-full bg-transparent py-3.5 text-mono text-[0.8125rem] text-on-surface placeholder:text-outline focus:outline-none"
+        type="search"
+        placeholder="Search entries by title, content, or tag"
+        aria-label="Search entries"
+        class="flex-1 min-w-0 bg-transparent border-0 outline-none py-3.5 text-mono text-[0.8125rem] text-on-surface placeholder:text-outline"
       />
-      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.1em] text-outline shrink-0">{{ filteredPosts.length }} / {{ posts?.length || 0 }}</span>
+      <span class="hidden sm:inline text-mono text-[0.625rem] tracking-[0.1em] text-outline shrink-0">
+        {{ String(filteredPosts.length).padStart(2, '0') }} / {{ String(posts?.length || 0).padStart(2, '0') }}
+      </span>
     </div>
 
     <BaseLoader v-if="pending" />
@@ -32,62 +31,87 @@
       ERR — could not load posts: {{ error.message }}
     </div>
 
-    <div v-else-if="filteredPosts.length === 0" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center text-mono text-[0.8125rem] text-outline">
-      no entries match this filter
-    </div>
+    <template v-else>
+      <div class="flex flex-wrap gap-x-8 gap-y-2 py-3 border-t-2 border-outline-variant/55 border-b border-outline-variant/40 text-mono text-[0.625rem] tracking-[0.12em] text-outline">
+        <span>ENTRIES · {{ String(posts?.length || 0).padStart(2, '0') }}</span>
+        <span v-if="latest">LATEST · {{ latest }}</span>
+        <span class="flex-1"></span>
+        <span class="text-primary">SORTED NEWEST FIRST</span>
+      </div>
 
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-outline-variant/50">
-      <NuxtLink
-        v-for="(post, index) in filteredPosts"
-        :key="post.id"
-        v-reveal
-        :to="`/blog/${post.slug}`"
-        class="group flex flex-col border-r border-b border-outline-variant/50 bg-surface-container/35 hover:bg-surface-container/70 transition-colors min-w-0"
-      >
-        <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-outline-variant/40">
-          <span class="text-mono text-[0.625rem] tracking-[0.12em] text-primary">LOG · {{ String(index + 1).padStart(2, '0') }}</span>
-          <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">
-            {{ new Date(post.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase() }}
-          </span>
-        </div>
-
-        <div v-if="post.image_url" class="aspect-video overflow-hidden border-b border-outline-variant/40 bg-surface-container-lowest">
-          <img
-            :src="post.image_url"
-            :alt="post.title"
-            class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
-          />
-        </div>
-
-        <div class="flex-grow flex flex-col gap-3 p-4">
-          <h2 class="font-headline text-[1.0625rem] font-semibold leading-snug text-on-surface line-clamp-2 group-hover:text-primary transition-colors">
-            {{ post.title }}
-          </h2>
-          <p v-if="post.excerpt" class="text-sm leading-[1.55] text-on-surface-variant line-clamp-3">{{ post.excerpt }}</p>
-
-          <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-[0.375rem] mt-auto pt-2">
+      <div v-if="filteredPosts.length" class="flex flex-col">
+        <article
+          v-for="(post, index) in filteredPosts"
+          :key="post.id"
+          v-reveal
+          class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-x-8 lg:gap-x-12 py-5 lg:py-7 border-b border-outline-variant/40 min-w-0"
+        >
+          <div class="flex items-start gap-3 min-w-0">
             <span
-              v-for="tag in post.tags"
-              :key="tag"
-              class="text-mono text-[0.625rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-1.5 py-0.5"
-            >{{ tag }}</span>
+              :class="['shrink-0 w-[9px] h-[9px] mt-1.5 rotate-45', index === 0 ? 'bg-primary' : 'bg-outline-variant']"
+            ></span>
+            <div class="min-w-0">
+              <div class="text-mono text-xs tracking-[0.06em] text-primary">{{ sheetDate(post.created_at) }}</div>
+              <div class="text-mono text-[0.625rem] tracking-[0.1em] text-outline mt-1.5">
+                {{ readTime(post.content) }} MIN READ · {{ post.views || 0 }} VIEWS
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="flex items-center gap-2.5 px-4 py-3 border-t border-outline-variant/40 text-mono text-[0.6875rem] tracking-[0.08em] text-primary">
-          Read entry
-          <span class="flex-1 h-px bg-outline-variant/40"></span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
-            <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
+          <div class="md:col-span-2 min-w-0 flex flex-col gap-3">
+            <h2 class="font-headline text-[clamp(1.1875rem,2.1vw,1.5rem)] font-semibold -tracking-[0.02em] leading-[1.25] text-on-surface text-pretty">
+              <NuxtLink :to="`/blog/${post.slug}`" class="hover:text-primary transition-colors">{{ post.title }}</NuxtLink>
+            </h2>
+
+            <p v-if="post.excerpt" class="text-[0.9375rem] leading-[1.6] text-on-surface-variant max-w-[52rem] text-pretty">
+              {{ post.excerpt }}
+            </p>
+
+            <div class="flex flex-wrap items-center gap-x-3.5 gap-y-[0.4375rem]">
+              <span
+                v-for="tag in post.tags"
+                :key="tag"
+                class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
+              >{{ tag }}</span>
+              <span class="flex-1"></span>
+              <NuxtLink
+                :to="`/blog/${post.slug}`"
+                class="group inline-flex items-center gap-[0.4375rem] text-mono text-xs tracking-[0.06em] text-primary"
+              >
+                Read entry
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
+                  <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
+                </svg>
+              </NuxtLink>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div v-else class="border border-dashed border-outline-variant/60 px-6 py-16 text-center text-mono text-[0.8125rem] text-outline mt-6">
+        No entries match that search.
+      </div>
+
+      <div class="pt-8">
+        <NuxtLink
+          to="/#hero"
+          class="inline-flex items-center gap-2 px-[1.125rem] py-3 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
           </svg>
-        </div>
-      </NuxtLink>
-    </div>
+          Return to sheet 01
+        </NuxtLink>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
+import SheetRule from '~/components/molecules/SheetRule.vue'
+import { readTime, sheetDate } from '~/composables/useSheetRefs'
+
 const { fetchBlogs } = useBlogActions()
 
 const { data: posts, pending, error } = useLazyAsyncData('blogs', () => fetchBlogs(true))
@@ -102,6 +126,13 @@ const filteredPosts = computed(() => {
     (post.content && post.content.toLowerCase().includes(query)) ||
     post.tags?.some(tag => tag.toLowerCase().includes(query))
   )
+})
+
+const latest = computed(() => {
+  const newest = posts.value?.[0]?.created_at
+  return newest
+    ? new Date(newest).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase()
+    : ''
 })
 
 useSeoMeta({

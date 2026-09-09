@@ -64,6 +64,10 @@
   .text-mono {
     font-family: 'IBM Plex Mono', monospace;
   }
+  /* Section hatching, as used on unsupplied drawing plates */
+  .bp-hatch {
+    background-image: repeating-linear-gradient(135deg, rgb(var(--outline-variant) / 0.16) 0 1px, transparent 1px 9px);
+  }
   /* Drafting paper: 20px minor grid over a 120px major grid */
   .bp-grid {
     background-image:
