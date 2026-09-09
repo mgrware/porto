@@ -11,13 +11,19 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space_Grotesk:wght@300;400;500;600;700&display=swap' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap' }
+      ],
+      // v-reveal hides content until it scrolls in; without JS it never would.
+      noscript: [
+        { innerHTML: '<style>[data-reveal]{opacity:1!important;transform:none!important}</style>' }
       ]
     }
   },
   colorMode: {
-    classSuffix: ''
+    classSuffix: '',
+    preference: 'dark',
+    fallback: 'dark'
   },
   supabase: {
     redirect: false
