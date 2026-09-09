@@ -1,110 +1,153 @@
 <template>
-  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <div class="flex items-center gap-4 mb-8">
-      <NuxtLink
-        to="/projects"
-        class="group inline-flex items-center gap-2 text-mono text-[0.6875rem] tracking-[0.12em] text-outline hover:text-primary transition-colors"
-      >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
-          <path d="M20 12H5" /><path d="M11 6l-6 6 6 6" />
-        </svg>
-        BACK TO ASSEMBLY INDEX
-      </NuxtLink>
-      <span class="flex-1 h-px bg-outline-variant/45"></span>
-      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">SHEET 06 · DRAWING</span>
-    </div>
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <NuxtLink
+      to="/projects"
+      class="group inline-flex items-center gap-2 mb-7 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors"
+    >
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
+        <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
+      </svg>
+      Back to drawing index
+    </NuxtLink>
 
     <BaseLoader v-if="pending" />
 
     <div v-else-if="error || !project" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center">
       <h1 class="font-headline text-2xl font-semibold text-on-surface mb-2">Drawing not found</h1>
-      <p class="text-mono text-[0.8125rem] text-outline mb-6">this project is not in the index</p>
+      <p class="text-mono text-[0.8125rem] text-outline mb-6">this project is not in the drawing index</p>
       <NuxtLink
         to="/projects"
         class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
       >Back to projects</NuxtLink>
     </div>
 
-    <article v-else>
-      <header class="mb-10">
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-6 border-b border-outline-variant/50 text-mono text-[0.6875rem] tracking-[0.1em] text-outline">
-          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span class="text-primary">{{ project.year }}</span>
-            <span class="w-1 h-1 bg-outline-variant"></span>
-            <span>PROJECT RECORD</span>
-          </div>
+    <template v-else>
+      <SheetRule :sheet="sheet" :caption="`DWG ${drawingRef}`" />
 
-          <NuxtLink
-            v-if="user"
-            :to="`/dashboard/projects/edit/${project.id}`"
-            class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
-          >
-            <BaseIcon class="text-sm">edit</BaseIcon>
-            EDIT PROJECT
-          </NuxtLink>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-3 mb-4 text-mono text-xs tracking-[0.1em]">
+        <span class="text-primary">{{ project.year }}</span>
+        <span class="w-1.5 h-1.5 bg-outline-variant rotate-45"></span>
+        <span class="text-outline">BACKEND / PLATFORM</span>
+        <span class="flex-1"></span>
+        <NuxtLink
+          v-if="user"
+          :to="`/dashboard/projects/edit/${project.id}`"
+          class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+        >
+          <BaseIcon class="text-sm">edit</BaseIcon>
+          EDIT PROJECT
+        </NuxtLink>
+      </div>
+
+      <h1 class="font-headline text-[clamp(2.25rem,4.8vw,3.75rem)] font-semibold leading-[1.04] -tracking-[0.03em] text-on-surface mb-5 max-w-[24ch] text-pretty">
+        {{ project.title }}
+      </h1>
+
+      <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-[0.4375rem] mb-7">
+        <span
+          v-for="tag in project.tags"
+          :key="tag"
+          class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
+        >{{ tag }}</span>
+      </div>
+
+      <!-- plate -->
+      <div class="relative border border-outline-variant/55 bg-background/60 mb-7">
+        <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-outline-variant z-10"></span>
+        <span class="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-outline-variant z-10"></span>
+        <span class="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-outline-variant z-10"></span>
+        <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant z-10"></span>
+        <img v-if="project.image_url" :src="project.image_url" :alt="project.title" class="w-full aspect-[21/9] object-cover" />
+        <div v-else class="bp-hatch aspect-[21/9] flex items-center justify-center">
+          <span class="text-mono text-xs tracking-[0.12em] text-outline">PLATE {{ sheet }} — SCREENSHOT TO BE SUPPLIED</span>
         </div>
-
-        <h1 class="font-headline text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.05] -tracking-[0.025em] text-on-surface mb-6 text-pretty">
-          {{ project.title }}
-        </h1>
-
-        <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-[0.4375rem] mb-8">
-          <span
-            v-for="tag in project.tags"
-            :key="tag"
-            class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
-          >{{ tag }}</span>
-        </div>
-
-        <div class="relative border border-outline-variant/55 p-1.5 bg-surface-container/40 mb-8">
-          <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-primary"></span>
-          <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-primary"></span>
-          <img
-            v-if="project.image_url"
-            :src="project.image_url"
-            :alt="project.title"
-            class="w-full aspect-video object-cover"
-          />
-          <div v-else class="relative w-full aspect-video bg-surface-container-lowest flex items-center justify-center">
-            <div class="bp-grid absolute inset-0"></div>
-            <BaseIcon class="relative text-[96px] text-outline-variant">{{ project.icon || 'folder' }}</BaseIcon>
-          </div>
-        </div>
-
-        <div v-if="project.demo_link || project.repo_link" class="flex flex-wrap gap-3">
-          <a
-            v-if="project.demo_link"
-            :href="project.demo_link"
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] tracking-[0.04em] transition-colors"
-          >
-            Live demo
-            <BaseIcon class="text-base">open_in_new</BaseIcon>
-          </a>
-          <a
-            v-if="project.repo_link"
-            :href="project.repo_link"
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] tracking-[0.04em] transition-colors"
-          >
-            Source code
-            <BaseIcon class="text-base">code</BaseIcon>
-          </a>
-        </div>
-      </header>
-
-      <div class="relative border border-outline-variant/55 bg-background/60">
-        <div class="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-outline-variant/45 bg-surface-container/90">
-          <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-secondary">notes — about the project</span>
-          <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">NTS</span>
-        </div>
-        <div class="prose prose-invert max-w-none p-5 sm:p-8">
-          <div class="text-[1.0625rem] leading-[1.7] text-on-surface-variant" v-html="project.description" @click="handleContentClick"></div>
+        <div class="flex flex-wrap justify-between gap-x-4 gap-y-2 px-4 py-2.5 border-t border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
+          <span class="truncate max-w-[70%]">FIG. 1 — {{ project.title.toUpperCase() }}</span>
+          <span>SCALE NTS</span>
         </div>
       </div>
-    </article>
+
+      <div v-if="project.demo_link || project.repo_link" class="flex flex-wrap gap-3 mb-8 lg:mb-12">
+        <a
+          v-if="project.demo_link"
+          :href="project.demo_link"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2.5 px-5 py-3.5 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] font-medium transition-colors"
+        >
+          Live demo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <path d="M14 4h6v6" /><path d="M20 4L10 14" /><path d="M18 14v6H4V6h6" />
+          </svg>
+        </a>
+        <a
+          v-if="project.repo_link"
+          :href="project.repo_link"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2.5 px-5 py-3.5 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
+        >
+          Source code
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <path d="M9 18l-6-6 6-6" /><path d="M15 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
+        <div class="lg:col-span-2 min-w-0">
+          <div class="flex items-center gap-4 pb-3 mb-5 border-b-2 border-outline-variant/55">
+            <h2 class="font-headline text-[1.375rem] font-semibold -tracking-[0.02em] text-on-surface">About the project</h2>
+            <span class="flex-1"></span>
+            <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">GENERAL NOTES</span>
+          </div>
+
+          <div class="prose prose-invert max-w-none" v-html="project.description" @click="handleContentClick"></div>
+        </div>
+
+        <aside class="min-w-0 lg:sticky lg:top-[88px] flex flex-col gap-5">
+          <div class="border border-outline-variant/55 bg-surface-container/50">
+            <div class="px-4 py-2.5 border-b border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.12em] text-secondary">
+              SPECIFICATION
+            </div>
+            <div
+              v-for="row in spec"
+              :key="row.label"
+              class="flex justify-between gap-4 px-4 py-[0.6875rem] border-b border-outline-variant/[0.28] last:border-b-0 min-w-0"
+            >
+              <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-outline shrink-0">{{ row.label }}</span>
+              <span class="text-mono text-xs text-on-surface text-right min-w-0 truncate">{{ row.value }}</span>
+            </div>
+          </div>
+
+          <div v-if="project.tags && project.tags.length" class="border border-outline-variant/55 bg-surface-container/50">
+            <div class="px-4 py-2.5 border-b border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.12em] text-secondary">
+              TECHNICAL STACK
+            </div>
+            <div
+              v-for="(tag, index) in project.tags"
+              :key="tag"
+              class="px-4 py-3 border-b border-outline-variant/[0.28] last:border-b-0 min-w-0"
+            >
+              <div class="text-mono text-[0.625rem] tracking-[0.12em] text-primary mb-[0.3125rem]">{{ String(index + 1).padStart(2, '0') }}</div>
+              <div class="text-sm leading-[1.5] text-on-surface-variant">{{ tag }}</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div v-if="prev || next" class="grid grid-cols-1 sm:grid-cols-2 border-t-2 border-outline-variant/55 mt-8 lg:mt-12">
+        <NuxtLink v-if="prev" :to="`/projects/${prev.slug || prev.id}`" class="group py-5 border-b border-outline-variant/40 min-w-0">
+          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">◀ PREVIOUS SHEET · {{ prevSheet }}</div>
+          <div class="font-headline text-[1.0625rem] font-semibold text-on-surface group-hover:text-primary transition-colors">{{ prev.title }}</div>
+        </NuxtLink>
+        <span v-else class="hidden sm:block border-b border-outline-variant/40"></span>
+        <NuxtLink v-if="next" :to="`/projects/${next.slug || next.id}`" class="group py-5 border-b border-outline-variant/40 sm:text-right min-w-0">
+          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">NEXT SHEET · {{ nextSheet }} ▶</div>
+          <div class="font-headline text-[1.0625rem] font-semibold text-on-surface group-hover:text-primary transition-colors">{{ next.title }}</div>
+        </NuxtLink>
+      </div>
+    </template>
 
     <Teleport to="body">
       <div v-if="selectedImage" class="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 p-4" @click="closeLightbox">
@@ -164,15 +207,40 @@
 <script setup lang="ts">
 import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
-import { useProjectActions } from '~/composables/useProjectActions'
+import SheetRule from '~/components/molecules/SheetRule.vue'
+import { useProjectActions, type Project } from '~/composables/useProjectActions'
+import { drawingNo, sheetNo } from '~/composables/useSheetRefs'
 
 const route = useRoute()
-const { fetchProjectBySlug } = useProjectActions()
+const { fetchProjects, fetchProjectBySlug } = useProjectActions()
 const user = useSupabaseUser()
 
 const { data: project, pending, error } = useLazyAsyncData(`project-detail-${route.params.slug}`, () =>
   fetchProjectBySlug(route.params.slug as string)
 )
+
+// Shares the index page's cache key, so navigating from the list costs nothing.
+const { data: projects } = useLazyAsyncData('projects', () => fetchProjects())
+
+const position = computed(() => (projects.value || []).findIndex((p: Project) => p.id === project.value?.id))
+const sheet = computed(() => (position.value >= 0 ? sheetNo('05', position.value) : '05'))
+const drawingRef = computed(() => (project.value ? drawingNo(project.value, Math.max(position.value, 0)) : ''))
+const prev = computed(() => (position.value > 0 ? projects.value?.[position.value - 1] : null))
+const next = computed(() => (position.value >= 0 ? projects.value?.[position.value + 1] : null))
+const prevSheet = computed(() => sheetNo('05', position.value - 1))
+const nextSheet = computed(() => sheetNo('05', position.value + 1))
+
+const spec = computed(() => {
+  if (!project.value) return []
+  return [
+    { label: 'DRAWING NO.', value: drawingRef.value },
+    { label: 'SHEET', value: sheet.value },
+    { label: 'YEAR', value: project.value.year || '—' },
+    { label: 'DISCIPLINE', value: 'Backend / platform' },
+    { label: 'DEMO', value: project.value.demo_link ? 'AVAILABLE' : '—' },
+    { label: 'SOURCE', value: project.value.repo_link ? 'AVAILABLE' : '—' }
+  ]
+})
 
 watchEffect(() => {
   if (project.value) {
@@ -235,13 +303,16 @@ const handleContentClick = (event: MouseEvent) => {
 
 <style scoped lang="postcss">
 :deep(.prose h2) {
-  @apply font-headline text-2xl font-semibold mt-12 mb-5 -tracking-[0.02em] text-on-surface first:mt-0;
+  @apply font-headline text-[1.375rem] font-semibold mt-10 mb-4 pb-3 -tracking-[0.02em] text-on-surface border-b-2 border-outline-variant/55 first:mt-0;
 }
 :deep(.prose h3) {
-  @apply font-headline text-xl font-semibold mt-10 mb-4 text-on-surface;
+  @apply font-headline text-lg font-semibold mt-8 mb-3 text-on-surface;
 }
 :deep(.prose p) {
-  @apply mb-6 leading-[1.7] text-on-surface-variant;
+  @apply mb-4 text-[1.0625rem] leading-[1.68] text-on-surface-variant;
+}
+:deep(.prose strong) {
+  @apply font-semibold text-on-surface;
 }
 :deep(.prose a) {
   @apply text-primary underline underline-offset-4 hover:text-secondary transition-colors;
@@ -253,14 +324,14 @@ const handleContentClick = (event: MouseEvent) => {
   @apply list-decimal list-outside pl-5 mb-6 space-y-2 marker:text-outline-variant;
 }
 :deep(.prose blockquote) {
-  @apply border-l-2 border-primary pl-4 my-6 text-on-surface-variant;
+  @apply border-l-2 border-primary bg-surface-container/50 pl-5 pr-4 py-4 my-6 text-on-background;
 }
 :deep(.prose pre) {
-  @apply bg-surface-container-lowest border border-outline-variant/55 p-5 my-8 overflow-x-auto text-sm leading-relaxed !important;
+  @apply bg-surface-container-lowest border border-outline-variant/55 p-[1.125rem] my-7 overflow-x-auto text-[0.8125rem] leading-[1.75] !important;
   font-family: 'IBM Plex Mono', monospace;
 }
 :deep(.prose code:not(pre code):not(pre.ql-syntax)) {
-  @apply bg-surface-container px-1.5 py-0.5 text-primary text-sm border border-outline-variant/40;
+  @apply text-primary text-[0.9375rem] border border-outline-variant/50 px-1.5 py-px;
   font-family: 'IBM Plex Mono', monospace;
 }
 :deep(.prose img) {
