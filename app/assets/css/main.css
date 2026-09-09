@@ -110,7 +110,7 @@
   color: rgb(var(--on-background));
 }
 
-/* Supabase Loader Animations */
+/* Loader animations */
 @keyframes spinCW {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -127,8 +127,8 @@
 }
 
 @keyframes pulseShadow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(62, 207, 142, 0.4)) drop-shadow(0 0 15px rgba(62, 207, 142, 0.15)); }
-  50% { filter: drop-shadow(0 0 20px rgba(62, 207, 142, 0.8)) drop-shadow(0 0 30px rgba(62, 207, 142, 0.4)); }
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(201, 147, 46, 0.4)) drop-shadow(0 0 15px rgba(201, 147, 46, 0.15)); }
+  50% { filter: drop-shadow(0 0 20px rgba(201, 147, 46, 0.8)) drop-shadow(0 0 30px rgba(201, 147, 46, 0.4)); }
 }
 
 .animate-spin-cw {

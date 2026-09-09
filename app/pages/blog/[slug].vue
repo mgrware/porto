@@ -1,79 +1,97 @@
 <template>
-  <div v-if="isPreview && isAllowed" class="bg-surface-container-high border-b border-outline-variant p-3 text-center text-xs font-mono tracking-widest text-on-surface-variant flex justify-center items-center gap-2">
-    <span class="material-symbols-outlined text-sm">visibility</span>
-    PREVIEW_MODE - DRAFT
+  <div
+    v-if="isPreview && isAllowed"
+    class="border-b border-outline-variant/60 bg-surface-container px-4 py-2.5 flex justify-center items-center gap-2 text-mono text-[0.6875rem] tracking-[0.12em] text-primary"
+  >
+    <span class="w-1.5 h-1.5 bg-primary animate-bp-pulse"></span>
+    PREVIEW — UNPUBLISHED DRAFT
   </div>
-  <div class="max-w-4xl mx-auto px-6 py-12">
-    <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-12 group">
-      <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
-      <span class="text-xs font-mono uppercase tracking-widest">BACK_TO_LOGS</span>
-    </NuxtLink>
+
+  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <div class="flex items-center gap-4 mb-8">
+      <NuxtLink
+        to="/blog"
+        class="group inline-flex items-center gap-2 text-mono text-[0.6875rem] tracking-[0.12em] text-outline hover:text-primary transition-colors"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
+          <path d="M20 12H5" /><path d="M11 6l-6 6 6 6" />
+        </svg>
+        BACK TO LOG REGISTER
+      </NuxtLink>
+      <span class="flex-1 h-px bg-outline-variant/45"></span>
+      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">SHEET 05 · ENTRY</span>
+    </div>
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="error || !post || !isAllowed" class="text-center py-20">
-      <h1 class="text-3xl font-bold mb-4">Post Not Found</h1>
-      <p class="text-on-surface-variant mb-8">The requested blog post could not be found or there was an error.</p>
-      <NuxtLink to="/blog">
-        <button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold">Go Back</button>
-      </NuxtLink>
+    <div v-else-if="error || !post || !isAllowed" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center">
+      <h1 class="font-headline text-2xl font-semibold text-on-surface mb-2">Entry not found</h1>
+      <p class="text-mono text-[0.8125rem] text-outline mb-6">this drawing is not in the register</p>
+      <NuxtLink
+        to="/blog"
+        class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
+      >Back to blog</NuxtLink>
     </div>
 
-    <article v-else class="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <header class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-4">
-            <span class="text-xs font-mono bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest">
-              {{ new Date(post.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) }}
+    <article v-else>
+      <header class="mb-10">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-6 border-b border-outline-variant/50 text-mono text-[0.6875rem] tracking-[0.1em] text-outline">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span class="text-primary">
+              {{ new Date(post.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase() }}
             </span>
-            <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
-            <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest">5 MIN READ</span>
-            <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
-            <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest flex items-center gap-1" title="Views">
-              <span class="material-symbols-outlined text-sm">visibility</span>
+            <span class="w-1 h-1 bg-outline-variant"></span>
+            <span>5 MIN READ</span>
+            <span class="w-1 h-1 bg-outline-variant"></span>
+            <span class="flex items-center gap-1.5" title="Views">
+              <BaseIcon class="text-sm">visibility</BaseIcon>
               {{ post.views || 0 }}
             </span>
           </div>
-          
-          <NuxtLink v-if="user" :to="`/dashboard/blogs/edit/${post.id}`">
-            <button class="bg-surface-container-high hover:bg-primary/20 text-primary px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-colors">
-              <span class="material-symbols-outlined text-sm">edit</span>
-              EDIT_ENTRY
-            </button>
+
+          <NuxtLink
+            v-if="user"
+            :to="`/dashboard/blogs/edit/${post.id}`"
+            class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+          >
+            <BaseIcon class="text-sm">edit</BaseIcon>
+            EDIT ENTRY
           </NuxtLink>
         </div>
-        
-        <h1 class="text-4xl md:text-6xl font-bold font-headline mb-8 tracking-tighter leading-[0.9]">
+
+        <h1 class="font-headline text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.05] -tracking-[0.025em] text-on-surface mb-6 text-pretty">
           {{ post.title }}
         </h1>
 
-        <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-2 mb-8">
-          <span v-for="tag in post.tags" :key="tag" class="px-3 py-1 bg-surface-container text-on-surface-variant font-mono text-[10px] rounded-full uppercase tracking-widest border border-outline-variant">
-            #{{ tag }}
-          </span>
+        <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-[0.4375rem] mb-8">
+          <span
+            v-for="tag in post.tags"
+            :key="tag"
+            class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
+          >{{ tag }}</span>
         </div>
-        
-        <div v-if="post.image_url" class="aspect-video w-full bg-surface-container rounded-3xl mb-12 overflow-hidden border border-surface-container-high relative">
-          <img :src="post.image_url" class="w-full h-full object-cover" />
-        </div>
-        <div v-else class="aspect-video w-full bg-surface-container rounded-3xl mb-12 overflow-hidden border border-surface-container-high relative">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+
+        <div v-if="post.image_url" class="relative border border-outline-variant/55 p-1.5 bg-surface-container/40 mb-10">
+          <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-primary"></span>
+          <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-primary"></span>
+          <img :src="post.image_url" :alt="post.title" class="w-full aspect-video object-cover" />
         </div>
       </header>
 
-      <div class="prose prose-invert prose-primary max-w-none">
-        <div class="text-on-background/80 leading-relaxed text-lg" v-html="post.content"></div>
+      <div class="prose prose-invert max-w-none">
+        <div class="text-[1.0625rem] leading-[1.7] text-on-surface-variant" v-html="post.content"></div>
       </div>
 
-      <footer class="mt-20 pt-12 border-t border-surface-container-high">
-        <div class="bg-surface-container p-8 rounded-3xl border border-surface-container-high flex flex-col md:flex-row items-center gap-8">
-          <div class="w-20 h-20 bg-surface rounded-full overflow-hidden border-2 border-surface-container-highest shrink-0 shadow-lg">
-            <img src="~/assets/images/avatar.jpg" alt="Gilang Ramadan" class="w-full h-full object-cover" />
+      <footer class="mt-16 pt-8 border-t-2 border-outline-variant/60">
+        <div class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary mb-4">DRAWN BY</div>
+        <div class="flex items-center gap-4 border border-outline-variant/55 bg-surface-container/40 p-4">
+          <div class="relative shrink-0 w-16 h-16 border border-outline-variant/60 p-1">
+            <img src="~/assets/images/avatar.jpg" alt="Gilang Ramadan" class="w-full h-full object-cover grayscale opacity-90" />
           </div>
-          <div>
-            <h3 class="text-xl font-bold mb-2">Written by Gilang Ramadan</h3>
-            <p class="text-on-surface-variant text-sm">
-              Fullstack Engineer specialized in high-performance backend systems and modern frontend architectures.
+          <div class="min-w-0">
+            <h2 class="font-headline text-base font-semibold text-on-surface mb-1">Gilang Ramadan</h2>
+            <p class="text-sm leading-[1.55] text-on-surface-variant">
+              Senior backend engineer — high-performance systems, payment infrastructure, and the telemetry to prove they work.
             </p>
           </div>
         </div>
@@ -85,13 +103,14 @@
 <script setup lang="ts">
 import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
+import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
 
 const route = useRoute()
 const { fetchBlogBySlug, incrementBlogViews } = useBlogActions()
 const user = useSupabaseUser()
 
-const { data: post, pending, error } = useLazyAsyncData(`blog-${route.params.slug}`, () => 
+const { data: post, pending, error } = useLazyAsyncData(`blog-${route.params.slug}`, () =>
   fetchBlogBySlug(route.params.slug as string)
 )
 
@@ -113,7 +132,7 @@ watchEffect(() => {
     if (import.meta.client) {
       const viewsArray = viewedBlogs.value || []
       const currentPost = post.value
-      
+
       if (currentPost?.id && !viewsArray.includes(currentPost.id)) {
         incrementBlogViews(currentPost.id).then(() => {
           viewsArray.push(currentPost.id)
@@ -136,20 +155,35 @@ watchEffect(() => {
 
 <style scoped lang="postcss">
 :deep(.prose h2) {
-  @apply text-2xl font-bold mt-12 mb-6 font-headline tracking-tight text-primary;
+  @apply font-headline text-2xl font-semibold mt-12 mb-5 -tracking-[0.02em] text-on-surface;
+}
+:deep(.prose h3) {
+  @apply font-headline text-xl font-semibold mt-10 mb-4 text-on-surface;
 }
 :deep(.prose p) {
-  @apply mb-6 text-on-background/80 leading-relaxed;
+  @apply mb-6 leading-[1.7] text-on-surface-variant;
+}
+:deep(.prose a) {
+  @apply text-primary underline underline-offset-4 hover:text-secondary transition-colors;
 }
 :deep(.prose ul) {
-  @apply list-disc list-inside mb-6 space-y-2;
+  @apply list-disc list-outside pl-5 mb-6 space-y-2 marker:text-outline-variant;
+}
+:deep(.prose ol) {
+  @apply list-decimal list-outside pl-5 mb-6 space-y-2 marker:text-outline-variant;
+}
+:deep(.prose blockquote) {
+  @apply border-l-2 border-primary pl-4 my-6 text-on-surface-variant;
+}
+:deep(.prose img) {
+  @apply my-8 border border-outline-variant/55 p-1.5;
 }
 :deep(.prose pre) {
-  @apply bg-[#282c34] border border-outline-variant p-6 my-8 overflow-x-auto text-sm leading-relaxed !important;
-  font-family: 'Space Grotesk', monospace;
+  @apply bg-surface-container-lowest border border-outline-variant/55 p-5 my-8 overflow-x-auto text-sm leading-relaxed !important;
+  font-family: 'IBM Plex Mono', monospace;
 }
 :deep(.prose code:not(pre code):not(pre.ql-syntax)) {
-  @apply bg-surface-container px-2 py-1 text-primary text-sm border border-surface-container-high;
-  font-family: 'Space Grotesk', monospace;
+  @apply bg-surface-container px-1.5 py-0.5 text-primary text-sm border border-outline-variant/40;
+  font-family: 'IBM Plex Mono', monospace;
 }
 </style>
