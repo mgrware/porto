@@ -1,117 +1,156 @@
 <template>
-  <div class="max-w-6xl mx-auto px-6 py-12">
-    <header class="mb-16">
-      <h1 class="text-5xl font-bold font-headline mb-4 tracking-tighter text-primary">
-        PROJECTS<span class="text-on-background/20">.EXE</span>
-      </h1>
-      <p class="text-on-surface-variant max-w-2xl text-lg">
-        A collection of scalable systems, backend services, and full-stack applications I've built.
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <SheetRule sheet="05" caption="DRAWING INDEX — SELECTED WORKS" />
+
+    <div v-reveal class="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
+      <h1 class="font-headline text-[clamp(2.25rem,4.6vw,3.5rem)] font-semibold -tracking-[0.03em] leading-[1.05] text-on-surface">Projects</h1>
+      <p class="text-[1.0625rem] leading-[1.6] text-on-surface-variant max-w-[34rem] mb-1.5">
+        Scalable systems, backend services, and full-stack platforms — each entry filed with its stack and year.
       </p>
-    </header>
+    </div>
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="error" class="bg-error/10 border border-error text-error p-6 rounded-lg">
-      <p>Error loading projects: {{ error.message }}</p>
+    <div v-else-if="error" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
+      ERR — could not load projects: {{ error.message }}
     </div>
 
-    <div v-else-if="!projects || projects.length === 0" class="text-center py-20 bg-surface-container rounded-2xl border border-dashed border-surface-container-high">
-      <p class="text-on-surface-variant">No projects found. Check back later!</p>
+    <div v-else-if="!projects || projects.length === 0" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center text-mono text-[0.8125rem] text-outline">
+      no drawings filed yet
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-      <div 
-        v-for="project in projects" 
-        :key="project.id"
-        class="group bg-surface-container border border-surface-container-high rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 flex flex-col"
-      >
-        <div class="aspect-video bg-surface-container-highest relative overflow-hidden flex items-center justify-center">
-          <!-- Image Background if available -->
-          <img v-if="project.image_url" :src="project.image_url" :alt="project.title" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 z-0" />
-          
-          <!-- Fallback Gradient Background -->
-          <div v-else :class="['absolute inset-0 bg-gradient-to-br opacity-50 group-hover:opacity-80 transition-opacity duration-500 z-0', project.color_class]"></div>
-          <!-- Grid pattern overlay -->
-          <div v-if="!project.image_url" class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CiAgPGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPgo8L3N2Zz4=')] opacity-30 z-0"></div>
-          
-          <BaseIcon v-if="!project.image_url" class="text-7xl text-white/70 relative z-10 group-hover:scale-110 transition-transform duration-500">{{ project.icon }}</BaseIcon>
-          
-          <!-- Overlay to ensure text readability if there's an image -->
-          <div v-if="project.image_url" class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 z-10"></div>
-          
-          <div class="absolute bottom-4 left-4 z-20">
-            <span class="text-[10px] font-mono bg-background/50 backdrop-blur text-on-surface px-2 py-1 rounded uppercase tracking-widest border border-outline-variant/20 shadow-sm">
-              {{ project.year }}
-            </span>
-          </div>
-        </div>
-        
-        <div class="p-6 flex-grow flex flex-col">
-          <NuxtLink :to="`/projects/${project.slug || project.id}`">
-            <h2 class="text-2xl font-bold mb-3 group-hover:text-primary transition-colors leading-tight">
-              {{ project.title }}
-            </h2>
-          </NuxtLink>
-          <p class="text-on-surface-variant text-sm mb-6 flex-grow">
-            {{ stripHtml(project.description)?.length > 500 ? stripHtml(project.description).substring(0, 500) + '...' : stripHtml(project.description) }}
-            <NuxtLink v-if="stripHtml(project.description)?.length > 500" :to="`/projects/${project.slug || project.id}`" class="text-primary hover:underline ml-1 font-medium">
-              Read more
-            </NuxtLink>
-          </p>
-
-          <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-2 mb-6">
-            <span v-for="tag in project.tags" :key="tag" class="text-[10px] font-mono bg-surface-container-high text-on-surface-variant px-2 py-1 rounded border border-outline-variant/30 uppercase tracking-widest">
-              {{ tag }}
-            </span>
-          </div>
-          
-          <div class="flex flex-wrap gap-3 mt-auto">
-            <NuxtLink :to="`/projects/${project.slug || project.id}`" class="flex-1 min-w-[100px]">
-              <BaseButton variant="surface" class="w-full text-xs">
-                DETAILS
-                <BaseIcon size="sm">arrow_forward</BaseIcon>
-              </BaseButton>
-            </NuxtLink>
-            <NuxtLink :to="project.demo_link" v-if="project.demo_link" class="flex-1 min-w-[100px]">
-              <BaseButton variant="primary" class="w-full text-xs">
-                DEMO
-                <BaseIcon size="sm">open_in_new</BaseIcon>
-              </BaseButton>
-            </NuxtLink>
-            <NuxtLink :to="project.repo_link" v-if="project.repo_link" class="flex-1 min-w-[100px]">
-              <BaseButton variant="surface" class="w-full text-xs">
-                SOURCE
-                <BaseIcon size="sm">code</BaseIcon>
-              </BaseButton>
-            </NuxtLink>
-          </div>
-        </div>
+    <template v-else>
+      <div class="flex flex-wrap gap-x-8 gap-y-2 py-3 border-t-2 border-outline-variant/55 border-b border-outline-variant/40 text-mono text-[0.625rem] tracking-[0.12em] text-outline">
+        <span>TOTAL SHEETS · {{ String(projects.length).padStart(2, '0') }}</span>
+        <span v-if="span">SPAN · {{ span }}</span>
+        <span>DISCIPLINE · BACKEND / PLATFORM</span>
+        <span class="flex-1"></span>
+        <span class="text-primary">REV 03</span>
       </div>
-    </div>
-    
-    <div class="text-center py-12">
-      <NuxtLink to="/" class="inline-block">
-        <BaseButton variant="ghost">
-          <BaseIcon>arrow_back</BaseIcon>
-          RETURN TO HOME
-        </BaseButton>
-      </NuxtLink>
-    </div>
+
+      <div class="flex flex-col">
+        <article
+          v-for="(project, index) in projects"
+          :key="project.id"
+          v-reveal
+          class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-10 py-6 lg:py-8 border-b border-outline-variant/40 min-w-0"
+        >
+          <div class="max-w-[320px] min-w-0">
+            <NuxtLink
+              :to="`/projects/${project.slug || project.id}`"
+              class="group relative block aspect-[4/3] border border-outline-variant/55 bg-surface-container/75 overflow-hidden"
+            >
+              <span class="absolute -top-px -left-px w-[11px] h-[11px] border-t-2 border-l-2 border-primary z-10"></span>
+              <span class="absolute -bottom-px -right-px w-[11px] h-[11px] border-b-2 border-r-2 border-primary z-10"></span>
+              <img
+                v-if="project.image_url"
+                :src="project.image_url"
+                :alt="project.title"
+                class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+              />
+              <div v-else class="bp-hatch w-full h-full flex items-center justify-center">
+                <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">PLATE — {{ drawingNo(project, index) }}</span>
+              </div>
+            </NuxtLink>
+            <div class="flex justify-between gap-4 pt-2 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
+              <span class="truncate">{{ drawingNo(project, index) }}</span>
+              <span class="text-primary shrink-0">{{ project.year }}</span>
+            </div>
+          </div>
+
+          <div class="md:col-span-2 min-w-0 flex flex-col gap-3.5">
+            <h2 class="font-headline text-[clamp(1.25rem,2.2vw,1.625rem)] font-semibold -tracking-[0.02em] text-on-surface">
+              <NuxtLink :to="`/projects/${project.slug || project.id}`" class="hover:text-primary transition-colors">
+                {{ project.title }}
+              </NuxtLink>
+            </h2>
+
+            <p class="text-[0.9375rem] leading-[1.6] text-on-surface-variant max-w-[52rem] text-pretty">
+              {{ summary(project.description) }}
+            </p>
+
+            <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-[0.4375rem]">
+              <span
+                v-for="tag in project.tags"
+                :key="tag"
+                class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
+              >{{ tag }}</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2.5 pt-1">
+              <NuxtLink
+                :to="`/projects/${project.slug || project.id}`"
+                class="inline-flex items-center gap-2 px-4 py-[0.6875rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
+              >
+                Details
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                  <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
+                </svg>
+              </NuxtLink>
+              <a
+                v-if="project.demo_link"
+                :href="project.demo_link"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 px-4 py-[0.6875rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
+              >
+                Live demo
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                  <path d="M14 4h6v6" /><path d="M20 4L10 14" /><path d="M18 14v6H4V6h6" />
+                </svg>
+              </a>
+              <a
+                v-if="project.repo_link"
+                :href="project.repo_link"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 px-4 py-[0.6875rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
+              >
+                Source code
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                  <path d="M9 18l-6-6 6-6" /><path d="M15 6l6 6-6 6" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="pt-8">
+        <NuxtLink
+          to="/#hero"
+          class="inline-flex items-center gap-2 px-[1.125rem] py-3 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
+          </svg>
+          Return to sheet 01
+        </NuxtLink>
+      </div>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import BaseButton from '~/components/atoms/BaseButton.vue'
-import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
-import { useProjectActions } from '~/composables/useProjectActions'
+import SheetRule from '~/components/molecules/SheetRule.vue'
+import { useProjectActions, type Project } from '~/composables/useProjectActions'
+import { drawingNo } from '~/composables/useSheetRefs'
 
 const { fetchProjects } = useProjectActions()
 const { data: projects, pending, error } = useLazyAsyncData('projects', () => fetchProjects())
 
-const stripHtml = (html: string) => {
-  if (!html) return ''
-  return html.replace(/<[^>]*>?/gm, '')
+const span = computed(() => {
+  const years = (projects.value || []).map((p: Project) => parseInt(p.year, 10)).filter(Boolean)
+  if (!years.length) return ''
+  const [min, max] = [Math.min(...years), Math.max(...years)]
+  return min === max ? `${min}` : `${min}–${max}`
+})
+
+// ponytail: index blurb only — the full description lives on the detail sheet.
+const summary = (html: string) => {
+  const text = (html || '').replace(/<[^>]*>?/gm, '').trim()
+  return text.length > 420 ? `${text.slice(0, 420)}…` : text
 }
 
 useSeoMeta({

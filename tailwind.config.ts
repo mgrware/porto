@@ -65,8 +65,9 @@ export default <Partial<Config>>{
       },
       fontFamily: {
         "headline": ["Space Grotesk", "sans-serif"],
-        "body": ["Inter", "sans-serif"],
-        "label": ["Space Grotesk", "sans-serif"]
+        "body": ["IBM Plex Sans", "sans-serif"],
+        "label": ["IBM Plex Mono", "monospace"],
+        "mono": ["IBM Plex Mono", "monospace"]
       }
     }
   }

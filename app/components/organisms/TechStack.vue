@@ -1,31 +1,27 @@
 <template>
-  <section id="tech-stack" class="px-8 lg:px-16 py-20 bg-surface-container-low">
-    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-      <div>
-        <h2 class="font-headline text-3xl font-bold uppercase tracking-tight mb-2">Technical_Stack</h2>
-        <p class="text-on-surface-variant font-body">Hardened toolset for modern infrastructure</p>
-      </div>
-      <div class="h-px flex-1 bg-outline-variant/20 mx-8 hidden md:block"></div>
-      <div class="text-mono text-xs text-primary font-bold tracking-widest">CORE_CAPABILITIES.V1</div>
-    </div>
+  <section id="stack" class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <SheetHeading sheet="02" title="Tech stack" note="Parts list — the tooling these systems are actually built on." />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0">
-      <div 
-        v-for="(stack, index) in techStacks" 
-        :key="stack.title"
-        :class="[
-          'group p-8 bg-surface border border-outline-variant/10 hover:bg-surface-container-high transition-all',
-          index > 0 && 'lg:border-l-0'
-        ]"
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-outline-variant/50">
+      <div
+        v-for="group in stacks"
+        :key="group.code"
+        v-reveal
+        class="border-r border-b border-outline-variant/50 px-[1.375rem] pt-6 pb-7 bg-surface-container/35 min-w-0"
       >
-        <div :class="[stack.iconColor, 'mb-6']">
-          <BaseIcon class="text-4xl">{{ stack.icon }}</BaseIcon>
+        <div class="flex items-center justify-between gap-3 mb-[1.125rem]">
+          <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ group.code }}</span>
+          <span class="w-2.5 h-2.5 border border-primary rotate-45"></span>
         </div>
-        <h3 class="font-headline font-bold mb-4 uppercase">{{ stack.title }}</h3>
-        <ul class="space-y-3 font-body text-sm text-on-surface-variant">
-          <li v-for="skill in stack.skills" :key="skill" class="flex items-center gap-2">
-            <span class="w-1 h-1 bg-primary"></span>
-            {{ skill }}
+        <h3 class="font-headline text-[1.0625rem] font-semibold text-on-surface mb-4">{{ group.title }}</h3>
+        <ul class="flex flex-col gap-2.5">
+          <li
+            v-for="item in group.items"
+            :key="item"
+            class="flex items-baseline gap-2.5 text-mono text-[0.8125rem] leading-[1.5] text-on-surface-variant"
+          >
+            <span class="shrink-0 w-3 h-px bg-outline-variant -translate-y-1"></span>
+            <span class="min-w-0">{{ item }}</span>
           </li>
         </ul>
       </div>
@@ -34,32 +30,28 @@
 </template>
 
 <script setup lang="ts">
-import BaseIcon from '../atoms/BaseIcon.vue'
+import SheetHeading from '../molecules/SheetHeading.vue'
 
-const techStacks = [
+const stacks = [
   {
+    code: 'INF · 01',
     title: 'Infrastructure',
-    icon: 'cloud_done',
-    iconColor: 'text-secondary',
-    skills: ['Kubernetes / Docker', 'Terraform (IaC)', 'AWS / GCP / Azure']
+    items: ['Docker / Docker Compose', 'Kubernetes', 'Terraform (IaC)', 'AWS / GCP', 'Nginx / Traefik']
   },
   {
+    code: 'LNG · 02',
     title: 'Languages',
-    icon: 'code',
-    iconColor: 'text-primary',
-    skills: ['Go (Golang)', 'Ruby', 'PHP', 'Javascript']
+    items: ['Ruby / Rails', 'Go', 'Node.js / NestJS', 'PHP / Laravel', 'JavaScript']
   },
   {
-    title: 'Data_Storage',
-    icon: 'database',
-    iconColor: 'text-tertiary',
-    skills: ['PostgreSQL / MySQL', 'Redis / Memcached', 'MongoDB']
+    code: 'DAT · 03',
+    title: 'Data storage',
+    items: ['PostgreSQL', 'MySQL / SQL Server', 'Redis / Memcached', 'MongoDB', 'Prisma / ActiveRecord']
   },
   {
+    code: 'PRF · 04',
     title: 'Performance',
-    icon: 'speed',
-    iconColor: 'text-error',
-    skills: ['Prometheus / Grafana', 'Distributed Tracing', 'Load Balancing']
+    items: ['Prometheus / Grafana', 'Distributed tracing', 'Load balancing', 'Query & index tuning', 'BullMQ / Sidekiq']
   }
 ]
 </script>

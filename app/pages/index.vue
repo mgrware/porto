@@ -3,7 +3,7 @@
     <HeroSection />
     <TechStack />
     <ExperienceTimeline />
-    <MeshSection />
+    <PracticeSection />
   </div>
 </template>
 
@@ -11,5 +11,5 @@
 import HeroSection from '~/components/organisms/HeroSection.vue'
 import TechStack from '~/components/organisms/TechStack.vue'
 import ExperienceTimeline from '~/components/organisms/ExperienceTimeline.vue'
-import MeshSection from '~/components/organisms/MeshSection.vue'
+import PracticeSection from '~/components/organisms/PracticeSection.vue'
 </script>

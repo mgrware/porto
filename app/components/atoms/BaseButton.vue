@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<{
 })
 
 const variantClasses: Record<Variant, string> = {
-  primary: 'bg-primary text-on-primary-fixed hover:bg-primary-dim',
+  primary: 'bg-primary text-on-primary-fixed hover:bg-primary-container',
   surface: 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest border border-outline-variant/20',
   outline: 'border border-primary text-primary hover:bg-primary/10',
   ghost: 'text-on-surface-variant hover:text-primary'
