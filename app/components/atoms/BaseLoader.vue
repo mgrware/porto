@@ -5,11 +5,11 @@
       <!-- Concentric SVG Orbits -->
       <svg class="absolute inset-0 w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <!-- Supabase Signature Green Gradient -->
+          <!-- Blueprint gradient -->
           <linearGradient :id="`supabase-grad-${id}`" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#10B981" />
-            <stop offset="50%" stop-color="#3ECF8E" />
-            <stop offset="100%" stop-color="#059669" />
+            <stop offset="0%" stop-color="#C9932E" />
+            <stop offset="50%" stop-color="#8FB8DE" />
+            <stop offset="100%" stop-color="#3E6E8E" />
           </linearGradient>
 
           <!-- Glow Filter for SVGs -->
@@ -25,13 +25,13 @@
         <!-- Outer Ring: Query packets rotating clockwise -->
         <circle cx="50" cy="50" r="45" 
                 stroke="currentColor" 
-                class="text-emerald-500/20 animate-spin-cw" 
+                class="text-outline-variant/30 animate-spin-cw" 
                 stroke-width="0.75" 
                 stroke-dasharray="10 15 2 4" />
         
         <circle cx="50" cy="50" r="45" 
                 stroke="currentColor" 
-                class="text-emerald-400/80 animate-spin-cw" 
+                class="text-primary/80 animate-spin-cw" 
                 :style="{ filter: `url(#svg-glow-${id})` }" 
                 stroke-width="1.5" 
                 stroke-dasharray="2 40" />
@@ -39,34 +39,34 @@
         <!-- Middle Ring: Node connections rotating counter-clockwise -->
         <circle cx="50" cy="50" r="38" 
                 stroke="currentColor" 
-                class="text-emerald-600/30 animate-spin-ccw" 
+                class="text-outline-variant/40 animate-spin-ccw" 
                 stroke-width="1" 
                 stroke-dasharray="5 5 20 8" />
 
         <circle cx="50" cy="50" r="38" 
                 stroke="currentColor" 
-                class="text-emerald-400/90 animate-spin-ccw" 
+                class="text-secondary/90 animate-spin-ccw" 
                 stroke-width="1.5" 
                 stroke-dasharray="1 75" />
 
         <!-- Inner Ring: Data aligner rotating fast -->
         <circle cx="50" cy="50" r="31" 
                 stroke="currentColor" 
-                class="text-emerald-500/40 animate-spin-fast" 
+                class="text-outline-variant/50 animate-spin-fast" 
                 stroke-width="0.5" 
                 stroke-dasharray="35 5 10 5" />
         
         <!-- Rotating coordinate indicator dots -->
         <g class="animate-spin-cw" style="transform-origin: 50% 50%; animation-duration: 12s;">
-          <circle cx="50" cy="8" r="1.5" fill="#3ECF8E" :style="{ filter: `url(#svg-glow-${id})` }" />
-          <circle cx="50" cy="92" r="1" fill="#10B981" />
+          <circle cx="50" cy="8" r="1.5" fill="#C9932E" :style="{ filter: `url(#svg-glow-${id})` }" />
+          <circle cx="50" cy="92" r="1" fill="#8FB8DE" />
         </g>
       </svg>
 
       <!-- Center Logo Container -->
       <div class="absolute w-24 h-24 flex items-center justify-center animate-logo-float">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" 
-             class="w-14 h-14 text-[#3ECF8E] animate-supabase-glow transition-all duration-500"
+             class="w-14 h-14 text-primary animate-supabase-glow transition-all duration-500"
              :stroke="`url(#supabase-grad-${id})`" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <!-- Left bracket < -->
           <path d="M7 6L2 12L7 18" />
@@ -78,7 +78,7 @@
       </div>
     </div>
     <!-- Pulse Loading text -->
-    <span class="mt-4 font-mono text-[10px] text-emerald-400 uppercase tracking-widest animate-pulse">{{ label }}</span>
+    <span class="mt-4 font-mono text-[10px] text-primary uppercase tracking-widest animate-pulse">{{ label }}</span>
   </div>
 </template>
 

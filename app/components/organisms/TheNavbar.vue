@@ -9,7 +9,7 @@
         <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.06em] text-outline">/ backend systems</span>
       </NuxtLink>
 
-      <div class="hidden lg:flex items-center gap-7">
+      <div class="hidden xl:flex items-center gap-7">
         <NuxtLink
           v-for="item in sheets"
           :key="item.href"
@@ -71,7 +71,7 @@
         </a>
 
         <button
-          class="lg:hidden grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-secondary"
+          class="xl:hidden grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-secondary"
           :aria-expanded="isMobileMenuOpen"
           aria-label="Toggle navigation"
           @click="isMobileMenuOpen = !isMobileMenuOpen"
@@ -86,7 +86,7 @@
 
     <div
       v-if="isMobileMenuOpen"
-      class="lg:hidden border-t border-outline-variant/35 px-5 sm:px-8 pt-3 pb-5 flex flex-col bg-background/95"
+      class="xl:hidden border-t border-outline-variant/35 px-5 sm:px-8 pt-3 pb-5 flex flex-col bg-background/95"
     >
       <NuxtLink
         v-for="(item, index) in [...sheets, ...pages]"

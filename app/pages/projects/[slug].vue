@@ -1,111 +1,153 @@
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
-    <NuxtLink to="/projects" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-12 group">
-      <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
-      <span class="text-xs font-mono uppercase tracking-widest">BACK_TO_PROJECTS</span>
-    </NuxtLink>
+  <div class="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <div class="flex items-center gap-4 mb-8">
+      <NuxtLink
+        to="/projects"
+        class="group inline-flex items-center gap-2 text-mono text-[0.6875rem] tracking-[0.12em] text-outline hover:text-primary transition-colors"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
+          <path d="M20 12H5" /><path d="M11 6l-6 6 6 6" />
+        </svg>
+        BACK TO ASSEMBLY INDEX
+      </NuxtLink>
+      <span class="flex-1 h-px bg-outline-variant/45"></span>
+      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">SHEET 06 · DRAWING</span>
+    </div>
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="error || !project" class="text-center py-20">
-      <h1 class="text-3xl font-bold mb-4">Project Not Found</h1>
-      <p class="text-on-surface-variant mb-8">The requested project could not be found or there was an error.</p>
-      <NuxtLink to="/projects">
-        <button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold">Go Back</button>
-      </NuxtLink>
+    <div v-else-if="error || !project" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center">
+      <h1 class="font-headline text-2xl font-semibold text-on-surface mb-2">Drawing not found</h1>
+      <p class="text-mono text-[0.8125rem] text-outline mb-6">this project is not in the index</p>
+      <NuxtLink
+        to="/projects"
+        class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
+      >Back to projects</NuxtLink>
     </div>
 
-    <article v-else class="animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <header class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-4">
-            <span class="text-xs font-mono bg-primary/10 text-primary px-3 py-1 rounded-full uppercase tracking-widest border border-primary/20">
-              {{ project.year }}
-            </span>
-            <span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
-            <span class="text-xs text-on-surface-variant font-mono uppercase tracking-widest">PROJECT_DETAILS</span>
+    <article v-else>
+      <header class="mb-10">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 mb-6 border-b border-outline-variant/50 text-mono text-[0.6875rem] tracking-[0.1em] text-outline">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span class="text-primary">{{ project.year }}</span>
+            <span class="w-1 h-1 bg-outline-variant"></span>
+            <span>PROJECT RECORD</span>
           </div>
-          
-          <NuxtLink v-if="user" :to="`/dashboard/projects/edit/${project.id}`">
-            <button class="bg-surface-container-high hover:bg-primary/20 text-primary px-4 py-2 rounded-xl text-xs font-mono uppercase tracking-widest flex items-center gap-2 transition-colors border border-outline-variant/30">
-              <span class="material-symbols-outlined text-sm">edit</span>
-              EDIT_PROJECT
-            </button>
+
+          <NuxtLink
+            v-if="user"
+            :to="`/dashboard/projects/edit/${project.id}`"
+            class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+          >
+            <BaseIcon class="text-sm">edit</BaseIcon>
+            EDIT PROJECT
           </NuxtLink>
         </div>
-        
-        <h1 class="text-4xl md:text-6xl font-bold font-headline mb-8 tracking-tighter leading-[0.9]">
+
+        <h1 class="font-headline text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.05] -tracking-[0.025em] text-on-surface mb-6 text-pretty">
           {{ project.title }}
         </h1>
 
-        <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-2 mb-8">
-          <span v-for="tag in project.tags" :key="tag" class="px-3 py-1 bg-surface-container text-on-surface-variant font-mono text-[10px] rounded-full uppercase tracking-widest border border-outline-variant">
-            #{{ tag }}
-          </span>
+        <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-[0.4375rem] mb-8">
+          <span
+            v-for="tag in project.tags"
+            :key="tag"
+            class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
+          >{{ tag }}</span>
         </div>
-        
-        <div class="aspect-video w-full bg-surface-container-highest rounded-3xl mb-12 overflow-hidden border border-surface-container-high relative flex items-center justify-center">
-          <img v-if="project.image_url" :src="project.image_url" :alt="project.title" class="absolute inset-0 w-full h-full object-cover z-0" />
-          <div v-else :class="['absolute inset-0 bg-gradient-to-br opacity-80 z-0', project.color_class]"></div>
-          <div v-if="!project.image_url" class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CiAgPGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPgo8L3N2Zz4=')] opacity-30 z-0"></div>
-          <span v-if="!project.image_url" class="material-symbols-outlined text-[120px] text-white/90 relative z-10">{{ project.icon || 'folder' }}</span>
-          <div v-if="project.image_url" class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 z-10"></div>
+
+        <div class="relative border border-outline-variant/55 p-1.5 bg-surface-container/40 mb-8">
+          <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-primary"></span>
+          <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-primary"></span>
+          <img
+            v-if="project.image_url"
+            :src="project.image_url"
+            :alt="project.title"
+            class="w-full aspect-video object-cover"
+          />
+          <div v-else class="relative w-full aspect-video bg-surface-container-lowest flex items-center justify-center">
+            <div class="bp-grid absolute inset-0"></div>
+            <BaseIcon class="relative text-[96px] text-outline-variant">{{ project.icon || 'folder' }}</BaseIcon>
+          </div>
         </div>
-        
-        <div class="flex flex-wrap gap-4 mb-12" v-if="project.demo_link || project.repo_link">
-          <a :href="project.demo_link" target="_blank" v-if="project.demo_link" class="flex-1 md:flex-none min-w-[200px]">
-            <BaseButton variant="primary" size="lg" class="w-full">
-              LIVE DEMO
-              <BaseIcon size="sm">open_in_new</BaseIcon>
-            </BaseButton>
+
+        <div v-if="project.demo_link || project.repo_link" class="flex flex-wrap gap-3">
+          <a
+            v-if="project.demo_link"
+            :href="project.demo_link"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] tracking-[0.04em] transition-colors"
+          >
+            Live demo
+            <BaseIcon class="text-base">open_in_new</BaseIcon>
           </a>
-          <a :href="project.repo_link" target="_blank" v-if="project.repo_link" class="flex-1 md:flex-none min-w-[200px]">
-            <BaseButton variant="surface" size="lg" class="w-full">
-              SOURCE CODE
-              <BaseIcon size="sm">code</BaseIcon>
-            </BaseButton>
+          <a
+            v-if="project.repo_link"
+            :href="project.repo_link"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] tracking-[0.04em] transition-colors"
+          >
+            Source code
+            <BaseIcon class="text-base">code</BaseIcon>
           </a>
         </div>
       </header>
 
-      <div class="prose prose-invert prose-primary max-w-none bg-surface-container border border-surface-container-high p-8 md:p-12 rounded-3xl shadow-xl">
-        <h2 class="text-2xl font-bold font-headline tracking-tighter mb-6 text-primary">ABOUT_THE_PROJECT</h2>
-        <div class="text-on-background/80 leading-relaxed text-lg font-body" v-html="project.description" @click="handleContentClick">
+      <div class="relative border border-outline-variant/55 bg-background/60">
+        <div class="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-outline-variant/45 bg-surface-container/90">
+          <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-secondary">notes — about the project</span>
+          <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">NTS</span>
+        </div>
+        <div class="prose prose-invert max-w-none p-5 sm:p-8">
+          <div class="text-[1.0625rem] leading-[1.7] text-on-surface-variant" v-html="project.description" @click="handleContentClick"></div>
         </div>
       </div>
     </article>
 
     <Teleport to="body">
-      <div v-if="selectedImage" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 animate-in fade-in duration-200" @click="closeLightbox">
-        
-        <!-- Controls -->
-        <div class="absolute top-6 right-6 flex items-center gap-4 z-50">
-          <div class="flex items-center gap-2 bg-white/10 rounded-full p-1 backdrop-blur-sm" @click.stop>
-            <button @click="zoomOut" class="text-white hover:bg-white/20 p-2 rounded-full transition-colors flex items-center justify-center" :disabled="zoomLevel <= 0.5">
-              <BaseIcon>remove</BaseIcon>
+      <div v-if="selectedImage" class="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 p-4" @click="closeLightbox">
+        <div class="absolute top-6 right-6 flex items-center gap-3 z-50">
+          <div class="flex items-center gap-1 border border-outline-variant/60 bg-surface-container/90 p-1" @click.stop>
+            <button
+              class="grid place-items-center w-8 h-8 text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
+              :disabled="zoomLevel <= 0.5"
+              aria-label="Zoom out"
+              @click="zoomOut"
+            >
+              <BaseIcon class="text-base">remove</BaseIcon>
             </button>
-            <span class="text-white font-mono text-xs min-w-[3ch] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
-            <button @click="zoomIn" class="text-white hover:bg-white/20 p-2 rounded-full transition-colors flex items-center justify-center" :disabled="zoomLevel >= 3">
-              <BaseIcon>add</BaseIcon>
+            <span class="text-mono text-[0.6875rem] text-on-surface min-w-[4ch] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
+            <button
+              class="grid place-items-center w-8 h-8 text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
+              :disabled="zoomLevel >= 3"
+              aria-label="Zoom in"
+              @click="zoomIn"
+            >
+              <BaseIcon class="text-base">add</BaseIcon>
             </button>
           </div>
 
-          <button @click="closeLightbox" class="text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center backdrop-blur-sm">
-            <BaseIcon>close</BaseIcon>
+          <button
+            class="grid place-items-center w-10 h-10 border border-outline-variant/60 bg-surface-container/90 text-on-surface-variant hover:text-primary transition-colors"
+            aria-label="Close"
+            @click="closeLightbox"
+          >
+            <BaseIcon class="text-base">close</BaseIcon>
           </button>
         </div>
 
-        <!-- Image Container -->
         <div class="w-full h-full overflow-hidden flex items-center justify-center relative">
-          <img 
-            :src="selectedImage" 
-            :style="{ 
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoomLevel})`, 
-              transition: isDragging ? 'none' : 'transform 0.2s ease-out' 
+          <img
+            :src="selectedImage"
+            :style="{
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoomLevel})`,
+              transition: isDragging ? 'none' : 'transform 0.2s ease-out'
             }"
-            class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl origin-center" 
+            class="max-w-full max-h-[90vh] object-contain border border-outline-variant/50 origin-center"
             :class="zoomLevel > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'"
-            @click.stop 
+            @click.stop
             @wheel.prevent="handleWheel"
             @mousedown.prevent="startDrag"
             @mousemove="onDrag"
@@ -120,16 +162,15 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from '~/components/atoms/BaseButton.vue'
 import BaseIcon from '~/components/atoms/BaseIcon.vue'
-import { useProjectActions } from '~/composables/useProjectActions'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
+import { useProjectActions } from '~/composables/useProjectActions'
 
 const route = useRoute()
 const { fetchProjectBySlug } = useProjectActions()
 const user = useSupabaseUser()
 
-const { data: project, pending, error } = useLazyAsyncData(`project-detail-${route.params.slug}`, () => 
+const { data: project, pending, error } = useLazyAsyncData(`project-detail-${route.params.slug}`, () =>
   fetchProjectBySlug(route.params.slug as string)
 )
 
@@ -194,26 +235,35 @@ const handleContentClick = (event: MouseEvent) => {
 
 <style scoped lang="postcss">
 :deep(.prose h2) {
-  @apply text-2xl font-bold mt-12 mb-6 font-headline tracking-tight text-primary;
+  @apply font-headline text-2xl font-semibold mt-12 mb-5 -tracking-[0.02em] text-on-surface first:mt-0;
+}
+:deep(.prose h3) {
+  @apply font-headline text-xl font-semibold mt-10 mb-4 text-on-surface;
 }
 :deep(.prose p) {
-  @apply mb-6 text-on-background/80 leading-relaxed;
+  @apply mb-6 leading-[1.7] text-on-surface-variant;
+}
+:deep(.prose a) {
+  @apply text-primary underline underline-offset-4 hover:text-secondary transition-colors;
 }
 :deep(.prose ul) {
-  @apply list-disc list-inside mb-6 space-y-2;
+  @apply list-disc list-outside pl-5 mb-6 space-y-2 marker:text-outline-variant;
 }
 :deep(.prose ol) {
-  @apply list-decimal list-inside mb-6 space-y-2;
+  @apply list-decimal list-outside pl-5 mb-6 space-y-2 marker:text-outline-variant;
+}
+:deep(.prose blockquote) {
+  @apply border-l-2 border-primary pl-4 my-6 text-on-surface-variant;
 }
 :deep(.prose pre) {
-  @apply bg-[#282c34] border border-outline-variant p-6 my-8 overflow-x-auto text-sm leading-relaxed !important;
-  font-family: 'Space Grotesk', monospace;
+  @apply bg-surface-container-lowest border border-outline-variant/55 p-5 my-8 overflow-x-auto text-sm leading-relaxed !important;
+  font-family: 'IBM Plex Mono', monospace;
 }
 :deep(.prose code:not(pre code):not(pre.ql-syntax)) {
-  @apply bg-surface-container px-2 py-1 text-primary text-sm border border-surface-container-high;
-  font-family: 'Space Grotesk', monospace;
+  @apply bg-surface-container px-1.5 py-0.5 text-primary text-sm border border-outline-variant/40;
+  font-family: 'IBM Plex Mono', monospace;
 }
 :deep(.prose img) {
-  @apply cursor-zoom-in hover:opacity-90 transition-opacity rounded-xl border border-surface-container-high shadow-md my-8 mx-auto block;
+  @apply cursor-zoom-in hover:opacity-90 transition-opacity border border-outline-variant/55 p-1.5 my-8 mx-auto block;
 }
 </style>
