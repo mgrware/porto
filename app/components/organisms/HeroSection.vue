@@ -1,67 +1,113 @@
 <template>
-  <section id="terminal" class="min-h-[calc(100vh-4rem)] flex flex-col lg:flex-row items-center px-8 lg:px-16 py-12 gap-12 border-b border-surface-container-high bg-surface">
-    <div class="flex-1 space-y-8">
-      <div class="relative w-24 h-24 mb-6 group">
-        <div class="absolute -inset-1 border border-primary/30 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-        <div class="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary"></div>
-        <div class="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-primary"></div>
-        <div class="w-full h-full overflow-hidden bg-surface-container-highest">
-          <img 
-            alt="Systems Architect Profile" 
-            class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" 
-            src="~/assets/images/avatar.jpg"
-          />
-        </div>
-        <div class="absolute -bottom-2 -right-2 bg-background px-1">
-          <BaseBadge variant="id">ID_VERIFIED</BaseBadge>
-        </div>
-      </div>
-
-      <BaseBadge variant="primary">
-        GILANG_RAMADAN // SENIOR_BACKEND_ENGINEER
-      </BaseBadge>
-
-      <h1 class="font-headline text-5xl lg:text-7xl font-bold leading-none tracking-tighter uppercase">
-        Programming <br/>
-        <span class="text-primary">Scalable</span> <br/>
-        Systems
-      </h1>
-
-      <p class="font-body text-on-surface-variant max-w-xl text-lg leading-relaxed">
-        Senior Backend Engineer with 10+ years architecting fintech-grade marketplace platforms on Ruby on Rails, Go, and PostgreSQL. Deep specialization in Stripe Connect payment infrastructure — split payments, escrow, subscriptions, and automated payouts — with end-to-end ownership from technical design to production. Previously Engineering Manager running a department behind a system that sustained 1,000 TPS at 99.9% uptime; most recently led the backend build for an early-stage rental and services marketplace from zero to production. Now focused on hands-on senior IC work, partnering with remote cross-functional teams to ship reliable, observable, and well-tested backend systems.
-      </p>
-
-      <div class="flex flex-wrap gap-4 pt-4">
-        <NuxtLink to="/projects">
-          <BaseButton variant="primary" size="lg">
-            VIEW PROJECTS
-            <BaseIcon>arrow_forward</BaseIcon>
-          </BaseButton>
-        </NuxtLink>
-      </div>
+  <section id="hero" class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-12 lg:pb-20">
+    <div class="flex items-center gap-4 mb-7 lg:mb-11">
+      <span class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary">SHEET 01</span>
+      <span class="flex-1 h-px bg-outline-variant/45"></span>
+      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">SYSTEM OVERVIEW — GENERAL ARRANGEMENT</span>
     </div>
 
-    <!-- Terminal Visualizer -->
-    <div class="flex-1 w-full max-w-2xl">
-      <div class="bg-surface-container-lowest border border-outline-variant/30 shadow-2xl overflow-hidden">
-        <div class="bg-surface-container px-4 py-2 flex justify-between items-center border-b border-outline-variant/10">
-          <div class="flex gap-2">
-            <div class="w-3 h-3 bg-error-dim"></div>
-            <div class="w-3 h-3 bg-tertiary-dim"></div>
-            <div class="w-3 h-3 bg-primary-dim"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
+      <div v-reveal class="flex flex-col gap-6 min-w-0">
+        <div class="flex items-stretch gap-4">
+          <div class="relative shrink-0 w-[84px] h-[84px] border border-outline-variant/60 p-[5px] bg-surface-container/60">
+            <img
+              src="~/assets/images/avatar.jpg"
+              alt="Gilang Ramadan"
+              class="w-full h-full object-cover grayscale contrast-[1.05] opacity-90"
+            />
+            <span class="absolute -top-px -left-px w-[9px] h-[9px] border-t-2 border-l-2 border-primary"></span>
+            <span class="absolute -bottom-px -right-px w-[9px] h-[9px] border-b-2 border-r-2 border-primary"></span>
           </div>
-          <span class="text-mono text-[10px] text-outline uppercase tracking-widest">system_monitor.go</span>
+          <div class="flex flex-col justify-center gap-1.5 border-l border-dashed border-outline-variant/60 pl-4 min-w-0">
+            <div class="text-mono text-[0.6875rem] tracking-[0.1em] text-secondary">REF. GR-BE-2026</div>
+            <div class="text-mono text-[0.6875rem] text-outline">Bandung, Indonesia · UTC+7 · remote</div>
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-primary animate-bp-pulse"></span>
+              <span class="text-mono text-[0.6875rem] text-primary">Open to senior IC roles</span>
+            </div>
+          </div>
         </div>
-        <div class="p-6 font-headline text-sm leading-relaxed overflow-x-auto">
-          <div v-for="(line, index) in codeLines" :key="index" class="flex gap-4">
-            <span class="text-outline/40 select-none">{{ (index + 1).toString().padStart(2, '0') }}</span>
-            <span v-html="line"></span>
+
+        <h1 class="font-headline text-[clamp(2.5rem,5.4vw,4.25rem)] font-semibold leading-[1.02] -tracking-[0.03em] text-on-surface text-pretty">
+          Backend systems,<br />drawn to spec.
+        </h1>
+
+        <div class="flex items-center gap-3">
+          <span class="h-px w-11 bg-primary"></span>
+          <span class="text-mono text-xs tracking-[0.12em] text-secondary">SENIOR BACKEND ENGINEER · 10+ YEARS</span>
+        </div>
+
+        <p class="text-[1.0625rem] leading-[1.65] text-on-surface-variant max-w-2xl text-pretty">
+          Ten years building fintech-grade marketplace and payment platforms on Ruby on Rails, Go, and PostgreSQL.
+          Deep specialization in Stripe Connect infrastructure — split payments, escrow, subscriptions, automated
+          payouts — owned end to end from technical design to production. Previously an Engineering Manager behind a
+          system sustaining 1,000 TPS at 99.9% uptime; most recently took an early-stage rental and services
+          marketplace from zero to launch. Now focused on hands-on senior IC work with distributed teams.
+        </p>
+
+        <div class="flex flex-wrap gap-3 pt-1">
+          <NuxtLink
+            to="/projects"
+            class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] font-medium tracking-[0.04em] transition-colors"
+          >
+            View projects
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+              <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
+            </svg>
+          </NuxtLink>
+          <a
+            href="#experience"
+            class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] tracking-[0.04em] transition-colors"
+          >
+            Experience log
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+              <path d="M12 5v14" /><path d="M6 13l6 6 6-6" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- detail A — terminal -->
+      <div v-reveal class="relative min-w-0 border border-outline-variant/55 bg-background/70">
+        <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-outline-variant"></span>
+        <span class="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-outline-variant"></span>
+        <span class="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-outline-variant"></span>
+        <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant"></span>
+
+        <div class="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-outline-variant/45 bg-surface-container/90">
+          <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-secondary">detail A — system_monitor.go</span>
+          <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">SCALE 1:1</span>
+        </div>
+
+        <div class="flex text-mono text-[0.8125rem] leading-[1.85]">
+          <div class="shrink-0 py-[1.125rem] px-3 text-right text-outline-variant/75 border-r border-outline-variant/[0.28] select-none">
+            <div v-for="n in codeLines.length" :key="n">{{ String(n).padStart(2, '0') }}</div>
           </div>
-          
-          <div class="mt-8 pt-4 border-t border-outline-variant/10 flex items-center gap-4 text-xs">
-            <span class="text-primary">● RUNNING</span>
-            <span class="text-on-surface-variant">Uptime: 99.99%</span>
-            <span class="text-on-surface-variant">Nodes: 42</span>
+          <div class="flex-1 min-w-0 py-[1.125rem] px-4 overflow-x-auto">
+            <div v-for="(line, index) in codeLines" :key="index" class="whitespace-pre" v-html="line"></div>
+          </div>
+        </div>
+
+        <div class="border-t border-outline-variant/45 px-4 py-3 flex items-center gap-2 text-mono text-xs text-secondary">
+          <span class="text-outline">$</span>
+          <span class="text-on-background">go run ./cmd/monitor --watch</span>
+        </div>
+
+        <div class="border-t border-outline-variant/45 grid grid-cols-2 sm:grid-cols-4">
+          <div
+            v-for="(stat, index) in stats"
+            :key="stat.label"
+            :class="[
+              'px-4 py-3.5 border-outline-variant/[0.28]',
+              index < stats.length - 1 && 'border-r',
+              index < 2 && 'border-b sm:border-b-0'
+            ]"
+          >
+            <div class="text-mono text-[0.625rem] tracking-[0.1em] text-outline mb-1.5">{{ stat.label }}</div>
+            <div class="flex items-center gap-1.5 text-mono text-sm" :class="stat.running ? 'text-secondary' : 'text-on-surface'">
+              <span v-if="stat.running" class="w-[7px] h-[7px] bg-secondary animate-bp-pulse"></span>
+              {{ stat.value }}
+            </div>
           </div>
         </div>
       </div>
@@ -70,19 +116,21 @@
 </template>
 
 <script setup lang="ts">
-import BaseIcon from '../atoms/BaseIcon.vue'
-import BaseButton from '../atoms/BaseButton.vue'
-import BaseBadge from '../atoms/BaseBadge.vue'
-
 const codeLines = [
-  '<span class="text-tertiary">package</span> <span class="text-on-surface">main</span>',
-  '<span>&nbsp;</span>',
-  '<span class="text-secondary">func</span> <span class="text-primary">initCoreArchitecture</span><span class="text-on-surface">() {</span>',
-  '<span class="text-on-surface-variant">&nbsp;&nbsp;// Initializing Docker clusters...</span>',
-  '<span class="text-on-surface">&nbsp;&nbsp;stack := []string{<span class="text-primary">"Go"</span>, <span class="text-primary">"Ruby"</span>, <span class="text-primary">"Javascript"</span>, <span class="text-primary">"Docker"</span>}</span>',
-  '<span class="text-on-surface">&nbsp;&nbsp;</span><span class="text-secondary">for</span> <span class="text-on-surface">_, tech := </span><span class="text-secondary">range</span> <span class="text-on-surface">stack {</span>',
-  '<span class="text-on-surface">&nbsp;&nbsp;&nbsp;&nbsp;deploy.Scale(tech, <span class="text-tertiary">1000</span>)</span>',
-  '<span class="text-on-surface">&nbsp;&nbsp;}</span>',
-  '<span class="text-on-surface">}</span>'
+  '<span class="text-primary">package</span><span class="text-on-background"> main</span>',
+  '<span class="text-primary">func</span> <span class="text-secondary">initCoreArchitecture</span><span class="text-on-background">() {</span>',
+  '<span class="text-outline">  // warm caches, verify replicas</span>',
+  '<span class="text-on-background">  stack := []string{</span><span class="text-secondary">"Go"</span><span class="text-on-background">, </span><span class="text-secondary">"Ruby"</span><span class="text-on-background">, </span><span class="text-secondary">"Postgres"</span><span class="text-on-background">}</span>',
+  '<span class="text-on-background">  </span><span class="text-primary">for</span><span class="text-on-background"> _, svc := </span><span class="text-primary">range</span><span class="text-on-background"> stack {</span>',
+  '<span class="text-on-background">    deploy.Scale(svc, </span><span class="text-primary">1000</span><span class="text-on-background">)</span>',
+  '<span class="text-on-background">  }</span>',
+  '<span class="text-on-background">}</span><span class="inline-block w-[7px] h-[15px] ml-1 -mb-0.5 bg-primary animate-bp-blink"></span>'
+]
+
+const stats = [
+  { label: 'STATUS', value: 'running', running: true },
+  { label: 'UPTIME', value: '99.99%', running: false },
+  { label: 'PEAK TPS', value: '1,000', running: false },
+  { label: 'p95 LATENCY', value: '<150ms', running: false }
 ]
 </script>
