@@ -8,7 +8,7 @@
       <div class="absolute left-[-4px] bottom-0 w-[9px] h-px bg-outline-variant"></div>
 
       <div class="flex flex-col gap-8">
-        <div v-for="exp in m.experience.items" :key="exp.company" v-reveal class="relative min-w-0">
+        <div v-for="exp in m.experience.items" :key="exp.period" v-reveal class="relative min-w-0">
           <div class="absolute -left-3 sm:-left-6 top-3 w-3 sm:w-6 border-t border-dashed border-outline-variant/75"></div>
           <div
             :class="[

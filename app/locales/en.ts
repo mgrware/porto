@@ -69,18 +69,28 @@ export default {
         tags: ['Ruby on Rails', 'PostgreSQL', 'Metaprogramming', 'Git', 'CI/CD']
       },
       {
-        period: 'Nov 2017 — Feb 2022',
-        role: 'Backend Engineering Manager',
+        period: 'Nov 2019 — Feb 2022',
+        role: 'Engineering Manager',
         company: 'PT Weyland Indonesia Perkasa',
         current: false,
         description: [
-          'Managed backend engineering for high-transaction platforms, including Payment Point Online Bank (PPOB) and Food Delivery systems, utilizing Ruby on Rails and MySQL.',
-          'Directed the end-to-end lifecycle of application development from initial skeleton design to production launch.',
-          'Enhanced transaction reliability and efficiency through the strategic integration of third-party payment and service APIs.',
-          'Bridged the gap between technical execution and business goals by reporting directly to the CTO and participating in strategic project discussions.',
-          'Facilitated team growth through structured training programs for new developers and rigorous code quality audits.'
+          'Promoted from Senior Backend Developer to Engineering Manager after 2 years — given full ownership of technology direction and architectural decisions, and responsible for managing an 8-person engineering team while continuing hands-on backend development.',
+          'Led the backend for AtozGo — a new on-demand food delivery super-app built as a new product line — achieving over 154,000 monthly transactions with a 92% delivery success rate and IDR 3.76 billion GMV within months of launch.',
+          'Designed a multi-sided order routing and delivery engine across 9 service domains with real-time push notifications via AnyCable.',
+          'Led a monolith-to-microservices migration, separating billing and transaction flows into independently deployable services.'
         ],
-        tags: ['Ruby on Rails', 'MySQL', 'API Integration']
+        tags: ['Ruby on Rails', 'AnyCable', 'Microservices', 'Team leadership']
+      },
+      {
+        period: 'Nov 2017 — Nov 2019',
+        role: 'Senior Backend Developer',
+        company: 'PT Weyland Indonesia Perkasa',
+        current: false,
+        description: [
+          'Fully responsible for the backend architecture of a fintech super-app spanning 7 core service domains and 21+ sub-services — bill payments (PPOB), top-up, QRIS, e-money, flight and bus ticketing, transfers, and bank disbursement — achieving a monthly transaction volume over IDR 8.6 billion and 181,000+ transactions/month within two years of launch.',
+          'Maintained 1,000 TPS with 99.9% uptime during peak utility payment cycles through load balancing on Nginx, horizontal scaling of stateless services, and proactive migration of bottlenecks before incidents.'
+        ],
+        tags: ['Ruby on Rails', 'MySQL', 'Nginx', 'Payments']
       },
       {
         period: 'Oct 2015 — Dec 2017',
