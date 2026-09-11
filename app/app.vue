@@ -3,3 +3,8 @@
     <NuxtPage />
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+const { locale } = useLocale()
+useHead({ htmlAttrs: { lang: locale } })
+</script>

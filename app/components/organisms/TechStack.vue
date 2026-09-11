@@ -1,10 +1,10 @@
 <template>
   <section id="stack" class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <SheetHeading sheet="02" title="Tech stack" note="Parts list — the tooling these systems are actually built on." />
+    <SheetHeading sheet="02" :title="m.stack.title" :note="m.stack.note" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-outline-variant/50">
       <div
-        v-for="group in stacks"
+        v-for="group in m.stack.groups"
         :key="group.code"
         v-reveal
         class="border-r border-b border-outline-variant/50 px-[1.375rem] pt-6 pb-7 bg-surface-container/35 min-w-0"
@@ -32,26 +32,5 @@
 <script setup lang="ts">
 import SheetHeading from '../molecules/SheetHeading.vue'
 
-const stacks = [
-  {
-    code: 'INF · 01',
-    title: 'Infrastructure',
-    items: ['Docker / Docker Compose', 'Kubernetes', 'Terraform (IaC)', 'AWS / GCP', 'Nginx / Traefik']
-  },
-  {
-    code: 'LNG · 02',
-    title: 'Languages',
-    items: ['Ruby / Rails', 'Go', 'Node.js / NestJS', 'PHP / Laravel', 'JavaScript']
-  },
-  {
-    code: 'DAT · 03',
-    title: 'Data storage',
-    items: ['PostgreSQL', 'MySQL / SQL Server', 'Redis / Memcached', 'MongoDB', 'Prisma / ActiveRecord']
-  },
-  {
-    code: 'PRF · 04',
-    title: 'Performance',
-    items: ['Prometheus / Grafana', 'Distributed tracing', 'Load balancing', 'Query & index tuning', 'BullMQ / Sidekiq']
-  }
-]
+const { m } = useLocale()
 </script>

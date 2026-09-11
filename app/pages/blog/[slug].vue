@@ -4,7 +4,7 @@
     class="border-b border-outline-variant/60 bg-surface-container px-4 py-2.5 flex justify-center items-center gap-2 text-mono text-[0.6875rem] tracking-[0.12em] text-primary"
   >
     <span class="w-1.5 h-1.5 bg-primary animate-bp-pulse"></span>
-    PREVIEW — UNPUBLISHED DRAFT
+    {{ m.blog.preview }}
   </div>
 
   <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
@@ -15,31 +15,31 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
         <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
       </svg>
-      Back to revision log
+      {{ m.blog.back }}
     </NuxtLink>
 
     <BaseLoader v-if="pending" />
 
     <div v-else-if="error || !post || !isAllowed" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center">
-      <h1 class="font-headline text-2xl font-semibold text-on-surface mb-2">Entry not found</h1>
-      <p class="text-mono text-[0.8125rem] text-outline mb-6">this entry is not in the revision log</p>
+      <h1 class="font-headline text-2xl font-semibold text-on-surface mb-2">{{ m.blog.notFound }}</h1>
+      <p class="text-mono text-[0.8125rem] text-outline mb-6">{{ m.blog.notFoundBody }}</p>
       <NuxtLink
         to="/blog"
         class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
-      >Back to blog</NuxtLink>
+      >{{ m.blog.backToBlog }}</NuxtLink>
     </div>
 
     <template v-else>
-      <SheetRule :sheet="sheet" :caption="`ENTRY ${entryRef}`" />
+      <SheetRule :sheet="sheet" :caption="`${m.blog.entry} ${entryRef}`" />
 
       <div class="flex flex-wrap items-center gap-x-5 gap-y-3 mb-5 text-mono text-xs tracking-[0.1em]">
         <span class="text-primary">{{ sheetDate(post.created_at) }}</span>
         <span class="w-1.5 h-1.5 bg-outline-variant rotate-45"></span>
-        <span class="text-outline">{{ readTime(post.content) }} MIN READ</span>
+        <span class="text-outline">{{ readTime(post.content) }} {{ m.blog.minRead }}</span>
         <span class="w-1.5 h-1.5 bg-outline-variant rotate-45"></span>
         <span class="inline-flex items-center gap-1.5 text-outline">
           <BaseIcon class="text-sm">visibility</BaseIcon>
-          {{ post.views || 0 }} VIEWS
+          {{ post.views || 0 }} {{ m.blog.views }}
         </span>
         <span class="flex-1"></span>
         <NuxtLink
@@ -48,7 +48,7 @@
           class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
         >
           <BaseIcon class="text-sm">edit</BaseIcon>
-          EDIT ENTRY
+          {{ m.blog.edit }}
         </NuxtLink>
       </div>
 
@@ -72,11 +72,11 @@
         <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant z-10"></span>
         <img v-if="post.image_url" :src="post.image_url" :alt="post.title" class="w-full aspect-[21/9] object-cover" />
         <div v-else class="bp-hatch aspect-[21/9] flex items-center justify-center">
-          <span class="text-mono text-xs tracking-[0.12em] text-outline">PLATE {{ sheet }} — COVER IMAGE TO BE SUPPLIED</span>
+          <span class="text-mono text-xs tracking-[0.12em] text-outline">{{ m.blog.plate }} {{ sheet }} — {{ m.blog.coverMissing }}</span>
         </div>
         <div class="flex flex-wrap justify-between gap-x-4 gap-y-2 px-4 py-2.5 border-t border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
-          <span class="truncate max-w-[70%]">FIG. 1 — {{ post.title.toUpperCase() }}</span>
-          <span>SCALE NTS</span>
+          <span class="truncate max-w-[70%]">{{ m.blog.fig }} — {{ post.title.toUpperCase() }}</span>
+          <span>{{ m.blog.scale }}</span>
         </div>
       </div>
 
@@ -91,10 +91,10 @@
               <span class="absolute -bottom-px -right-px w-[9px] h-[9px] border-b-2 border-r-2 border-primary"></span>
             </div>
             <div class="min-w-0 flex flex-col justify-center gap-1.5">
-              <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">DRAWN BY</div>
+              <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ m.blog.drawnBy }}</div>
               <div class="font-headline text-[1.0625rem] font-semibold text-on-surface">Gilang Ramadan</div>
               <p class="text-sm leading-[1.55] text-on-surface-variant">
-                Fullstack engineer specialized in high-performance backend systems and modern frontend architectures.
+                {{ m.blog.authorBio }}
               </p>
             </div>
           </div>
@@ -103,7 +103,7 @@
         <aside class="min-w-0 lg:sticky lg:top-[88px] flex flex-col gap-5">
           <nav v-if="toc.length" class="border border-outline-variant/55 bg-surface-container/50">
             <div class="px-4 py-2.5 border-b border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.12em] text-secondary">
-              ON THIS SHEET
+              {{ m.blog.onThisSheet }}
             </div>
             <a
               v-for="(item, index) in toc"
@@ -118,7 +118,7 @@
 
           <div class="border border-outline-variant/55 bg-surface-container/50">
             <div class="px-4 py-2.5 border-b border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.12em] text-secondary">
-              ENTRY RECORD
+              {{ m.blog.entryRecord }}
             </div>
             <div
               v-for="row in entryRecord"
@@ -134,12 +134,12 @@
 
       <div v-if="prev || next" class="grid grid-cols-1 sm:grid-cols-2 border-t-2 border-outline-variant/55 mt-8 lg:mt-12">
         <NuxtLink v-if="prev" :to="`/blog/${prev.slug}`" class="group py-5 border-b border-outline-variant/40 min-w-0">
-          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">◀ PREVIOUS SHEET · {{ prevSheet }}</div>
+          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">◀ {{ m.blog.prevSheet }} · {{ prevSheet }}</div>
           <div class="font-headline text-[1.0625rem] font-semibold text-on-surface group-hover:text-primary transition-colors">{{ prev.title }}</div>
         </NuxtLink>
         <span v-else class="hidden sm:block border-b border-outline-variant/40"></span>
         <NuxtLink v-if="next" :to="`/blog/${next.slug}`" class="group py-5 border-b border-outline-variant/40 sm:text-right min-w-0">
-          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">NEXT SHEET · {{ nextSheet }} ▶</div>
+          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">{{ m.blog.nextSheet }} · {{ nextSheet }} ▶</div>
           <div class="font-headline text-[1.0625rem] font-semibold text-on-surface group-hover:text-primary transition-colors">{{ next.title }}</div>
         </NuxtLink>
       </div>
@@ -159,6 +159,7 @@ import { entryNo, readTime, sheetDate, sheetNo } from '~/composables/useSheetRef
 const route = useRoute()
 const { fetchBlogs, fetchBlogBySlug, incrementBlogViews } = useBlogActions()
 const user = useSupabaseUser()
+const { m } = useLocale()
 
 const { data: post, pending, error } = useLazyAsyncData(`blog-${route.params.slug}`, () =>
   fetchBlogBySlug(route.params.slug as string)
@@ -182,12 +183,12 @@ const nextSheet = computed(() => sheetNo('06', position.value + 1))
 const entryRecord = computed(() => {
   if (!post.value) return []
   return [
-    { label: 'ENTRY', value: entryRef.value },
-    { label: 'FILED', value: sheetDate(post.value.created_at) },
-    { label: 'STATUS', value: (post.value.status || 'draft').toUpperCase() },
-    { label: 'READ TIME', value: `${readTime(post.value.content)} MIN` },
-    { label: 'VIEWS', value: String(post.value.views || 0) },
-    { label: 'TAGS', value: String(post.value.tags?.length || 0) }
+    { label: m.value.blog.record.entry, value: entryRef.value },
+    { label: m.value.blog.record.filed, value: sheetDate(post.value.created_at) },
+    { label: m.value.blog.record.status, value: (post.value.status || 'draft').toUpperCase() },
+    { label: m.value.blog.record.readTime, value: `${readTime(post.value.content)} ${m.value.blog.record.min}` },
+    { label: m.value.blog.record.views, value: String(post.value.views || 0) },
+    { label: m.value.blog.record.tags, value: String(post.value.tags?.length || 0) }
   ]
 })
 

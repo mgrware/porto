@@ -3,13 +3,12 @@
     <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-8 lg:pt-12 pb-10 lg:pb-14">
       <div v-reveal class="flex flex-wrap items-end justify-between gap-6 mb-7">
         <div class="min-w-0">
-          <div class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary mb-3">TITLE BLOCK</div>
+          <div class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary mb-3">{{ m.footer.titleBlock }}</div>
           <h2 class="font-headline text-[clamp(1.625rem,3vw,2.25rem)] font-semibold -tracking-[0.02em] text-on-surface mb-2.5 text-pretty">
-            Have a system that needs drawing up?
+            {{ m.footer.heading }}
           </h2>
           <p class="text-base leading-[1.6] text-on-surface-variant max-w-[34rem]">
-            Available for senior backend and platform work with remote, cross-functional teams. Reviews, architecture
-            audits, and payment-infrastructure builds included.
+            {{ m.footer.body }}
           </p>
         </div>
 
@@ -30,7 +29,7 @@
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-outline-variant/50">
         <div
-          v-for="field in titleBlock"
+          v-for="field in m.footer.fields"
           :key="field.label"
           class="border-r border-b border-outline-variant/50 px-4 py-3.5"
         >
@@ -42,8 +41,8 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-between gap-4 pt-4 text-mono text-[0.6875rem] tracking-[0.06em] text-outline">
-        <span>© {{ year }} Gilang Ramadan — all drawings reserved</span>
-        <span>Systems Blueprint · rev 03</span>
+        <span>© {{ year }} Gilang Ramadan — {{ m.footer.copyright }}</span>
+        <span>{{ m.footer.rev }}</span>
       </div>
     </div>
   </footer>
@@ -57,12 +56,5 @@ const socials = [
   { label: 'LinkedIn', icon: 'business_center', link: 'https://www.linkedin.com/in/mgrdev' }
 ]
 
-const titleBlock = [
-  { label: 'DRAWN BY', value: 'Gilang Ramadan' },
-  { label: 'DISCIPLINE', value: 'Backend / platform' },
-  { label: 'SCALE', value: '1 : 1' },
-  { label: 'DRAWING NO.', value: 'GR-BE-2026-01', accent: true },
-  { label: 'REV', value: '03' },
-  { label: 'SHEET', value: '1 of 1' }
-]
+const { m } = useLocale()
 </script>

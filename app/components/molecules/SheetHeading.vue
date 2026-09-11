@@ -1,7 +1,7 @@
 <template>
   <div v-reveal class="flex flex-wrap items-end gap-x-6 gap-y-4 mb-8">
     <div class="min-w-0">
-      <div class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary mb-2.5">SHEET {{ sheet }}</div>
+      <div class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary mb-2.5">{{ m.sheet }} {{ sheet }}</div>
       <h2 class="font-headline text-[clamp(1.75rem,3.2vw,2.5rem)] font-semibold -tracking-[0.02em] text-on-surface">
         {{ title }}
       </h2>
@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+const { m } = useLocale()
 defineProps<{
   sheet: string
   title: string
