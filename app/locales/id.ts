@@ -54,20 +54,37 @@ const id: typeof en = {
     note: 'Tampak elevasi — posisi terbaru di paling atas.',
     items: [
       {
+        period: 'Mar 2026 — sekarang',
+        role: 'Solo Founder & Engineer',
+        company: 'PT Giradia Solusi Digital',
+        current: true,
+        description: [
+          'Membangun Bati, POS SaaS multi-tenant di atas NestJS dan PostgreSQL yang melayani aplikasi kasir Flutter dan dasbor admin.',
+          'Merancang sinkronisasi offline-first dengan kunci UUIDv7 yang dibuat di sisi klien, push idempoten, dan pull berbasis cursor — merchant bisa berjualan offline dan merekonsiliasi tanpa penjualan ganda atau stok hilang.',
+          'Memodelkan setiap pergerakan kas dan stok sebagai event immutable dengan read model turunan, sehingga koreksi berupa entri lawan, bukan edit. Laba rugi, arus kas, neraca, rekonsiliasi kas shift, dan buku besar semuanya diproyeksikan dari satu sumber kebenaran, mencegah perubahan retroaktif.',
+          'Membangun lapisan entitlement freemium/Pro: fitur diresolusi sebagai fitur paket, di-cache di Redis, dan ditegakkan di sisi server lewat guard fitur dan kuota, sehingga tiap laporan bisa dijual per flag sebagai add-on.',
+          'Merilis pipeline penjualan F&B dengan billing per kanal dan open bill tanpa mengubah alur checkout inti, memungkinkan beberapa terminal POS melayani satu meja secara bersamaan tanpa kehilangan data akibat race condition.',
+          'Menjalankan produksi di Docker/Traefik; membuat job terjadwal BullMQ (analitik, siklus langganan, notifikasi) idempoten lewat lock deduplikasi.',
+          'Menghilangkan hambatan horizontal scaling lewat layanan migrasi sekali jalan, rate limiting berbasis Redis, dan penyimpanan kompatibel S3.'
+        ],
+        tags: ['NestJS', 'PostgreSQL', 'Redis', 'BullMQ', 'Docker', 'Traefik', 'Flutter']
+      },
+      {
         period: 'Mar 2022 — Feb 2026',
         role: 'Senior Backend Developer',
         company: 'Virtual Spirit',
         current: false,
         description: [
-          'Merancang arsitektur dan memimpin pengembangan backend Sistem Sewa Properti berskala besar dari nol menggunakan Ruby on Rails dan PostgreSQL.',
-          'Memimpin tim backend developer, melakukan code review via Git, dan memberikan mentoring teknis bagi anggota baru.',
-          'Mengurangi downtime sistem sebesar 20% melalui troubleshooting proaktif dan penerapan monitoring otomatis.',
-          'Mengoptimalkan alur kerja pengembangan dengan memecah kebutuhan bisnis yang kompleks menjadi tugas teknis yang jelas serta memimpin daily scrum.',
-          'Mengembangkan modul Metaprogramming khusus yang meningkatkan efisiensi kode dan mengurangi boilerplate di seluruh sistem secara signifikan.',
-          'Mengelola siklus deployment end-to-end untuk lingkungan staging dan produksi dengan uptime sistem 99,9%.',
-          'Berkolaborasi lintas fungsi dengan QA, Business Analyst, dan Project Manager untuk memastikan fitur kritis dirilis tepat waktu.'
+          'Merancang lapisan domain inti dengan pola Interactor dan Organizer, memisahkan logika bisnis dari model dan controller Rails — fondasi yang mudah dirawat dan memangkas waktu review PR.',
+          'Membangun infrastruktur pembayaran marketplace end-to-end di atas Stripe API dan Stripe Connect, mengimplementasikan destination fee dan split payment.',
+          'Membangun pipeline routing pembayaran otomatis yang menyalurkan pembayaran sewa dari penyewa ke pemilik dengan pemotongan platform fee, menghapus rekonsiliasi manual dan memenuhi SLA pembayaran di hari yang sama.',
+          'Merancang mesin escrow dan billing langganan yang mendukung pembayaran berulang, alur hold-and-release, serta pemesanan jasa profesional di berbagai tingkat harga.',
+          'Mengimplementasikan lapisan pesan real-time dengan AnyCable di Ruby on Rails untuk chat dan fitur media sosial in-app, teruji menopang 1.000+ koneksi WebSocket bersamaan.',
+          'Menghilangkan pola query N+1 dan merefaktor beban basis data yang berat, menambahkan counter cache dipadukan dengan cache Redis untuk menurunkan latensi PostgreSQL.',
+          'Mengontainerisasi seluruh stack aplikasi dengan Docker dan Docker Compose, mencapai paritas dev/staging/produksi dan memangkas onboarding engineer baru dari 2 hari menjadi kurang dari 4 jam.',
+          'Bermitra dengan tim lintas fungsi terdistribusi (FE, UI/UX, Produk) lintas zona waktu dengan Agile/Scrum.'
         ],
-        tags: ['Ruby on Rails', 'PostgreSQL', 'Metaprogramming', 'Git', 'CI/CD']
+        tags: ['Ruby on Rails', 'PostgreSQL', 'Stripe Connect', 'AnyCable', 'Redis', 'Docker']
       },
       {
         period: 'Nov 2019 — Feb 2022',

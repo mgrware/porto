@@ -53,20 +53,37 @@ export default {
     note: 'Elevation view — most recent position at the top.',
     items: [
       {
+        period: 'Mar 2026 — present',
+        role: 'Solo Founder & Engineer',
+        company: 'PT Giradia Solusi Digital',
+        current: true,
+        description: [
+          'Built Bati, a multi-tenant POS SaaS on NestJS and PostgreSQL serving a Flutter cashier app and admin dashboard.',
+          'Designed offline-first sync using client-generated UUIDv7 keys with idempotent push and cursor-based pull, allowing merchants to sell offline and reconcile without duplicate sales or lost stock.',
+          'Modeled every cash and stock movement as an immutable event with a derived read model, so corrections are counter-entries rather than edits. Profit and loss, cash flow, balance sheets, shift cash reconciliations, and ledgers are all projected from a single source of truth, preventing retroactive movement.',
+          'Built a freemium/Pro entitlement layer: features are resolved as package features, cached in Redis, and enforced server-side by feature and quota guards, allowing each report to be sold per flag as an add-on.',
+          'Shipped an F&B sales pipeline with per-channel and open billing without changing the core checkout flow, enabling multiple POS terminals to serve a single table concurrently without data loss from race conditions.',
+          'Ran production on Docker/Traefik; made BullMQ scheduled jobs (analytics, subscription lifecycle, notifications) idempotent via deduplication locks.',
+          'Removed horizontal scaling barriers via a one-time migration service, Redis-backed rate limiting, and S3-compatible storage.'
+        ],
+        tags: ['NestJS', 'PostgreSQL', 'Redis', 'BullMQ', 'Docker', 'Traefik', 'Flutter']
+      },
+      {
         period: 'Mar 2022 — Feb 2026',
         role: 'Senior Backend Developer',
         company: 'Virtual Spirit',
         current: false,
         description: [
-          'Architected and led the backend development of a large-scale Property Rental System from scratch using Ruby on Rails and PostgreSQL.',
-          'Led a team of backend developers, conducting code reviews via Git and providing technical mentorship to newcomers.',
-          'Reduced system downtime by 20% through proactive troubleshooting and implementing automated monitoring.',
-          'Optimized development workflow by breaking down complex business requirements into actionable technical tasks and leading daily scrum meetings.',
-          'Developed custom Metaprogramming modules that significantly improved code efficiency and reduced boilerplate across the system.',
-          'Managed end-to-end deployment cycles for staging and production environments, ensuring 99.9% system uptime.',
-          'Collaborated cross-functionally with QA, Business Analysts, and Project Managers to ensure on-time delivery of critical features.'
+          'Designed the core domain layer using the Interactor and Organizer patterns, separating business logic from Rails models and controllers — a maintainable foundation that reduced PR review time.',
+          'Engineered an end-to-end marketplace payment infrastructure on Stripe API and Stripe Connect, implementing destination fees and split payments.',
+          'Built an automated payment routing pipeline that distributes rent payments from tenants to owners with platform fee capture, eliminating manual reconciliation and delivering same-day payment SLAs.',
+          'Designed an escrow and subscription billing engine supporting recurring fee payments, hold-and-release flows, and professional services bookings across multiple pricing tiers.',
+          'Implemented a real-time messaging layer with AnyCable in Ruby on Rails for in-app chat and social media features, tested to maintain 1,000+ concurrent WebSocket connections.',
+          'Eliminated N+1 query patterns and refactored heavy database loads, adding counter caching combined with Redis caching to lower PostgreSQL latency.',
+          'Containerized the entire application stack with Docker and Docker Compose, achieving dev/staging/production parity and reducing new-engineer onboarding from 2 days to under 4 hours.',
+          'Partnered with distributed cross-functional teams (FE, UI/UX, Product) across time zones using Agile/Scrum.'
         ],
-        tags: ['Ruby on Rails', 'PostgreSQL', 'Metaprogramming', 'Git', 'CI/CD']
+        tags: ['Ruby on Rails', 'PostgreSQL', 'Stripe Connect', 'AnyCable', 'Redis', 'Docker']
       },
       {
         period: 'Nov 2019 — Feb 2022',
