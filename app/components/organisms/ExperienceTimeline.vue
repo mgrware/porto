@@ -54,36 +54,20 @@ import SheetHeading from '../molecules/SheetHeading.vue'
 
 const experiences = [
   {
-    period: 'Feb 2026 — present',
-    role: 'Founder & Lead Engineer',
-    company: 'PT Giradia Solusi Digital',
-    current: true,
-    description: [
-      'Founded and lead end-to-end architecture as sole engineer for Bati, an offline-first, multi-tenant POS SaaS platform for Indonesian SMEs (UMKM) — full-stack ownership across backend (NestJS, Prisma, PostgreSQL, Redis, BullMQ, Traefik), mobile (Flutter), and admin dashboard (React).',
-      'Designed an offline-first sync engine — outbox pattern with client-generated UUIDv7 idempotency keys and event-sourced inventory and cash ledgers — enabling reliable multi-cashier, multi-outlet operation with zero data loss under intermittent connectivity.',
-      'Architected a flexible entitlement and monetization system spanning Free/Pro tiers plus recurring and one-time à la carte add-ons across 40+ feature flags, unified through shared backend/mobile/admin gating contracts so pricing-model changes require no application logic rewrites.',
-      'Built and normalized a 56,000+ SKU master product catalog from multiple public retail datasets, powering barcode-scan product prefill to reduce merchant onboarding friction.'
-    ],
-    tags: ['NestJS', 'Prisma', 'PostgreSQL', 'Redis', 'BullMQ', 'Traefik', 'Flutter', 'React']
-  },
-  {
     period: 'Mar 2022 — Feb 2026',
     role: 'Senior Backend Developer',
     company: 'Virtual Spirit',
-    current: true,
+    current: false,
     description: [
-      'Architected core domain layer using Interactor and Organizer patterns, decoupling business logic from Rails models and controllers — established a maintainable foundation that cut PR review time by ~30% and contained regression risk in payment-critical flows as the codebase grew.',
-      'Established the testing foundation from the ground up using RSpec, reaching 78% coverage across 13 service domains with CI-gated unit, integration, and request specs on all payment and auth paths.',
-      'Engineered end-to-end marketplace payment infrastructure on Stripe API and Stripe Connect, implementing destination charges, split payments, Connect Express onboarding, webhook idempotency, and dispute handling — production-ready for multi-party payouts at scale.',
-      'Built automated payout routing pipeline distributing rental payments from tenants to landlords with platform fee capture, eliminating manual reconciliation and providing a same-day payout SLA from day one of launch.',
-      'Designed escrow and subscription billing engine supporting recurring charges, hold-and-release flows, and KYC-gated activation for professional service bookings across multiple pricing tiers.',
-      'Implemented real-time messaging layer with AnyCable on Ruby on Rails for in-app chat and live notifications, benchmarked to sustain 1,000+ concurrent WebSocket connections at p95 <100ms — chosen over ActionCable to cut server memory footprint by ~60% and remove a known scaling ceiling before it became a problem.',
-      'Eliminated N+1 query patterns and refactored heavy ActiveRecord associations using includes, preload, and counter caches; combined with Redis caching and targeted PostgreSQL indexing to drop p95 endpoint latency from 800ms to <150ms across core read paths.',
-      'Built backend framework for an internal social-graph engine — feed generation, listing publication, and portfolio surfacing — with cursor-based pagination and Redis-backed activity feeds designed to scale horizontally as content volume grows.',
-      'Containerized full application stack with Docker and Docker Compose, achieving dev/staging/production parity and cutting new-engineer onboarding from 2 days to under 4 hours.',
-      'Partnered with distributed cross-functional teams (Frontend, UI/UX, Product) across timezones using Git Flow, code review standards, and Agile/Scrum ceremonies; maintained a zero-rollback release record across the platform\'s first year in production.'
+      'Architected and led the backend development of a large-scale Property Rental System from scratch using Ruby on Rails and PostgreSQL.',
+      'Led a team of backend developers, conducting code reviews via Git and providing technical mentorship to newcomers.',
+      'Reduced system downtime by 20% through proactive troubleshooting and implementing automated monitoring.',
+      'Optimized development workflow by breaking down complex business requirements into actionable technical tasks and leading daily scrum meetings.',
+      'Developed custom Metaprogramming modules that significantly improved code efficiency and reduced boilerplate across the system.',
+      'Managed end-to-end deployment cycles for staging and production environments, ensuring 99.9% system uptime.',
+      'Collaborated cross-functionally with QA, Business Analysts, and Project Managers to ensure on-time delivery of critical features.'
     ],
-    tags: ['Ruby on Rails', 'PostgreSQL', 'Stripe Connect', 'AnyCable', 'Redis', 'RSpec', 'Docker', 'CI/CD']
+    tags: ['Ruby on Rails', 'PostgreSQL', 'Metaprogramming', 'Git', 'CI/CD']
   },
   {
     period: 'Nov 2017 — Feb 2022',
@@ -91,15 +75,13 @@ const experiences = [
     company: 'PT Weyland Indonesia Perkasa',
     current: false,
     description: [
-      'Owned backend architecture for a fintech super-app spanning 7 core service domains and 21+ sub-services — bill payments (PPOB), top-up, QRIS, e-money, ticketing, transfers, and school cashless — reaching Rp 8.6B+ in monthly transaction volume and 181,000+ transactions/month within two years of launch.',
-      'Sustained 1,000 TPS at 99.9% uptime during peak utility payment cycles and ticketing rushes through load balancing on Nginx and AWS ALB, horizontal scaling of stateless services, and proactive bottleneck mitigation before incidents surfaced.',
-      'Led monolith-to-microservices migration, decomposing tightly-coupled billing and ticketing flows into independently deployable services — eliminated cross-domain deploy contention and improved fault isolation across a platform serving 11,000+ registered agents and end-users.',
-      'Designed a shared integration layer standardizing auth, idempotency, and retry logic across 10+ third-party providers (Finnet/Finpay, Tiket.com, Infobip, and others) — each with its own contract and failure mode, abstracted behind a unified internal interface.',
-      'Post-promotion, led backend for AtozGO — a new on-demand delivery super-app (food, express courier, e-commerce, cleaning, pre-order, mall) built as a net-new product line serving Greater Jakarta, reaching 154,000+ monthly transactions at 92% delivery success rate and Rp 3.76B GMV within months of launch.',
-      'Designed multi-sided order routing and dispatch engine across 9 service domains with real-time push notifications via FCM and OTP delivery with automatic InfoBip → local SMS fallback, ensuring deliverability under third-party outages with zero manual intervention.',
-      'Promoted from Senior Backend Developer to Engineering Manager after 2 years — given full ownership of technology direction, architecture decisions, and an 8-person engineering org (5 BE, 2 QA, 1 SA) while continuing hands-on backend development.'
+      'Managed backend engineering for high-transaction platforms, including Payment Point Online Bank (PPOB) and Food Delivery systems, utilizing Ruby on Rails and MySQL.',
+      'Directed the end-to-end lifecycle of application development from initial skeleton design to production launch.',
+      'Enhanced transaction reliability and efficiency through the strategic integration of third-party payment and service APIs.',
+      'Bridged the gap between technical execution and business goals by reporting directly to the CTO and participating in strategic project discussions.',
+      'Facilitated team growth through structured training programs for new developers and rigorous code quality audits.'
     ],
-    tags: ['Ruby on Rails', 'Golang', 'Laravel', 'MySQL', 'Nginx', 'AWS', 'CI/CD']
+    tags: ['Ruby on Rails', 'MySQL', 'API Integration']
   },
   {
     period: 'Oct 2015 — Dec 2017',
@@ -112,7 +94,7 @@ const experiences = [
       'Served as a technical lead for specific sprints, managing SOW estimations, milestones, and developer assignments.',
       'Authored core application skeletons and shared libraries to be utilized by the wider development team to ensure consistency.'
     ],
-    tags: ['Ruby on Rails', 'SQL Server', 'Stored procedures']
+    tags: ['Ruby on Rails', 'SQL Server']
   },
   {
     period: 'Jan 2014 — Aug 2015',
@@ -123,7 +105,7 @@ const experiences = [
       'Built a comprehensive Certification Management System using Laravel and MySQL.',
       'Translated complex business requirements into functional product features while maintaining platform stability.'
     ],
-    tags: ['Laravel', 'MySQL', 'jQuery']
+    tags: ['Laravel', 'MySQL']
   }
 ]
 </script>

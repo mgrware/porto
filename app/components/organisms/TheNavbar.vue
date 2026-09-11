@@ -70,6 +70,20 @@
           Download CV
         </a>
 
+        <ClientOnly>
+          <button
+            class="grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-on-surface transition-colors"
+            :title="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            :aria-label="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+          >
+            <BaseIcon class="text-base">{{ colorMode.value === 'dark' ? 'light_mode' : 'dark_mode' }}</BaseIcon>
+          </button>
+          <template #fallback>
+            <span class="w-[34px] h-[34px] border border-outline-variant/60"></span>
+          </template>
+        </ClientOnly>
+
         <button
           class="xl:hidden grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-secondary"
           :aria-expanded="isMobileMenuOpen"
@@ -129,6 +143,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import BaseIcon from '../atoms/BaseIcon.vue'
 
 const { user, logout } = useAuthActions()
+const colorMode = useColorMode()
 const activeSection = ref('')
 const isMobileMenuOpen = ref(false)
 
