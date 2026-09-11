@@ -1,9 +1,9 @@
 <template>
   <section id="hero" class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-10 lg:pt-20 pb-12 lg:pb-20">
     <div class="flex items-center gap-4 mb-7 lg:mb-11">
-      <span class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary">SHEET 01</span>
+      <span class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary">{{ m.sheet }} 01</span>
       <span class="flex-1 h-px bg-outline-variant/45"></span>
-      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">SYSTEM OVERVIEW — GENERAL ARRANGEMENT</span>
+      <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.14em] text-outline">{{ m.hero.caption }}</span>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
@@ -20,29 +20,25 @@
           </div>
           <div class="flex flex-col justify-center gap-1.5 border-l border-dashed border-outline-variant/60 pl-4 min-w-0">
             <div class="text-mono text-[0.6875rem] tracking-[0.1em] text-secondary">REF. GR-BE-2026</div>
-            <div class="text-mono text-[0.6875rem] text-outline">Bandung, Indonesia · UTC+7 · remote</div>
+            <div class="text-mono text-[0.6875rem] text-outline">{{ m.hero.location }}</div>
             <div class="flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-primary animate-bp-pulse"></span>
-              <span class="text-mono text-[0.6875rem] text-primary">Open to senior IC roles</span>
+              <span class="text-mono text-[0.6875rem] text-primary">{{ m.hero.open }}</span>
             </div>
           </div>
         </div>
 
         <h1 class="font-headline text-[clamp(2.5rem,5.4vw,4.25rem)] font-semibold leading-[1.02] -tracking-[0.03em] text-on-surface text-pretty">
-          Backend systems,<br />drawn to spec.
+          {{ m.hero.title[0] }}<br />{{ m.hero.title[1] }}
         </h1>
 
         <div class="flex items-center gap-3">
           <span class="h-px w-11 bg-primary"></span>
-          <span class="text-mono text-xs tracking-[0.12em] text-secondary">SENIOR BACKEND ENGINEER · 10+ YEARS</span>
+          <span class="text-mono text-xs tracking-[0.12em] text-secondary">{{ m.hero.subtitle }}</span>
         </div>
 
         <p class="text-[1.0625rem] leading-[1.65] text-on-surface-variant max-w-2xl text-pretty">
-          Ten years building fintech-grade marketplace and payment platforms on Ruby on Rails, Go, and PostgreSQL.
-          Deep specialization in Stripe Connect infrastructure — split payments, escrow, subscriptions, automated
-          payouts — owned end to end from technical design to production. Previously an Engineering Manager behind a
-          system sustaining 1,000 TPS at 99.9% uptime; most recently took an early-stage rental and services
-          marketplace from zero to launch. Now focused on hands-on senior IC work with distributed teams.
+          {{ m.hero.bio }}
         </p>
 
         <div class="flex flex-wrap gap-3 pt-1">
@@ -50,7 +46,7 @@
             to="/projects"
             class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] font-medium tracking-[0.04em] transition-colors"
           >
-            View projects
+            {{ m.hero.viewProjects }}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
               <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
             </svg>
@@ -59,7 +55,7 @@
             href="#experience"
             class="inline-flex items-center gap-2.5 px-[1.375rem] py-[0.9375rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] tracking-[0.04em] transition-colors"
           >
-            Experience log
+            {{ m.hero.experienceLog }}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
               <path d="M12 5v14" /><path d="M6 13l6 6 6-6" />
             </svg>
@@ -76,7 +72,7 @@
 
         <div class="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-outline-variant/45 bg-surface-container/90">
           <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-secondary">detail A — system_monitor.go</span>
-          <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">SCALE 1:1</span>
+          <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">{{ m.hero.scale }}</span>
         </div>
 
         <div class="flex text-mono text-[0.8125rem] leading-[1.85]">
@@ -95,11 +91,11 @@
 
         <div class="border-t border-outline-variant/45 grid grid-cols-2 sm:grid-cols-4">
           <div
-            v-for="(stat, index) in stats"
+            v-for="(stat, index) in m.hero.stats"
             :key="stat.label"
             :class="[
               'px-4 py-3.5 border-outline-variant/[0.28]',
-              index < stats.length - 1 && 'border-r',
+              index < m.hero.stats.length - 1 && 'border-r',
               index < 2 && 'border-b sm:border-b-0'
             ]"
           >
@@ -127,10 +123,5 @@ const codeLines = [
   '<span class="text-on-background">}</span><span class="inline-block w-[7px] h-[15px] ml-1 -mb-0.5 bg-primary animate-bp-blink"></span>'
 ]
 
-const stats = [
-  { label: 'STATUS', value: 'running', running: true },
-  { label: 'UPTIME', value: '99.99%', running: false },
-  { label: 'PEAK TPS', value: '1,000', running: false },
-  { label: 'p95 LATENCY', value: '<150ms', running: false }
-]
+const { m } = useLocale()
 </script>

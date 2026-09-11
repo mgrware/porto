@@ -1,11 +1,11 @@
 <template>
   <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <SheetRule sheet="06" caption="REVISION LOG — FIELD NOTES" />
+    <SheetRule sheet="06" :caption="m.blog.caption" />
 
     <div v-reveal class="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
-      <h1 class="font-headline text-[clamp(2.25rem,4.6vw,3.5rem)] font-semibold -tracking-[0.03em] leading-[1.05] text-on-surface">Blog</h1>
+      <h1 class="font-headline text-[clamp(2.25rem,4.6vw,3.5rem)] font-semibold -tracking-[0.03em] leading-[1.05] text-on-surface">{{ m.blog.title }}</h1>
       <p class="text-[1.0625rem] leading-[1.6] text-on-surface-variant max-w-[34rem] mb-1.5">
-        Notes on software architecture, backend engineering, and building high-performance systems.
+        {{ m.blog.intro }}
       </p>
     </div>
 
@@ -16,8 +16,8 @@
       <input
         v-model="searchQuery"
         type="search"
-        placeholder="Search entries by title, content, or tag"
-        aria-label="Search entries"
+        :placeholder="m.blog.searchPlaceholder"
+        :aria-label="m.blog.searchAria"
         class="flex-1 min-w-0 bg-transparent border-0 outline-none py-3.5 text-mono text-[0.8125rem] text-on-surface placeholder:text-outline"
       />
       <span class="hidden sm:inline text-mono text-[0.625rem] tracking-[0.1em] text-outline shrink-0">
@@ -28,15 +28,15 @@
     <BaseLoader v-if="pending" />
 
     <div v-else-if="error" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
-      ERR — could not load posts: {{ error.message }}
+      {{ m.blog.loadError }} {{ error.message }}
     </div>
 
     <template v-else>
       <div class="flex flex-wrap gap-x-8 gap-y-2 py-3 border-t-2 border-outline-variant/55 border-b border-outline-variant/40 text-mono text-[0.625rem] tracking-[0.12em] text-outline">
-        <span>ENTRIES · {{ String(posts?.length || 0).padStart(2, '0') }}</span>
-        <span v-if="latest">LATEST · {{ latest }}</span>
+        <span>{{ m.blog.entries }} · {{ String(posts?.length || 0).padStart(2, '0') }}</span>
+        <span v-if="latest">{{ m.blog.latest }} · {{ latest }}</span>
         <span class="flex-1"></span>
-        <span class="text-primary">SORTED NEWEST FIRST</span>
+        <span class="text-primary">{{ m.blog.sorted }}</span>
       </div>
 
       <div v-if="filteredPosts.length" class="flex flex-col">
@@ -53,7 +53,7 @@
             <div class="min-w-0">
               <div class="text-mono text-xs tracking-[0.06em] text-primary">{{ sheetDate(post.created_at) }}</div>
               <div class="text-mono text-[0.625rem] tracking-[0.1em] text-outline mt-1.5">
-                {{ readTime(post.content) }} MIN READ · {{ post.views || 0 }} VIEWS
+                {{ readTime(post.content) }} {{ m.blog.minRead }} · {{ post.views || 0 }} {{ m.blog.views }}
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@
                 :to="`/blog/${post.slug}`"
                 class="group inline-flex items-center gap-[0.4375rem] text-mono text-xs tracking-[0.06em] text-primary"
               >
-                Read entry
+                {{ m.blog.readEntry }}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
                   <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
                 </svg>
@@ -89,7 +89,7 @@
       </div>
 
       <div v-else class="border border-dashed border-outline-variant/60 px-6 py-16 text-center text-mono text-[0.8125rem] text-outline mt-6">
-        No entries match that search.
+        {{ m.blog.noMatch }}
       </div>
 
       <div class="pt-8">
@@ -100,7 +100,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
             <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
           </svg>
-          Return to sheet 01
+          {{ m.blog.backHome }}
         </NuxtLink>
       </div>
     </template>
@@ -113,6 +113,7 @@ import SheetRule from '~/components/molecules/SheetRule.vue'
 import { readTime, sheetDate } from '~/composables/useSheetRefs'
 
 const { fetchBlogs } = useBlogActions()
+const { m } = useLocale()
 
 const { data: posts, pending, error } = useLazyAsyncData('blogs', () => fetchBlogs(true))
 
@@ -136,7 +137,7 @@ const latest = computed(() => {
 })
 
 useSeoMeta({
-  title: 'Blog | Gilang Ramadan',
-  description: 'Sharing thoughts on software architecture and backend engineering.'
+  title: () => m.value.blog.seoTitle,
+  description: () => m.value.blog.seoDescription
 })
 </script>

@@ -6,12 +6,12 @@
           <span class="w-2 h-2 bg-primary"></span>
         </span>
         <span class="font-headline text-[0.9375rem] font-semibold -tracking-[0.01em] text-on-surface">Gilang Ramadan</span>
-        <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.06em] text-outline">/ backend systems</span>
+        <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.06em] text-outline">{{ m.nav.tagline }}</span>
       </NuxtLink>
 
       <div class="hidden xl:flex items-center gap-7">
         <NuxtLink
-          v-for="item in sheets"
+          v-for="item in m.nav.sheets"
           :key="item.href"
           :to="'/' + item.href"
           :aria-current="activeSection === item.href.replace('#', '') ? 'true' : 'false'"
@@ -34,7 +34,7 @@
         <span class="w-px h-5 bg-outline-variant/50"></span>
 
         <NuxtLink
-          v-for="page in pages"
+          v-for="page in m.nav.pages"
           :key="page.href"
           :to="page.href"
           :class="[
@@ -49,11 +49,11 @@
           v-if="user"
           to="/dashboard"
           class="hidden sm:inline-flex text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface px-2 py-1.5 border border-outline-variant/60 transition-colors"
-        >DASHBOARD</NuxtLink>
+        >{{ m.nav.dashboard }}</NuxtLink>
         <button
           v-if="user"
           class="hidden sm:grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-error transition-colors"
-          title="Log out"
+          :title="m.nav.logout"
           @click="logout"
         >
           <BaseIcon class="text-base">logout</BaseIcon>
@@ -67,14 +67,21 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
             <path d="M12 3v13" /><path d="M6 12l6 6 6-6" /><path d="M4 21h16" />
           </svg>
-          Download CV
+          {{ m.nav.downloadCv }}
         </a>
+
+        <button
+          class="grid place-items-center h-[34px] px-2 border border-outline-variant/60 text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface transition-colors"
+          :title="m.nav.switchLang"
+          :aria-label="m.nav.switchLang"
+          @click="toggle"
+        >{{ locale === 'en' ? 'ID' : 'EN' }}</button>
 
         <ClientOnly>
           <button
             class="grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-on-surface transition-colors"
-            :title="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-            :aria-label="colorMode.value === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            :title="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
+            :aria-label="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
             @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
           >
             <BaseIcon class="text-base">{{ colorMode.value === 'dark' ? 'light_mode' : 'dark_mode' }}</BaseIcon>
@@ -87,7 +94,7 @@
         <button
           class="xl:hidden grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-secondary"
           :aria-expanded="isMobileMenuOpen"
-          aria-label="Toggle navigation"
+          :aria-label="m.nav.toggleNav"
           @click="isMobileMenuOpen = !isMobileMenuOpen"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
@@ -103,14 +110,14 @@
       class="xl:hidden border-t border-outline-variant/35 px-5 sm:px-8 pt-3 pb-5 flex flex-col bg-background/95"
     >
       <NuxtLink
-        v-for="(item, index) in [...sheets, ...pages]"
+        v-for="(item, index) in [...m.nav.sheets, ...m.nav.pages]"
         :key="item.href"
         :to="item.href.startsWith('#') ? '/' + item.href : item.href"
         class="flex items-baseline gap-3 py-2.5 border-b border-outline-variant/20 last:border-b-0"
         @click="isMobileMenuOpen = false"
       >
         <span
-          :class="['text-mono text-[0.625rem]', index < sheets.length ? 'text-primary' : 'text-outline']"
+          :class="['text-mono text-[0.625rem]', index < m.nav.sheets.length ? 'text-primary' : 'text-outline']"
         >{{ String(index + 1).padStart(2, '0') }}</span>
         <span class="text-[0.9375rem] text-on-surface">{{ item.label }}</span>
       </NuxtLink>
@@ -121,18 +128,18 @@
           download="gilang_ramadan_-_senior_backend_developer.pdf"
           class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 border border-primary text-primary text-mono text-[0.6875rem] tracking-[0.08em]"
           @click="isMobileMenuOpen = false"
-        >Download CV</a>
+        >{{ m.nav.downloadCv }}</a>
         <NuxtLink
           v-if="user"
           to="/dashboard"
           class="text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant"
           @click="isMobileMenuOpen = false"
-        >DASHBOARD</NuxtLink>
+        >{{ m.nav.dashboard }}</NuxtLink>
         <button
           v-if="user"
           class="text-mono text-[0.6875rem] tracking-[0.08em] text-error text-left"
           @click="() => { logout(); isMobileMenuOpen = false }"
-        >LOGOUT</button>
+        >{{ m.nav.logout.toUpperCase() }}</button>
       </div>
     </div>
   </nav>
@@ -144,20 +151,9 @@ import BaseIcon from '../atoms/BaseIcon.vue'
 
 const { user, logout } = useAuthActions()
 const colorMode = useColorMode()
+const { m, locale, toggle } = useLocale()
 const activeSection = ref('')
 const isMobileMenuOpen = ref(false)
-
-const sheets = [
-  { code: '01', label: 'Overview', href: '#hero' },
-  { code: '02', label: 'Tech stack', href: '#stack' },
-  { code: '03', label: 'Experience', href: '#experience' },
-  { code: '04', label: 'Practice', href: '#architecture' }
-]
-
-const pages = [
-  { label: 'Projects', href: '/projects' },
-  { label: 'Blog', href: '/blog' }
-]
 
 let observer: IntersectionObserver | null = null
 
@@ -171,7 +167,7 @@ onMounted(() => {
     { rootMargin: '-64px 0px -55% 0px', threshold: 0 }
   )
 
-  sheets.forEach(({ href }) => {
+  m.value.nav.sheets.forEach(({ href }) => {
     const element = document.getElementById(href.replace('#', ''))
     if (element) observer?.observe(element)
   })
