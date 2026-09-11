@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Systems Blueprint palette — single dark drafting theme.
+/* Systems Blueprint palette — dark drafting theme (default) + light paper variant.
    RGB triplets so Tailwind opacity modifiers (/40 etc) keep working. */
 :root {
   --background: 8 24 38;             /* #081826 */
@@ -35,6 +35,42 @@
   --on-error: 8 24 38;
   --error-container: 122 42 30;
   --on-error-container: 255 220 212;
+  color-scheme: dark;
+}
+
+/* Light: same drawing on white paper. Amber/blue darkened for contrast on white. */
+:root.light {
+  --background: 246 249 252;         /* #F6F9FC */
+  --on-background: 31 52 70;         /* #1F3446 */
+  --surface: 246 249 252;
+  --surface-dim: 226 234 241;
+  --surface-bright: 255 255 255;
+  --surface-container-lowest: 255 255 255;
+  --surface-container-low: 238 243 247;
+  --surface-container: 230 237 243;  /* #E6EDF3 */
+  --surface-container-high: 220 229 237;
+  --surface-container-highest: 208 220 230;
+  --on-surface: 11 30 47;            /* #0B1E2F */
+  --on-surface-variant: 62 90 112;   /* #3E5A70 */
+  --outline: 106 138 163;            /* #6A8AA3 */
+  --outline-variant: 157 182 200;    /* #9DB6C8 */
+  --primary: 143 100 16;             /* #8F6410 — amber, darkened */
+  --on-primary: 255 255 255;
+  --primary-container: 201 147 46;
+  --on-primary-container: 31 18 0;
+  --secondary: 47 95 134;            /* #2F5F86 */
+  --on-secondary: 255 255 255;
+  --secondary-container: 199 220 236;
+  --on-secondary-container: 11 30 47;
+  --tertiary: 143 100 16;
+  --on-tertiary: 255 255 255;
+  --tertiary-container: 199 220 236;
+  --on-tertiary-container: 11 30 47;
+  --error: 179 38 30;
+  --on-error: 255 255 255;
+  --error-container: 249 222 220;
+  --on-error-container: 65 14 11;
+  color-scheme: light;
 }
 
 @layer base {
