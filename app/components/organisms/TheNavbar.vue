@@ -1,7 +1,7 @@
 <template>
-  <nav class="sticky top-0 z-50 bg-background/[0.88] backdrop-blur-sm border-b border-outline-variant/45">
+  <nav @keydown.esc="isMobileMenuOpen = false" class="sticky top-0 z-50 bg-background/[0.88] backdrop-blur-sm border-b border-outline-variant/45">
     <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between gap-6">
-      <NuxtLink to="/#hero" class="flex items-center gap-2.5 shrink-0">
+      <NuxtLink to="/#hero" class="flex items-center min-h-11 gap-2.5 shrink-0">
         <span class="w-[22px] h-[22px] border border-primary grid place-items-center">
           <span class="w-2 h-2 bg-primary"></span>
         </span>
@@ -16,7 +16,7 @@
           :to="'/' + item.href"
           :aria-current="activeSection === item.href.replace('#', '') ? 'true' : 'false'"
           :class="[
-            'flex items-baseline gap-[0.4375rem] py-1.5 border-b-2 transition-colors',
+            'flex items-baseline gap-[0.4375rem] py-3 border-b-2 transition-colors',
             activeSection === item.href.replace('#', '')
               ? 'border-primary text-on-surface'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -38,7 +38,7 @@
           :key="page.href"
           :to="page.href"
           :class="[
-            'text-[0.8125rem] transition-colors',
+            'inline-flex items-center min-h-11 text-[0.8125rem] transition-colors',
             $route.path.startsWith(page.href) ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
           ]"
         >{{ page.label }}</NuxtLink>
@@ -48,12 +48,13 @@
         <NuxtLink
           v-if="user"
           to="/dashboard"
-          class="hidden sm:inline-flex text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface px-2 py-1.5 border border-outline-variant/60 transition-colors"
+          class="hidden sm:inline-flex items-center min-h-11 text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface px-2.5 border border-outline-variant/60 transition-colors"
         >{{ m.nav.dashboard }}</NuxtLink>
         <button
           v-if="user"
-          class="hidden sm:grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-error transition-colors"
+          class="hidden sm:grid place-items-center w-11 h-11 border border-outline-variant/60 text-on-surface-variant hover:text-error transition-colors"
           :title="m.nav.logout"
+          :aria-label="m.nav.logout"
           @click="logout"
         >
           <BaseIcon class="text-base">logout</BaseIcon>
@@ -62,7 +63,7 @@
         <a
           href="/uploads/CV Gilang_Ramadan_-_Senior_Backend_Developer.pdf"
           download="gilang_ramadan_-_senior_backend_developer.pdf"
-          class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 border border-primary text-primary hover:bg-primary/[0.14] transition-colors text-mono text-[0.6875rem] tracking-[0.08em]"
+          class="hidden sm:inline-flex items-center min-h-11 gap-2 px-3.5 border border-primary text-primary hover:bg-primary/[0.14] transition-colors text-mono text-[0.6875rem] tracking-[0.08em]"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
             <path d="M12 3v13" /><path d="M6 12l6 6 6-6" /><path d="M4 21h16" />
@@ -71,7 +72,7 @@
         </a>
 
         <button
-          class="grid place-items-center h-[34px] px-2 border border-outline-variant/60 text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface transition-colors"
+          class="grid place-items-center h-11 min-w-11 px-2 border border-outline-variant/60 text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface transition-colors"
           :title="m.nav.switchLang"
           :aria-label="m.nav.switchLang"
           @click="toggle"
@@ -79,7 +80,7 @@
 
         <ClientOnly>
           <button
-            class="grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-on-surface transition-colors"
+            class="grid place-items-center w-11 h-11 border border-outline-variant/60 text-on-surface-variant hover:text-on-surface transition-colors"
             :title="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
             :aria-label="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
             @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
@@ -87,12 +88,12 @@
             <BaseIcon class="text-base">{{ colorMode.value === 'dark' ? 'light_mode' : 'dark_mode' }}</BaseIcon>
           </button>
           <template #fallback>
-            <span class="w-[34px] h-[34px] border border-outline-variant/60"></span>
+            <span class="w-11 h-11 border border-outline-variant/60"></span>
           </template>
         </ClientOnly>
 
         <button
-          class="xl:hidden grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-secondary"
+          class="xl:hidden grid place-items-center w-11 h-11 border border-outline-variant/60 text-secondary"
           :aria-expanded="isMobileMenuOpen"
           :aria-label="m.nav.toggleNav"
           @click="isMobileMenuOpen = !isMobileMenuOpen"
@@ -113,7 +114,7 @@
         v-for="(item, index) in [...m.nav.sheets, ...m.nav.pages]"
         :key="item.href"
         :to="item.href.startsWith('#') ? '/' + item.href : item.href"
-        class="flex items-baseline gap-3 py-2.5 border-b border-outline-variant/20 last:border-b-0"
+        class="flex items-center min-h-11 gap-3 py-2 border-b border-outline-variant/20 last:border-b-0"
         @click="isMobileMenuOpen = false"
       >
         <span
@@ -126,18 +127,18 @@
         <a
           href="/uploads/CV Gilang_Ramadan_-_Senior_Backend_Developer.pdf"
           download="gilang_ramadan_-_senior_backend_developer.pdf"
-          class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 border border-primary text-primary text-mono text-[0.6875rem] tracking-[0.08em]"
+          class="inline-flex items-center justify-center min-h-11 gap-2 px-3.5 border border-primary text-primary text-mono text-[0.6875rem] tracking-[0.08em]"
           @click="isMobileMenuOpen = false"
         >{{ m.nav.downloadCv }}</a>
         <NuxtLink
           v-if="user"
           to="/dashboard"
-          class="text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant"
+          class="inline-flex items-center min-h-11 text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant"
           @click="isMobileMenuOpen = false"
         >{{ m.nav.dashboard }}</NuxtLink>
         <button
           v-if="user"
-          class="text-mono text-[0.6875rem] tracking-[0.08em] text-error text-left"
+          class="min-h-11 text-mono text-[0.6875rem] tracking-[0.08em] text-error text-left"
           @click="() => { logout(); isMobileMenuOpen = false }"
         >{{ m.nav.logout.toUpperCase() }}</button>
       </div>

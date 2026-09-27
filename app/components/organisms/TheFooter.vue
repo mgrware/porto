@@ -19,7 +19,7 @@
             :href="social.link"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-2 px-[1.125rem] py-3 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
+            class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
           >
             <span class="material-symbols-outlined text-base">{{ social.icon }}</span>
             {{ social.label }}
@@ -41,7 +41,7 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-between gap-4 pt-4 text-mono text-[0.6875rem] tracking-[0.06em] text-outline">
-        <span>© {{ year }} Gilang Ramadan — {{ m.footer.copyright }}</span>
+        <span>© {{ year }} Gilang Ramadan · {{ m.footer.copyright }}</span>
         <span>{{ m.footer.rev }}</span>
       </div>
     </div>

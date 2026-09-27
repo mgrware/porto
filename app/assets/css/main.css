@@ -17,7 +17,7 @@
   --surface-container-highest: 23 54 80;
   --on-surface: 234 243 250;         /* #EAF3FA */
   --on-surface-variant: 169 198 218; /* #A9C6DA */
-  --outline: 94 134 163;             /* #5E86A3 */
+  --outline: 115 153 181;            /* #7399B5, 4.5:1+ up to surface-container-high */
   --outline-variant: 62 110 142;     /* #3E6E8E */
   --primary: 201 147 46;             /* #C9932E — drafting amber */
   --on-primary: 8 24 38;
@@ -52,7 +52,7 @@
   --surface-container-highest: 208 220 230;
   --on-surface: 11 30 47;            /* #0B1E2F */
   --on-surface-variant: 62 90 112;   /* #3E5A70 */
-  --outline: 106 138 163;            /* #6A8AA3 */
+  --outline: 72 102 128;             /* #486680, 4.5:1+ down to surface-container-high */
   --outline-variant: 157 182 200;    /* #9DB6C8 */
   --primary: 143 100 16;             /* #8F6410 — amber, darkened */
   --on-primary: 255 255 255;
@@ -96,6 +96,20 @@
   direction: ltr;
 }
 
+@layer components {
+  /* Square 44px icon action used in the admin tables */
+  .admin-icon-btn {
+    @apply grid place-items-center w-11 h-11 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors;
+  }
+  /* Form fields in login and the dashboard editors; focus uses the global :focus-visible ring */
+  .admin-label {
+    @apply block text-mono text-[0.6875rem] tracking-[0.1em] text-on-surface-variant;
+  }
+  .admin-input {
+    @apply w-full min-h-11 bg-background border border-outline-variant/60 px-3.5 py-2.5 text-on-surface placeholder:text-outline focus:border-primary transition-colors;
+  }
+}
+
 @layer utilities {
   .text-mono {
     font-family: 'IBM Plex Mono', monospace;
@@ -115,11 +129,12 @@
   }
 }
 
-@keyframes bp-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @keyframes bp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+/* BaseLoader: a 48px block travelling a 192px dimension line */
+@keyframes bp-measure { 0% { transform: translateX(0); } 50% { transform: translateX(144px); } 100% { transform: translateX(0); } }
 
-.animate-bp-blink { animation: bp-blink 1.1s step-end infinite; }
 .animate-bp-pulse { animation: bp-pulse 2.4s ease-in-out infinite; }
+.animate-bp-measure { animation: bp-measure 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
 
 /* v-reveal: fade + rise once the element scrolls into view */
 [data-reveal] {
@@ -133,7 +148,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] { opacity: 1; transform: none; transition: none; }
-  .animate-bp-blink, .animate-bp-pulse { animation: none; }
+  .animate-bp-pulse, .animate-bp-measure, .animate-spin { animation: none; }
 }
 
 /* Quill editor on the blueprint surface */
@@ -148,48 +163,4 @@
   border-color: rgb(var(--outline-variant) / 0.5);
   background-color: rgb(var(--background));
   color: rgb(var(--on-background));
-}
-
-/* Loader animations */
-@keyframes spinCW {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes spinCCW {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(-360deg); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-4px) scale(1.02); }
-}
-
-@keyframes pulseShadow {
-  0%, 100% { filter: drop-shadow(0 0 8px rgba(201, 147, 46, 0.4)) drop-shadow(0 0 15px rgba(201, 147, 46, 0.15)); }
-  50% { filter: drop-shadow(0 0 20px rgba(201, 147, 46, 0.8)) drop-shadow(0 0 30px rgba(201, 147, 46, 0.4)); }
-}
-
-.animate-spin-cw {
-  animation: spinCW 25s linear infinite;
-  transform-origin: center;
-}
-
-.animate-spin-ccw {
-  animation: spinCCW 18s linear infinite;
-  transform-origin: center;
-}
-
-.animate-spin-fast {
-  animation: spinCW 8s linear infinite;
-  transform-origin: center;
-}
-
-.animate-logo-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-supabase-glow {
-  animation: pulseShadow 3s ease-in-out infinite;
 }

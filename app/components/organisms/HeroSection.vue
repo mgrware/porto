@@ -63,65 +63,40 @@
         </div>
       </div>
 
-      <!-- detail A — terminal -->
-      <div v-reveal class="relative min-w-0 border border-outline-variant/55 bg-background/70">
+      <!-- detail A: figures quoted from the experience log, each with its source -->
+      <figure v-reveal class="relative min-w-0 border border-outline-variant/55 bg-background/70">
         <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-outline-variant"></span>
         <span class="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-outline-variant"></span>
         <span class="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-outline-variant"></span>
         <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant"></span>
 
         <div class="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-outline-variant/45 bg-surface-container/90">
-          <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-secondary">detail A — system_monitor.go</span>
+          <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-secondary">{{ m.hero.detail }}</span>
           <span class="text-mono text-[0.625rem] tracking-[0.1em] text-outline">{{ m.hero.scale }}</span>
         </div>
 
-        <div class="flex text-mono text-[0.8125rem] leading-[1.85]">
-          <div class="shrink-0 py-[1.125rem] px-3 text-right text-outline-variant/75 border-r border-outline-variant/[0.28] select-none">
-            <div v-for="n in codeLines.length" :key="n">{{ String(n).padStart(2, '0') }}</div>
-          </div>
-          <div class="flex-1 min-w-0 py-[1.125rem] px-4 overflow-x-auto">
-            <div v-for="(line, index) in codeLines" :key="index" class="whitespace-pre" v-html="line"></div>
-          </div>
-        </div>
-
-        <div class="border-t border-outline-variant/45 px-4 py-3 flex items-center gap-2 text-mono text-xs text-secondary">
-          <span class="text-outline">$</span>
-          <span class="text-on-background">go run ./cmd/monitor --watch</span>
-        </div>
-
-        <div class="border-t border-outline-variant/45 grid grid-cols-2 sm:grid-cols-4">
+        <dl class="flex flex-col">
           <div
-            v-for="(stat, index) in m.hero.stats"
-            :key="stat.label"
-            :class="[
-              'px-4 py-3.5 border-outline-variant/[0.28]',
-              index < m.hero.stats.length - 1 && 'border-r',
-              index < 2 && 'border-b sm:border-b-0'
-            ]"
+            v-for="figure in m.hero.figures"
+            :key="figure.value"
+            class="grid grid-cols-1 sm:grid-cols-[9.5rem_1fr] gap-x-5 gap-y-1 px-4 py-4 border-b border-outline-variant/[0.28] min-w-0"
           >
-            <div class="text-mono text-[0.625rem] tracking-[0.1em] text-outline mb-1.5">{{ stat.label }}</div>
-            <div class="flex items-center gap-1.5 text-mono text-sm" :class="stat.running ? 'text-secondary' : 'text-on-surface'">
-              <span v-if="stat.running" class="w-[7px] h-[7px] bg-secondary animate-bp-pulse"></span>
-              {{ stat.value }}
-            </div>
+            <dt class="font-headline text-[1.625rem] leading-none font-semibold -tracking-[0.02em] text-primary sm:pt-0.5">{{ figure.value }}</dt>
+            <dd class="min-w-0">
+              <div class="text-[0.9375rem] leading-[1.5] text-on-surface text-pretty">{{ figure.label }}</div>
+              <div class="text-mono text-[0.6875rem] tracking-[0.04em] text-outline mt-1.5">{{ figure.source }}</div>
+            </dd>
           </div>
-        </div>
-      </div>
+        </dl>
+
+        <figcaption class="px-4 py-3 text-mono text-xs text-outline">
+          <a href="#experience" class="inline-flex items-center min-h-11 hover:text-on-surface underline underline-offset-4 decoration-outline-variant">{{ m.hero.figuresNote }}</a>
+        </figcaption>
+      </figure>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-const codeLines = [
-  '<span class="text-primary">package</span><span class="text-on-background"> main</span>',
-  '<span class="text-primary">func</span> <span class="text-secondary">initCoreArchitecture</span><span class="text-on-background">() {</span>',
-  '<span class="text-outline">  // warm caches, verify replicas</span>',
-  '<span class="text-on-background">  stack := []string{</span><span class="text-secondary">"Go"</span><span class="text-on-background">, </span><span class="text-secondary">"Ruby"</span><span class="text-on-background">, </span><span class="text-secondary">"Postgres"</span><span class="text-on-background">}</span>',
-  '<span class="text-on-background">  </span><span class="text-primary">for</span><span class="text-on-background"> _, svc := </span><span class="text-primary">range</span><span class="text-on-background"> stack {</span>',
-  '<span class="text-on-background">    deploy.Scale(svc, </span><span class="text-primary">1000</span><span class="text-on-background">)</span>',
-  '<span class="text-on-background">  }</span>',
-  '<span class="text-on-background">}</span><span class="inline-block w-[7px] h-[15px] ml-1 -mb-0.5 bg-primary animate-bp-blink"></span>'
-]
-
 const { m } = useLocale()
 </script>
