@@ -54,7 +54,7 @@ export default {
     items: [
       {
         period: 'Mar 2026 — present',
-        role: 'Solo Founder & Engineer',
+        role: 'Senior Backend Developer',
         company: 'PT Giradia Solusi Digital',
         current: true,
         description: [

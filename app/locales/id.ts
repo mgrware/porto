@@ -55,7 +55,7 @@ const id: typeof en = {
     items: [
       {
         period: 'Mar 2026 — sekarang',
-        role: 'Solo Founder & Engineer',
+        role: 'Senior Backend Developer',
         company: 'PT Giradia Solusi Digital',
         current: true,
         description: [
