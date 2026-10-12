@@ -100,18 +100,34 @@
   .text-mono {
     font-family: 'IBM Plex Mono', monospace;
   }
-  /* Section hatching, as used on unsupplied drawing plates */
+  /* Placeholder fill for missing cover images */
   .bp-hatch {
-    background-image: repeating-linear-gradient(135deg, rgb(var(--outline-variant) / 0.16) 0 1px, transparent 1px 9px);
+    background-image: linear-gradient(135deg, rgb(var(--primary) / 0.18), rgb(var(--secondary) / 0.18));
   }
-  /* Drafting paper: 20px minor grid over a 120px major grid */
-  .bp-grid {
-    background-image:
-      linear-gradient(to right, rgb(var(--outline-variant) / 0.09) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--outline-variant) / 0.09) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--outline-variant) / 0.16) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--outline-variant) / 0.16) 1px, transparent 1px);
-    background-size: 20px 20px, 20px 20px, 120px 120px, 120px 120px;
+  .text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary;
+  }
+}
+
+@layer components {
+  /* Glass card, as used across the portfolio mock */
+  .glass {
+    @apply bg-surface-container/40 backdrop-blur-md border border-outline-variant/30 rounded-2xl;
+  }
+  .glass-hover {
+    @apply transition-all duration-300 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1;
+  }
+  .chip {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium text-secondary bg-secondary/10 border border-secondary/30;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-on-primary bg-gradient-to-r from-primary to-primary-container shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 transition-all duration-300;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-on-surface border border-outline-variant/50 hover:border-primary hover:bg-primary/10 transition-all duration-300;
+  }
+  .icon-btn {
+    @apply grid place-items-center w-10 h-10 rounded-xl border border-outline-variant/40 bg-surface-container/40 text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all duration-300;
   }
 }
 
@@ -124,8 +140,8 @@
 /* v-reveal: fade + rise once the element scrolls into view */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 620ms ease, transform 620ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: translateY(40px);
+  transition: opacity 800ms ease, transform 800ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 [data-reveal='shown'] {
   opacity: 1;

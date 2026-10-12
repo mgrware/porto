@@ -1,105 +1,80 @@
 <template>
-  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <SheetRule sheet="06" :caption="m.blog.caption" />
+  <div class="max-w-6xl mx-auto px-4 py-16 lg:py-20">
+    <SheetHeading :title="m.blog.title" :note="m.blog.intro" />
 
-    <div v-reveal class="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
-      <h1 class="font-headline text-[clamp(2.25rem,4.6vw,3.5rem)] font-semibold -tracking-[0.03em] leading-[1.05] text-on-surface">{{ m.blog.title }}</h1>
-      <p class="text-[1.0625rem] leading-[1.6] text-on-surface-variant max-w-[34rem] mb-1.5">
-        {{ m.blog.intro }}
-      </p>
-    </div>
-
-    <div v-reveal class="flex items-center gap-3 border border-outline-variant/60 bg-surface-container/50 px-3.5 max-w-[34rem] mb-7">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="text-outline shrink-0" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" />
-      </svg>
+    <div v-reveal class="flex items-center gap-3 glass px-4 max-w-xl mx-auto mb-12 focus-within:border-primary/60 transition-colors">
+      <BaseIcon class="text-xl text-outline">search</BaseIcon>
       <input
         v-model="searchQuery"
         type="search"
         :placeholder="m.blog.searchPlaceholder"
         :aria-label="m.blog.searchAria"
-        class="flex-1 min-w-0 bg-transparent border-0 outline-none py-3.5 text-mono text-[0.8125rem] text-on-surface placeholder:text-outline"
+        class="flex-1 min-w-0 bg-transparent border-0 outline-none py-4 text-sm text-on-surface placeholder:text-outline"
       />
-      <span class="hidden sm:inline text-mono text-[0.625rem] tracking-[0.1em] text-outline shrink-0">
-        {{ String(filteredPosts.length).padStart(2, '0') }} / {{ String(posts?.length || 0).padStart(2, '0') }}
-      </span>
+      <span class="hidden sm:inline text-xs text-outline shrink-0">{{ filteredPosts.length }} / {{ posts?.length || 0 }}</span>
     </div>
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="error" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
+    <div v-else-if="error" class="glass !border-error/50 bg-error/10 px-5 py-4 text-sm text-error">
       {{ m.blog.loadError }} {{ error.message }}
     </div>
 
     <template v-else>
-      <div class="flex flex-wrap gap-x-8 gap-y-2 py-3 border-t-2 border-outline-variant/55 border-b border-outline-variant/40 text-mono text-[0.625rem] tracking-[0.12em] text-outline">
-        <span>{{ m.blog.entries }} · {{ String(posts?.length || 0).padStart(2, '0') }}</span>
-        <span v-if="latest">{{ m.blog.latest }} · {{ latest }}</span>
-        <span class="flex-1"></span>
-        <span class="text-primary">{{ m.blog.sorted }}</span>
-      </div>
-
-      <div v-if="filteredPosts.length" class="flex flex-col">
+      <div v-if="filteredPosts.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <article
-          v-for="(post, index) in filteredPosts"
+          v-for="post in filteredPosts"
           :key="post.id"
           v-reveal
-          class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-x-8 lg:gap-x-12 py-5 lg:py-7 border-b border-outline-variant/40 min-w-0"
+          class="group relative overflow-hidden glass glass-hover flex flex-col min-w-0"
         >
-          <div class="flex items-start gap-3 min-w-0">
-            <span
-              :class="['shrink-0 w-[9px] h-[9px] mt-1.5 rotate-45', index === 0 ? 'bg-primary' : 'bg-outline-variant']"
-            ></span>
-            <div class="min-w-0">
-              <div class="text-mono text-xs tracking-[0.06em] text-primary">{{ sheetDate(post.created_at) }}</div>
-              <div class="text-mono text-[0.625rem] tracking-[0.1em] text-outline mt-1.5">
-                {{ readTime(post.content) }} {{ m.blog.minRead }} · {{ post.views || 0 }} {{ m.blog.views }}
-              </div>
+          <NuxtLink :to="`/blog/${post.slug}`" class="block overflow-hidden aspect-[16/9]">
+            <img
+              v-if="post.image_url"
+              :src="post.image_url"
+              :alt="post.title"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
+            <div v-else class="bp-hatch w-full h-full grid place-items-center">
+              <BaseIcon class="text-5xl text-primary/60">article</BaseIcon>
             </div>
-          </div>
+          </NuxtLink>
 
-          <div class="md:col-span-2 min-w-0 flex flex-col gap-3">
-            <h2 class="font-headline text-[clamp(1.1875rem,2.1vw,1.5rem)] font-semibold -tracking-[0.02em] leading-[1.25] text-on-surface text-pretty">
-              <NuxtLink :to="`/blog/${post.slug}`" class="hover:text-primary transition-colors">{{ post.title }}</NuxtLink>
+          <div class="p-6 flex flex-col gap-3 flex-1">
+            <div class="flex items-center gap-2 text-xs text-outline">
+              <BaseIcon class="text-sm">calendar_month</BaseIcon>
+              {{ sheetDate(post.created_at) }}
+              <span>·</span>
+              {{ readTime(post.content) }} {{ m.blog.minRead }}
+              <span>·</span>
+              {{ post.views || 0 }} {{ m.blog.views }}
+            </div>
+
+            <h2 class="font-headline text-xl font-bold leading-snug text-on-surface group-hover:text-primary transition-colors text-pretty">
+              <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
             </h2>
 
-            <p v-if="post.excerpt" class="text-[0.9375rem] leading-[1.6] text-on-surface-variant max-w-[52rem] text-pretty">
-              {{ post.excerpt }}
-            </p>
+            <p v-if="post.excerpt" class="text-sm leading-relaxed text-on-surface-variant line-clamp-3">{{ post.excerpt }}</p>
 
-            <div class="flex flex-wrap items-center gap-x-3.5 gap-y-[0.4375rem]">
-              <span
-                v-for="tag in post.tags"
-                :key="tag"
-                class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
-              >{{ tag }}</span>
-              <span class="flex-1"></span>
-              <NuxtLink
-                :to="`/blog/${post.slug}`"
-                class="group inline-flex items-center gap-[0.4375rem] text-mono text-xs tracking-[0.06em] text-primary"
-              >
-                {{ m.blog.readEntry }}
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
-                  <path d="M4 12h15" /><path d="M13 6l6 6-6 6" />
-                </svg>
-              </NuxtLink>
+            <div v-if="post.tags?.length" class="flex flex-wrap gap-2">
+              <span v-for="tag in post.tags" :key="tag" class="chip">{{ tag }}</span>
             </div>
+
+            <NuxtLink :to="`/blog/${post.slug}`" class="mt-auto pt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+              {{ m.blog.readEntry }}
+              <BaseIcon class="text-base group-hover:translate-x-1 transition-transform">arrow_forward</BaseIcon>
+            </NuxtLink>
           </div>
         </article>
       </div>
 
-      <div v-else class="border border-dashed border-outline-variant/60 px-6 py-16 text-center text-mono text-[0.8125rem] text-outline mt-6">
+      <div v-else class="glass px-6 py-16 text-center text-outline">
         {{ m.blog.noMatch }}
       </div>
 
-      <div class="pt-8">
-        <NuxtLink
-          to="/#hero"
-          class="inline-flex items-center gap-2 px-[1.125rem] py-3 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
-            <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
-          </svg>
+      <div class="pt-12 text-center">
+        <NuxtLink to="/" class="btn-ghost">
+          <BaseIcon class="text-base">arrow_back</BaseIcon>
           {{ m.blog.backHome }}
         </NuxtLink>
       </div>
@@ -108,8 +83,9 @@
 </template>
 
 <script setup lang="ts">
+import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
-import SheetRule from '~/components/molecules/SheetRule.vue'
+import SheetHeading from '~/components/molecules/SheetHeading.vue'
 import { readTime, sheetDate } from '~/composables/useSheetRefs'
 
 const { fetchBlogs } = useBlogActions()
@@ -127,13 +103,6 @@ const filteredPosts = computed(() => {
     (post.content && post.content.toLowerCase().includes(query)) ||
     post.tags?.some(tag => tag.toLowerCase().includes(query))
   )
-})
-
-const latest = computed(() => {
-  const newest = posts.value?.[0]?.created_at
-  return newest
-    ? new Date(newest).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }).toUpperCase()
-    : ''
 })
 
 useSeoMeta({

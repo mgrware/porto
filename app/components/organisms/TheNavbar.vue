@@ -1,177 +1,121 @@
 <template>
-  <nav class="sticky top-0 z-50 bg-background/[0.88] backdrop-blur-sm border-b border-outline-variant/45">
-    <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between gap-6">
-      <NuxtLink to="/#hero" class="flex items-center gap-2.5 shrink-0">
-        <span class="w-[22px] h-[22px] border border-primary grid place-items-center">
-          <span class="w-2 h-2 bg-primary"></span>
-        </span>
-        <span class="font-headline text-[0.9375rem] font-semibold -tracking-[0.01em] text-on-surface">Gilang Ramadan</span>
-        <span class="hidden sm:inline text-mono text-[0.6875rem] tracking-[0.06em] text-outline">{{ m.nav.tagline }}</span>
-      </NuxtLink>
-
-      <div class="hidden xl:flex items-center gap-7">
-        <NuxtLink
-          v-for="item in m.nav.sheets"
-          :key="item.href"
-          :to="'/' + item.href"
-          :aria-current="activeSection === item.href.replace('#', '') ? 'true' : 'false'"
-          :class="[
-            'flex items-baseline gap-[0.4375rem] py-1.5 border-b-2 transition-colors',
-            activeSection === item.href.replace('#', '')
-              ? 'border-primary text-on-surface'
-              : 'border-transparent text-on-surface-variant hover:text-on-surface'
-          ]"
-        >
-          <span
-            :class="[
-              'text-mono text-[0.625rem]',
-              activeSection === item.href.replace('#', '') ? 'text-primary' : 'text-outline'
-            ]"
-          >{{ item.code }}</span>
-          <span class="text-[0.8125rem] font-medium">{{ item.label }}</span>
+  <header class="sticky top-3 z-50 px-4 sm:px-6">
+    <nav class="max-w-6xl mx-auto glass bg-surface-container/70 backdrop-blur-xl shadow-lg shadow-primary/5">
+      <div class="h-16 px-4 sm:px-5 flex items-center justify-between gap-4">
+        <NuxtLink to="/" class="flex items-center gap-3 shrink-0">
+          <img src="~/assets/images/avatar.jpg" alt="" class="w-9 h-9 rounded-full object-cover ring-2 ring-primary/60" />
+          <span class="font-headline text-base font-semibold text-on-surface">
+            Gilang <span class="text-gradient">Ramadan</span>
+          </span>
         </NuxtLink>
 
-        <span class="w-px h-5 bg-outline-variant/50"></span>
+        <div class="hidden md:flex items-center gap-7">
+          <NuxtLink
+            v-for="link in links"
+            :key="link.href"
+            :to="link.href"
+            :class="[
+              'relative text-sm font-medium py-1 transition-colors group',
+              isActive(link.href) ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
+            ]"
+          >
+            {{ link.label }}
+            <span
+              :class="[
+                'absolute -bottom-0.5 left-0 h-0.5 rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-300',
+                isActive(link.href) ? 'w-full' : 'w-0 group-hover:w-full'
+              ]"
+            ></span>
+          </NuxtLink>
+        </div>
 
-        <NuxtLink
-          v-for="page in m.nav.pages"
-          :key="page.href"
-          :to="page.href"
-          :class="[
-            'text-[0.8125rem] transition-colors',
-            $route.path.startsWith(page.href) ? 'text-primary' : 'text-on-surface-variant hover:text-on-surface'
-          ]"
-        >{{ page.label }}</NuxtLink>
+        <div class="flex items-center gap-2 shrink-0">
+          <NuxtLink v-if="user" to="/dashboard" class="hidden sm:grid icon-btn" :title="m.nav.dashboard" :aria-label="m.nav.dashboard">
+            <BaseIcon class="text-lg">dashboard</BaseIcon>
+          </NuxtLink>
+          <button v-if="user" class="hidden sm:grid icon-btn hover:!text-error" :title="m.nav.logout" :aria-label="m.nav.logout" @click="logout">
+            <BaseIcon class="text-lg">logout</BaseIcon>
+          </button>
+
+          <a
+            :href="cvHref"
+            :download="cvName"
+            class="hidden sm:inline-flex btn-primary !px-4 !py-2.5 !text-xs"
+          >
+            <BaseIcon class="text-base">download</BaseIcon>
+            {{ m.nav.downloadCv }}
+          </a>
+
+          <button class="icon-btn text-xs font-semibold" :title="m.nav.switchLang" :aria-label="m.nav.switchLang" @click="toggle">
+            {{ locale === 'en' ? 'ID' : 'EN' }}
+          </button>
+
+          <ClientOnly>
+            <button
+              class="icon-btn"
+              :title="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
+              :aria-label="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
+              @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
+            >
+              <BaseIcon class="text-lg">{{ colorMode.value === 'dark' ? 'light_mode' : 'dark_mode' }}</BaseIcon>
+            </button>
+            <template #fallback>
+              <span class="w-10 h-10"></span>
+            </template>
+          </ClientOnly>
+
+          <button
+            class="md:hidden icon-btn"
+            :aria-expanded="isMobileMenuOpen"
+            :aria-label="m.nav.toggleNav"
+            @click="isMobileMenuOpen = !isMobileMenuOpen"
+          >
+            <BaseIcon class="text-lg">{{ isMobileMenuOpen ? 'close' : 'menu' }}</BaseIcon>
+          </button>
+        </div>
       </div>
 
-      <div class="flex items-center gap-3 shrink-0">
+      <div v-if="isMobileMenuOpen" class="md:hidden border-t border-outline-variant/30 p-3 flex flex-col gap-1">
         <NuxtLink
-          v-if="user"
-          to="/dashboard"
-          class="hidden sm:inline-flex text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface px-2 py-1.5 border border-outline-variant/60 transition-colors"
-        >{{ m.nav.dashboard }}</NuxtLink>
-        <button
-          v-if="user"
-          class="hidden sm:grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-error transition-colors"
-          :title="m.nav.logout"
-          @click="logout"
-        >
-          <BaseIcon class="text-base">logout</BaseIcon>
-        </button>
+          v-for="link in links"
+          :key="link.href"
+          :to="link.href"
+          :class="[
+            'px-4 py-3 rounded-xl text-sm font-medium transition-colors',
+            isActive(link.href) ? 'bg-primary/15 text-primary' : 'text-on-surface hover:bg-on-surface/5'
+          ]"
+          @click="isMobileMenuOpen = false"
+        >{{ link.label }}</NuxtLink>
 
-        <a
-          href="/uploads/CV Gilang_Ramadan_-_Senior_Backend_Developer.pdf"
-          download="gilang_ramadan_-_senior_backend_developer.pdf"
-          class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 border border-primary text-primary hover:bg-primary/[0.14] transition-colors text-mono text-[0.6875rem] tracking-[0.08em]"
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
-            <path d="M12 3v13" /><path d="M6 12l6 6 6-6" /><path d="M4 21h16" />
-          </svg>
+        <a :href="cvHref" :download="cvName" class="sm:hidden btn-primary mt-2" @click="isMobileMenuOpen = false">
+          <BaseIcon class="text-base">download</BaseIcon>
           {{ m.nav.downloadCv }}
         </a>
-
-        <button
-          class="grid place-items-center h-[34px] px-2 border border-outline-variant/60 text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant hover:text-on-surface transition-colors"
-          :title="m.nav.switchLang"
-          :aria-label="m.nav.switchLang"
-          @click="toggle"
-        >{{ locale === 'en' ? 'ID' : 'EN' }}</button>
-
-        <ClientOnly>
-          <button
-            class="grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-on-surface-variant hover:text-on-surface transition-colors"
-            :title="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
-            :aria-label="colorMode.value === 'dark' ? m.nav.toLight : m.nav.toDark"
-            @click="colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'"
-          >
-            <BaseIcon class="text-base">{{ colorMode.value === 'dark' ? 'light_mode' : 'dark_mode' }}</BaseIcon>
-          </button>
-          <template #fallback>
-            <span class="w-[34px] h-[34px] border border-outline-variant/60"></span>
-          </template>
-        </ClientOnly>
-
-        <button
-          class="xl:hidden grid place-items-center w-[34px] h-[34px] border border-outline-variant/60 text-secondary"
-          :aria-expanded="isMobileMenuOpen"
-          :aria-label="m.nav.toggleNav"
-          @click="isMobileMenuOpen = !isMobileMenuOpen"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
-            <template v-if="isMobileMenuOpen"><path d="M5 5l14 14" /><path d="M19 5L5 19" /></template>
-            <template v-else><path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h18" /></template>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div
-      v-if="isMobileMenuOpen"
-      class="xl:hidden border-t border-outline-variant/35 px-5 sm:px-8 pt-3 pb-5 flex flex-col bg-background/95"
-    >
-      <NuxtLink
-        v-for="(item, index) in [...m.nav.sheets, ...m.nav.pages]"
-        :key="item.href"
-        :to="item.href.startsWith('#') ? '/' + item.href : item.href"
-        class="flex items-baseline gap-3 py-2.5 border-b border-outline-variant/20 last:border-b-0"
-        @click="isMobileMenuOpen = false"
-      >
-        <span
-          :class="['text-mono text-[0.625rem]', index < m.nav.sheets.length ? 'text-primary' : 'text-outline']"
-        >{{ String(index + 1).padStart(2, '0') }}</span>
-        <span class="text-[0.9375rem] text-on-surface">{{ item.label }}</span>
-      </NuxtLink>
-
-      <div class="flex flex-col gap-3 pt-4 sm:hidden">
-        <a
-          href="/uploads/CV Gilang_Ramadan_-_Senior_Backend_Developer.pdf"
-          download="gilang_ramadan_-_senior_backend_developer.pdf"
-          class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 border border-primary text-primary text-mono text-[0.6875rem] tracking-[0.08em]"
-          @click="isMobileMenuOpen = false"
-        >{{ m.nav.downloadCv }}</a>
-        <NuxtLink
-          v-if="user"
-          to="/dashboard"
-          class="text-mono text-[0.6875rem] tracking-[0.08em] text-on-surface-variant"
-          @click="isMobileMenuOpen = false"
-        >{{ m.nav.dashboard }}</NuxtLink>
+        <NuxtLink v-if="user" to="/dashboard" class="sm:hidden px-4 py-3 rounded-xl text-sm text-on-surface-variant" @click="isMobileMenuOpen = false">
+          {{ m.nav.dashboard }}
+        </NuxtLink>
         <button
           v-if="user"
-          class="text-mono text-[0.6875rem] tracking-[0.08em] text-error text-left"
+          class="sm:hidden px-4 py-3 rounded-xl text-sm text-error text-left"
           @click="() => { logout(); isMobileMenuOpen = false }"
-        >{{ m.nav.logout.toUpperCase() }}</button>
+        >{{ m.nav.logout }}</button>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
 import BaseIcon from '../atoms/BaseIcon.vue'
 
 const { user, logout } = useAuthActions()
 const colorMode = useColorMode()
+const route = useRoute()
 const { m, locale, toggle } = useLocale()
-const activeSection = ref('')
 const isMobileMenuOpen = ref(false)
 
-let observer: IntersectionObserver | null = null
+const cvHref = '/uploads/CV Gilang_Ramadan_-_Senior_Backend_Developer.pdf'
+const cvName = 'gilang_ramadan_-_senior_backend_developer.pdf'
 
-onMounted(() => {
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) activeSection.value = entry.target.id
-      })
-    },
-    { rootMargin: '-64px 0px -55% 0px', threshold: 0 }
-  )
-
-  m.value.nav.sheets.forEach(({ href }) => {
-    const element = document.getElementById(href.replace('#', ''))
-    if (element) observer?.observe(element)
-  })
-})
-
-onUnmounted(() => observer?.disconnect())
+const links = computed(() => [{ label: m.value.nav.sheets[0]!.label, href: '/' }, ...m.value.nav.pages])
+const isActive = (href: string) => (href === '/' ? route.path === '/' : route.path.startsWith(href))
 </script>

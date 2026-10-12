@@ -1,146 +1,118 @@
 <template>
   <div
     v-if="isPreview && isAllowed"
-    class="border-b border-outline-variant/60 bg-surface-container px-4 py-2.5 flex justify-center items-center gap-2 text-mono text-[0.6875rem] tracking-[0.12em] text-primary"
+    class="sticky top-0 z-[60] bg-primary/15 backdrop-blur-md border-b border-primary/30 px-4 py-2.5 flex justify-center items-center gap-2 text-xs font-semibold text-primary"
   >
-    <span class="w-1.5 h-1.5 bg-primary animate-bp-pulse"></span>
+    <span class="w-2 h-2 rounded-full bg-primary animate-bp-pulse"></span>
     {{ m.blog.preview }}
   </div>
 
-  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+  <div class="max-w-6xl mx-auto px-4 py-12 lg:py-16">
     <NuxtLink
       to="/blog"
-      class="group inline-flex items-center gap-2 mb-7 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors"
+      class="group inline-flex items-center gap-2 mb-8 text-sm font-medium text-secondary hover:text-primary transition-colors"
     >
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
-        <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
-      </svg>
+      <BaseIcon class="text-base group-hover:-translate-x-1 transition-transform">arrow_back</BaseIcon>
       {{ m.blog.back }}
     </NuxtLink>
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="error || !post || !isAllowed" class="border border-dashed border-outline-variant/60 px-4 py-16 text-center">
-      <h1 class="font-headline text-2xl font-semibold text-on-surface mb-2">{{ m.blog.notFound }}</h1>
-      <p class="text-mono text-[0.8125rem] text-outline mb-6">{{ m.blog.notFoundBody }}</p>
-      <NuxtLink
-        to="/blog"
-        class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
-      >{{ m.blog.backToBlog }}</NuxtLink>
+    <div v-else-if="error || !post || !isAllowed" class="glass px-6 py-16 text-center">
+      <h1 class="font-headline text-2xl font-bold text-on-surface mb-2">{{ m.blog.notFound }}</h1>
+      <p class="text-sm text-outline mb-6">{{ m.blog.notFoundBody }}</p>
+      <NuxtLink to="/blog" class="btn-primary">{{ m.blog.backToBlog }}</NuxtLink>
     </div>
 
     <template v-else>
-      <SheetRule :sheet="sheet" :caption="`${m.blog.entry} ${entryRef}`" />
-
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-3 mb-5 text-mono text-xs tracking-[0.1em]">
-        <span class="text-primary">{{ sheetDate(post.created_at) }}</span>
-        <span class="w-1.5 h-1.5 bg-outline-variant rotate-45"></span>
-        <span class="text-outline">{{ readTime(post.content) }} {{ m.blog.minRead }}</span>
-        <span class="w-1.5 h-1.5 bg-outline-variant rotate-45"></span>
-        <span class="inline-flex items-center gap-1.5 text-outline">
-          <BaseIcon class="text-sm">visibility</BaseIcon>
-          {{ post.views || 0 }} {{ m.blog.views }}
-        </span>
-        <span class="flex-1"></span>
-        <NuxtLink
-          v-if="user"
-          :to="`/dashboard/blogs/edit/${post.id}`"
-          class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
-        >
-          <BaseIcon class="text-sm">edit</BaseIcon>
-          {{ m.blog.edit }}
-        </NuxtLink>
-      </div>
-
-      <h1 class="font-headline text-[clamp(2rem,4.4vw,3.5rem)] font-semibold leading-[1.06] -tracking-[0.03em] text-on-surface mb-5 max-w-[30ch] text-pretty">
-        {{ post.title }}
-      </h1>
-
-      <div v-if="post.tags && post.tags.length" class="flex flex-wrap gap-[0.4375rem] mb-7">
-        <span
-          v-for="tag in post.tags"
-          :key="tag"
-          class="text-mono text-[0.6875rem] tracking-[0.04em] text-secondary border border-outline-variant/55 px-2 py-1"
-        >{{ tag }}</span>
-      </div>
-
-      <!-- plate -->
-      <div class="relative border border-outline-variant/55 bg-background/60 mb-8 lg:mb-11">
-        <span class="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-outline-variant z-10"></span>
-        <span class="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-outline-variant z-10"></span>
-        <span class="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-outline-variant z-10"></span>
-        <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant z-10"></span>
-        <img v-if="post.image_url" :src="post.image_url" :alt="post.title" class="w-full aspect-[21/9] object-cover" />
-        <div v-else class="bp-hatch aspect-[21/9] flex items-center justify-center">
-          <span class="text-mono text-xs tracking-[0.12em] text-outline">{{ m.blog.plate }} {{ sheet }} — {{ m.blog.coverMissing }}</span>
+      <header v-reveal class="text-center max-w-4xl mx-auto mb-10">
+        <div class="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mb-6 text-sm text-outline">
+          <span class="inline-flex items-center gap-1.5 text-primary font-medium">
+            <BaseIcon class="text-base">calendar_month</BaseIcon>{{ sheetDate(post.created_at) }}
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <BaseIcon class="text-base">schedule</BaseIcon>{{ readTime(post.content) }} {{ m.blog.minRead }}
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <BaseIcon class="text-base">visibility</BaseIcon>{{ post.views || 0 }} {{ m.blog.views }}
+          </span>
+          <NuxtLink
+            v-if="user"
+            :to="`/dashboard/blogs/edit/${post.id}`"
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+          >
+            <BaseIcon class="text-sm">edit</BaseIcon>
+            {{ m.blog.edit }}
+          </NuxtLink>
         </div>
-        <div class="flex flex-wrap justify-between gap-x-4 gap-y-2 px-4 py-2.5 border-t border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
-          <span class="truncate max-w-[70%]">{{ m.blog.fig }} — {{ post.title.toUpperCase() }}</span>
-          <span>{{ m.blog.scale }}</span>
+
+        <h1 class="font-headline text-4xl md:text-6xl font-bold leading-tight text-on-surface mb-6 text-balance">
+          {{ post.title }}
+        </h1>
+
+        <div v-if="post.tags && post.tags.length" class="flex flex-wrap justify-center gap-2">
+          <span v-for="tag in post.tags" :key="tag" class="chip">{{ tag }}</span>
+        </div>
+      </header>
+
+      <div v-reveal class="overflow-hidden rounded-3xl border border-outline-variant/30 shadow-2xl shadow-primary/10 mb-12">
+        <img v-if="post.image_url" :src="post.image_url" :alt="post.title" class="w-full aspect-[21/9] object-cover" />
+        <div v-else class="bp-hatch aspect-[21/9] grid place-items-center">
+          <BaseIcon class="text-7xl text-primary/60">article</BaseIcon>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
-        <article class="lg:col-span-2 min-w-0 max-w-[46rem]">
+        <article class="lg:col-span-2 min-w-0">
           <div ref="contentEl" class="prose prose-invert max-w-none" v-html="post.content"></div>
 
-          <div class="flex items-stretch gap-5 mt-10 lg:mt-14 pt-7 border-t-2 border-outline-variant/55">
-            <div class="relative shrink-0 w-[72px] h-[72px] border border-outline-variant/60 p-1 bg-surface-container/60">
-              <img src="~/assets/images/avatar.jpg" alt="Gilang Ramadan" class="w-full h-full object-cover grayscale opacity-90" />
-              <span class="absolute -top-px -left-px w-[9px] h-[9px] border-t-2 border-l-2 border-primary"></span>
-              <span class="absolute -bottom-px -right-px w-[9px] h-[9px] border-b-2 border-r-2 border-primary"></span>
-            </div>
-            <div class="min-w-0 flex flex-col justify-center gap-1.5">
-              <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ m.blog.drawnBy }}</div>
-              <div class="font-headline text-[1.0625rem] font-semibold text-on-surface">Gilang Ramadan</div>
-              <p class="text-sm leading-[1.55] text-on-surface-variant">
-                {{ m.blog.authorBio }}
-              </p>
+          <div class="glass flex items-center gap-5 p-6 mt-12">
+            <img src="~/assets/images/avatar.jpg" alt="Gilang Ramadan" class="w-16 h-16 shrink-0 rounded-2xl object-cover ring-2 ring-primary/50" />
+            <div class="min-w-0">
+              <div class="text-xs text-outline mb-1">{{ m.blog.drawnBy }}</div>
+              <div class="font-headline text-lg font-bold text-on-surface">Gilang Ramadan</div>
+              <p class="text-sm leading-relaxed text-on-surface-variant">{{ m.blog.authorBio }}</p>
             </div>
           </div>
         </article>
 
-        <aside class="min-w-0 lg:sticky lg:top-[88px] flex flex-col gap-5">
-          <nav v-if="toc.length" class="border border-outline-variant/55 bg-surface-container/50">
-            <div class="px-4 py-2.5 border-b border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.12em] text-secondary">
-              {{ m.blog.onThisSheet }}
-            </div>
+        <aside class="min-w-0 lg:sticky lg:top-28 flex flex-col gap-6">
+          <nav v-if="toc.length" class="glass p-5">
+            <div class="text-sm font-semibold text-secondary mb-3">{{ m.blog.onThisSheet }}</div>
             <a
               v-for="(item, index) in toc"
               :key="item.id"
               :href="`#${item.id}`"
-              class="flex gap-3 px-4 py-2.5 border-b border-outline-variant/[0.28] last:border-b-0 text-sm leading-[1.45] text-on-surface-variant hover:text-on-surface hover:bg-outline-variant/[0.14] transition-colors"
+              class="flex gap-3 px-3 py-2 rounded-lg text-sm leading-snug text-on-surface-variant hover:text-on-surface hover:bg-primary/10 transition-colors"
             >
-              <span class="text-mono text-[0.6875rem] text-primary shrink-0">{{ String(index + 1).padStart(2, '0') }}</span>
+              <span class="text-primary font-semibold shrink-0">{{ index + 1 }}.</span>
               {{ item.text }}
             </a>
           </nav>
 
-          <div class="border border-outline-variant/55 bg-surface-container/50">
-            <div class="px-4 py-2.5 border-b border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.12em] text-secondary">
-              {{ m.blog.entryRecord }}
-            </div>
+          <div class="glass p-5">
+            <div class="text-sm font-semibold text-secondary mb-3">{{ m.blog.entryRecord }}</div>
             <div
               v-for="row in entryRecord"
               :key="row.label"
-              class="flex justify-between gap-4 px-4 py-[0.6875rem] border-b border-outline-variant/[0.28] last:border-b-0 min-w-0"
+              class="flex justify-between gap-4 py-2 border-b border-outline-variant/20 last:border-b-0 min-w-0"
             >
-              <span class="text-mono text-[0.6875rem] tracking-[0.08em] text-outline shrink-0">{{ row.label }}</span>
-              <span class="text-mono text-xs text-on-surface text-right min-w-0 truncate">{{ row.value }}</span>
+              <span class="text-xs text-outline shrink-0">{{ row.label }}</span>
+              <span class="text-xs font-medium text-on-surface text-right min-w-0 truncate">{{ row.value }}</span>
             </div>
           </div>
         </aside>
       </div>
 
-      <div v-if="prev || next" class="grid grid-cols-1 sm:grid-cols-2 border-t-2 border-outline-variant/55 mt-8 lg:mt-12">
-        <NuxtLink v-if="prev" :to="`/blog/${prev.slug}`" class="group py-5 border-b border-outline-variant/40 min-w-0">
-          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">◀ {{ m.blog.prevSheet }} · {{ prevSheet }}</div>
-          <div class="font-headline text-[1.0625rem] font-semibold text-on-surface group-hover:text-primary transition-colors">{{ prev.title }}</div>
+      <div v-if="prev || next" class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12">
+        <NuxtLink v-if="prev" :to="`/blog/${prev.slug}`" class="group glass glass-hover p-6 min-w-0">
+          <div class="flex items-center gap-1 text-xs text-outline mb-2"><BaseIcon class="text-sm">arrow_back</BaseIcon>{{ m.blog.prevSheet }}</div>
+          <div class="font-headline font-semibold text-on-surface group-hover:text-primary transition-colors">{{ prev.title }}</div>
         </NuxtLink>
-        <span v-else class="hidden sm:block border-b border-outline-variant/40"></span>
-        <NuxtLink v-if="next" :to="`/blog/${next.slug}`" class="group py-5 border-b border-outline-variant/40 sm:text-right min-w-0">
-          <div class="text-mono text-[0.625rem] tracking-[0.12em] text-outline mb-[0.4375rem]">{{ m.blog.nextSheet }} · {{ nextSheet }} ▶</div>
-          <div class="font-headline text-[1.0625rem] font-semibold text-on-surface group-hover:text-primary transition-colors">{{ next.title }}</div>
+        <span v-else class="hidden sm:block"></span>
+        <NuxtLink v-if="next" :to="`/blog/${next.slug}`" class="group glass glass-hover p-6 sm:text-right min-w-0">
+          <div class="flex items-center sm:justify-end gap-1 text-xs text-outline mb-2">{{ m.blog.nextSheet }}<BaseIcon class="text-sm">arrow_forward</BaseIcon></div>
+          <div class="font-headline font-semibold text-on-surface group-hover:text-primary transition-colors">{{ next.title }}</div>
         </NuxtLink>
       </div>
     </template>
@@ -152,9 +124,8 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
-import SheetRule from '~/components/molecules/SheetRule.vue'
 import type { BlogPost } from '~/composables/useBlogActions'
-import { entryNo, readTime, sheetDate, sheetNo } from '~/composables/useSheetRefs'
+import { entryNo, readTime, sheetDate } from '~/composables/useSheetRefs'
 
 const route = useRoute()
 const { fetchBlogs, fetchBlogBySlug, incrementBlogViews } = useBlogActions()
@@ -172,13 +143,10 @@ const isPreview = computed(() => post.value && post.value.status !== 'published'
 const isAllowed = computed(() => !isPreview.value || user.value)
 
 const position = computed(() => (posts.value || []).findIndex((p: BlogPost) => p.slug === post.value?.slug))
-const sheet = computed(() => (position.value >= 0 ? sheetNo('06', position.value) : '06'))
 const entryRef = computed(() => (post.value ? entryNo(post.value, Math.max(position.value, 0)) : ''))
 // The list is newest first, so the previous sheet sits after this one.
 const prev = computed(() => (position.value > 0 ? posts.value?.[position.value - 1] : null))
 const next = computed(() => (position.value >= 0 ? posts.value?.[position.value + 1] : null))
-const prevSheet = computed(() => sheetNo('06', position.value - 1))
-const nextSheet = computed(() => sheetNo('06', position.value + 1))
 
 const entryRecord = computed(() => {
   if (!post.value) return []
@@ -248,7 +216,7 @@ watchEffect(() => {
   @apply text-[1.125rem] text-on-background;
 }
 :deep(.prose h2) {
-  @apply font-headline text-2xl font-semibold mt-10 mb-4 pb-3 -tracking-[0.02em] text-on-surface border-b-2 border-outline-variant/55 scroll-mt-24;
+  @apply font-headline text-2xl font-semibold mt-10 mb-4 pb-3 -tracking-[0.02em] text-on-surface border-b border-outline-variant/30 scroll-mt-24;
 }
 :deep(.prose h3) {
   @apply font-headline text-lg font-semibold mt-8 mb-3 text-on-surface;
@@ -269,17 +237,17 @@ watchEffect(() => {
   @apply list-decimal list-outside pl-5 mb-6 space-y-2 marker:text-outline-variant;
 }
 :deep(.prose blockquote) {
-  @apply border-l-2 border-primary bg-surface-container/50 pl-5 pr-4 py-4 my-6 text-on-background;
+  @apply rounded-r-xl border-l-4 border-primary bg-surface-container/50 pl-5 pr-4 py-4 my-6 text-on-background;
 }
 :deep(.prose img) {
-  @apply my-8 border border-outline-variant/55 p-1.5;
+  @apply my-8 rounded-2xl border border-outline-variant/30 shadow-xl;
 }
 :deep(.prose pre) {
-  @apply bg-surface-container-lowest border border-outline-variant/55 p-[1.125rem] my-7 overflow-x-auto text-[0.8125rem] leading-[1.75] !important;
+  @apply rounded-xl bg-surface-container-lowest border border-outline-variant/40 p-5 my-7 overflow-x-auto text-[0.8125rem] leading-[1.75] !important;
   font-family: 'IBM Plex Mono', monospace;
 }
 :deep(.prose code:not(pre code):not(pre.ql-syntax)) {
-  @apply text-primary text-[0.9375rem] border border-outline-variant/50 px-1.5 py-px;
+  @apply rounded-md bg-primary/10 text-primary text-[0.9375rem] px-1.5 py-px;
   font-family: 'IBM Plex Mono', monospace;
 }
 </style>

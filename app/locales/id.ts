@@ -5,9 +5,11 @@ const id: typeof en = {
     tagline: '/ sistem backend',
     sheets: [
       { code: '01', label: 'Ikhtisar', href: '#hero' },
-      { code: '02', label: 'Teknologi', href: '#stack' },
-      { code: '03', label: 'Pengalaman', href: '#experience' },
-      { code: '04', label: 'Praktik', href: '#architecture' }
+      { code: '02', label: 'Tentang', href: '#about' },
+      { code: '03', label: 'Teknologi', href: '#stack' },
+      { code: '04', label: 'Pengalaman', href: '#experience' },
+      { code: '05', label: 'Praktik', href: '#architecture' },
+      { code: '06', label: 'Kontak', href: '#contact' }
     ],
     pages: [
       { label: 'Proyek', href: '/projects' },
@@ -38,6 +40,10 @@ const id: typeof en = {
       { label: 'TPS PUNCAK', value: '1.000', running: false },
       { label: 'LATENSI p95', value: '<150ms', running: false }
     ]
+  },
+  about: {
+    title: 'Tentang saya',
+    note: 'Siapa saya dan apa yang sudah saya bangun.'
   },
   stack: {
     title: 'Teknologi',

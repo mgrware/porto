@@ -4,9 +4,11 @@ export default {
     tagline: '/ backend systems',
     sheets: [
       { code: '01', label: 'Overview', href: '#hero' },
-      { code: '02', label: 'Tech stack', href: '#stack' },
-      { code: '03', label: 'Experience', href: '#experience' },
-      { code: '04', label: 'Practice', href: '#architecture' }
+      { code: '02', label: 'About', href: '#about' },
+      { code: '03', label: 'Tech stack', href: '#stack' },
+      { code: '04', label: 'Experience', href: '#experience' },
+      { code: '05', label: 'Practice', href: '#architecture' },
+      { code: '06', label: 'Contact', href: '#contact' }
     ],
     pages: [
       { label: 'Projects', href: '/projects' },
@@ -37,6 +39,10 @@ export default {
       { label: 'PEAK TPS', value: '1,000', running: false },
       { label: 'p95 LATENCY', value: '<150ms', running: false }
     ]
+  },
+  about: {
+    title: 'About me',
+    note: 'Who I am and what I have shipped.'
   },
   stack: {
     title: 'Tech stack',
