@@ -6,15 +6,15 @@
       reverse ? 'md:flex-row-reverse' : 'md:flex-row'
     ]"
   >
-    <NuxtLink :to="href" class="relative block w-full md:w-1/2 self-stretch overflow-hidden">
+    <NuxtLink :to="href" class="relative block w-full md:w-1/2 overflow-hidden">
       <div class="absolute inset-0 z-10 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
       <img
         v-if="project.image_url"
         :src="project.image_url"
         :alt="project.title"
-        class="w-full h-64 md:h-full md:min-h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+        class="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700"
       />
-      <div v-else class="bp-hatch w-full h-64 md:h-full md:min-h-80 grid place-items-center">
+      <div v-else class="bp-hatch w-full h-64 md:h-80 grid place-items-center">
         <BaseIcon class="text-6xl text-primary/60">folder_open</BaseIcon>
       </div>
     </NuxtLink>

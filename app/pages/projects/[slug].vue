@@ -8,9 +8,9 @@
       {{ m.projects.back }}
     </NuxtLink>
 
-    <BaseLoader v-if="pending" />
+    <BaseLoader v-if="pending && !project" />
 
-    <div v-else-if="error || !project" class="glass px-6 py-16 text-center">
+    <div v-else-if="!project" class="glass px-6 py-16 text-center">
       <h1 class="font-headline text-2xl font-bold text-on-surface mb-2">{{ m.projects.notFound }}</h1>
       <p class="text-sm text-outline mb-6">{{ m.projects.notFoundBody }}</p>
       <NuxtLink to="/projects" class="btn-primary">{{ m.projects.backToProjects }}</NuxtLink>
@@ -163,9 +163,12 @@ const { fetchProjects, fetchProjectBySlug } = useProjectActions()
 const user = useSupabaseUser()
 const { m } = useLocale()
 
-const { data: project, pending, error } = useLazyAsyncData(`project-detail-${route.params.slug}`, () =>
-  fetchProjectBySlug(route.params.slug as string)
-)
+// Coming from home or /projects the list is already cached: render it right away, refresh in the background.
+const slug = route.params.slug as string
+const { data: cachedProjects } = useNuxtData<Project[]>('projects')
+const { data: project, pending } = useLazyAsyncData(`project-detail-${slug}`, () => fetchProjectBySlug(slug), {
+  default: () => cachedProjects.value?.find((p) => p.slug === slug || String(p.id) === slug) ?? null
+})
 
 // Shares the index page's cache key, so navigating from the list costs nothing.
 const { data: projects } = useLazyAsyncData('projects', () => fetchProjects())

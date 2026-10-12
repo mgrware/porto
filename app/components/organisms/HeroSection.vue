@@ -17,10 +17,10 @@
       </p>
 
       <div v-reveal class="flex gap-4 justify-center flex-wrap mb-12">
-        <NuxtLink to="/projects" class="btn-primary !px-8 !py-4 !text-base">
+        <a href="#projects" class="btn-primary !px-8 !py-4 !text-base">
           {{ m.hero.viewProjects }}
           <BaseIcon class="text-lg">arrow_forward</BaseIcon>
-        </NuxtLink>
+        </a>
         <a href="#experience" class="btn-ghost !px-8 !py-4 !text-base">
           {{ m.hero.experienceLog }}
         </a>
