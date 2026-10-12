@@ -7,8 +7,9 @@ export default {
       { code: '02', label: 'About', href: '#about' },
       { code: '03', label: 'Tech stack', href: '#stack' },
       { code: '04', label: 'Experience', href: '#experience' },
-      { code: '05', label: 'Practice', href: '#architecture' },
-      { code: '06', label: 'Contact', href: '#contact' }
+      { code: '05', label: 'Projects', href: '#projects' },
+      { code: '06', label: 'Practice', href: '#architecture' },
+      { code: '07', label: 'Contact', href: '#contact' }
     ],
     pages: [
       { label: 'Projects', href: '/projects' },
@@ -43,6 +44,11 @@ export default {
   about: {
     title: 'About me',
     note: 'Who I am and what I have shipped.'
+  },
+  featured: {
+    title: 'Featured projects',
+    note: 'A selection of recent work and the systems behind it.',
+    viewAll: 'View all projects'
   },
   stack: {
     title: 'Tech stack',

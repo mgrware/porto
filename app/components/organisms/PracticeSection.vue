@@ -1,5 +1,5 @@
 <template>
-  <section id="architecture" class="py-20 scroll-mt-24">
+  <section id="architecture" class="py-20 bg-surface-container/20 scroll-mt-24">
     <div class="max-w-6xl mx-auto px-4">
       <SheetHeading :title="m.practice.title" :note="m.practice.note" />
 

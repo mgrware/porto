@@ -8,8 +8,9 @@ const id: typeof en = {
       { code: '02', label: 'Tentang', href: '#about' },
       { code: '03', label: 'Teknologi', href: '#stack' },
       { code: '04', label: 'Pengalaman', href: '#experience' },
-      { code: '05', label: 'Praktik', href: '#architecture' },
-      { code: '06', label: 'Kontak', href: '#contact' }
+      { code: '05', label: 'Proyek', href: '#projects' },
+      { code: '06', label: 'Praktik', href: '#architecture' },
+      { code: '07', label: 'Kontak', href: '#contact' }
     ],
     pages: [
       { label: 'Proyek', href: '/projects' },
@@ -44,6 +45,11 @@ const id: typeof en = {
   about: {
     title: 'Tentang saya',
     note: 'Siapa saya dan apa yang sudah saya bangun.'
+  },
+  featured: {
+    title: 'Proyek unggulan',
+    note: 'Pilihan karya terbaru beserta sistem di baliknya.',
+    viewAll: 'Lihat semua proyek'
   },
   stack: {
     title: 'Teknologi',

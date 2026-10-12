@@ -61,7 +61,7 @@
 import BaseIcon from '../atoms/BaseIcon.vue'
 
 const { m } = useLocale()
-const icons = ['home', 'person', 'code', 'work', 'architecture', 'mail']
+const icons = ['home', 'person', 'code', 'work', 'folder_open', 'architecture', 'mail']
 const active = ref(0)
 const open = ref(false)
 
