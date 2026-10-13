@@ -128,7 +128,7 @@ const id: typeof en = {
         company: 'Walden Global Services',
         current: false,
         description: [
-          'Backend developer inti di ShippingNet, platform pengelolaan ekspor, impor, dan dokumen kepabeanan untuk salah satu produsen FMCG terbesar di Indonesia, dengan lebih dari 200 tabel database.',
+          'Backend developer inti di ShippingNet, platform pengelolaan ekspor, impor, dan dokumen kepabeanan untuk salah satu produsen FMCG terbesar di Indonesia, dengan 80+ fitur yang tersebar di modul ekspor (27), impor (23), pengelolaan dokumen (7), dan master data (23).',
           'Membangun modul Impor: order impor berbasis PO, formulir purchase request (PBI), dokumen kepabeanan (PIB/PIBK), dokumen BPOM dan karantina, delivery order, pengiriman kargo, persetujuan tarif freight, klaim asuransi, serta pemantauan SLA dan dwelling time.',
           'Menerapkan role-based access control sampai level fungsi (modul → submodul → komponen → fungsi), terhubung dengan SSO perusahaan dan master data karyawan/organisasi (MDM).',
           'Membuat sistem notifikasi email berbasis template untuk 20+ jenis event, serta pembuatan dokumen pengiriman dan kepabeanan dalam format PDF/Word secara otomatis.',
