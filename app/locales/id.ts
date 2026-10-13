@@ -29,7 +29,7 @@ const id: typeof en = {
     caption: 'GAMBARAN UMUM',
     location: 'Bandung, Indonesia · UTC+7 · remote',
     open: 'Terbuka untuk posisi senior engineer',
-    title: ['Backend yang andal,', 'dari desain sampai produksi.'],
+    title: ['Backend systems,', 'drawn to spec.'],
     subtitle: 'SENIOR BACKEND ENGINEER · 10+ TAHUN',
     bio: 'Sudah sepuluh tahun saya membangun platform marketplace dan sistem pembayaran kelas fintech dengan Ruby on Rails, Go, dan PostgreSQL. Keahlian utama saya ada di Stripe Connect: split payment, escrow, langganan, sampai payout otomatis, saya pegang dari desain teknis hingga jalan di production. Saya pernah menjadi Engineering Manager untuk sistem yang melayani 1.000 TPS dengan uptime 99,9%, dan terakhir ikut membangun marketplace sewa dan jasa dari nol sampai rilis. Sekarang saya fokus kembali ke pekerjaan teknis sebagai senior engineer bersama tim remote.',
     viewProjects: 'Lihat proyek',
