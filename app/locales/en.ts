@@ -127,7 +127,7 @@ export default {
         company: 'Walden Global Services',
         current: false,
         description: [
-          'Core backend developer and top contributor of ShippingNet, an end-to-end export/import and customs document management platform for a major Indonesian FMCG manufacturer, covering export, import, and document-handling workflows across 200+ database tables.',
+          'Core backend developer of ShippingNet, an end-to-end export/import and customs document management platform for a major Indonesian FMCG manufacturer, covering export, import, and document-handling workflows across 200+ database tables.',
           'Built the Import module: PO-based import orders, purchase request (PBI) forms, customs declarations (PIB/PIBK), BPOM and quarantine documents, delivery orders, cargo delivery, freight-rate approval, insurance claims, and SLA/dwelling-time tracking.',
           'Implemented role-based access control down to function level (module → submodule → component → function), integrated with the company SSO and the employee/organization master database (MDM).',
           'Developed a template-driven email notification engine (20+ event types) and automated PDF/Word generation for shipping and customs documents.',
