@@ -29,7 +29,7 @@ const id: typeof en = {
     caption: 'IKHTISAR SISTEM — SUSUNAN UMUM',
     location: 'Bandung, Indonesia · UTC+7 · remote',
     open: 'Terbuka untuk peran senior IC',
-    title: ['Senior', 'backend developer'],
+    title: ['Sistem backend,', 'digambar sesuai spesifikasi.'],
     subtitle: 'SENIOR BACKEND ENGINEER · 10+ TAHUN',
     bio: 'Sepuluh tahun membangun platform marketplace dan pembayaran berstandar fintech di atas Ruby on Rails, Go, dan PostgreSQL. Spesialisasi mendalam pada infrastruktur Stripe Connect — split payment, escrow, langganan, payout otomatis — ditangani menyeluruh dari desain teknis hingga produksi. Sebelumnya Engineering Manager di balik sistem yang menopang 1.000 TPS dengan uptime 99,9%; terakhir membawa marketplace sewa dan jasa tahap awal dari nol hingga rilis. Kini fokus pada pekerjaan senior IC secara langsung bersama tim terdistribusi.',
     viewProjects: 'Lihat proyek',
