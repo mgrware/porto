@@ -30,7 +30,7 @@ export default {
     open: 'Open to senior IC roles',
     title: ['Backend systems,', 'drawn to spec.'],
     subtitle: 'SENIOR BACKEND ENGINEER · 10+ YEARS',
-    bio: 'Ten years building fintech-grade marketplace and payment platforms on Ruby on Rails, Go, and PostgreSQL. Deep specialization in Stripe Connect infrastructure — split payments, escrow, subscriptions, automated payouts — owned end to end from technical design to production. Previously an Engineering Manager behind a system sustaining 1,000 TPS at 99.9% uptime; most recently took an early-stage rental and services marketplace from zero to launch. Now focused on hands-on senior IC work with distributed teams.',
+    bio: 'Ten years building fintech-grade marketplace and payment platforms on Ruby on Rails, Go, and PostgreSQL. My core expertise is backend systems. I have delivered projects for one of the largest FMCG manufacturers in Indonesia, for startups, and for international companies. Most recently, I helped take an early-stage rental and services marketplace from zero to launch. Now focused on hands-on senior IC work with distributed teams.',
     viewProjects: 'View projects',
     experienceLog: 'Experience log',
     scale: 'SCALE 1:1',
