@@ -3,10 +3,10 @@
 export const skills = [
   { name: 'Ruby on Rails', level: 95 },
   { name: 'PostgreSQL', level: 90 },
-  { name: 'Stripe Connect & payments', level: 90 },
   { name: 'Node.js / NestJS', level: 85 },
   { name: 'Redis & background jobs', level: 85 },
   { name: 'Docker / Traefik / Nginx', level: 85 },
+  { name: 'PHP / Laravel', level: 80 },
   { name: 'MySQL / SQL Server', level: 80 },
   { name: 'Go', level: 75 }
 ]
