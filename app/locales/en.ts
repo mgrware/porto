@@ -127,12 +127,16 @@ export default {
         company: 'Walden Global Services',
         current: false,
         description: [
-          'Developed and maintained the Nutrifood Shipping Export & Import system using Ruby on Rails and SQL Server.',
+          'Core backend developer and top contributor (1,500+ commits) of ShippingNet, an end-to-end export/import and customs document management platform for a major Indonesian FMCG manufacturer, covering export, import, and document-handling workflows across 200+ database tables.',
+          'Built the Import module: PO-based import orders, purchase request (PBI) forms, customs declarations (PIB/PIBK), BPOM and quarantine documents, delivery orders, cargo delivery, freight-rate approval, insurance claims, and SLA/dwelling-time tracking.',
+          'Implemented role-based access control down to function level (module → submodule → component → function), integrated with the company SSO and the employee/organization master database (MDM).',
+          'Developed a template-driven email notification engine (20+ event types) and automated PDF/Word generation for shipping and customs documents.',
+          'Built Excel data import/export and integrations with Oracle stored procedures and an external trade (GLT) API.',
           'Improved data management efficiency by implementing database best practices and optimizing complex SQL queries.',
           'Served as a technical lead for specific sprints, managing SOW estimations, milestones, and developer assignments.',
           'Authored core application skeletons and shared libraries to be utilized by the wider development team to ensure consistency.'
         ],
-        tags: ['Ruby on Rails', 'SQL Server']
+        tags: ['Ruby on Rails', 'SQL Server', 'Oracle', 'RBAC / SSO']
       },
       {
         period: 'Jan 2014 — Aug 2015',

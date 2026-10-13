@@ -128,12 +128,16 @@ const id: typeof en = {
         company: 'Walden Global Services',
         current: false,
         description: [
-          'Mengembangkan dan merawat sistem Shipping Export & Import untuk Nutrifood dengan Ruby on Rails dan SQL Server.',
+          'Backend developer inti sekaligus kontributor terbanyak (1.500+ commit) di ShippingNet, platform pengelolaan ekspor, impor, dan dokumen kepabeanan untuk salah satu produsen FMCG terbesar di Indonesia, dengan lebih dari 200 tabel database.',
+          'Membangun modul Impor: order impor berbasis PO, formulir purchase request (PBI), dokumen kepabeanan (PIB/PIBK), dokumen BPOM dan karantina, delivery order, pengiriman kargo, persetujuan tarif freight, klaim asuransi, serta pemantauan SLA dan dwelling time.',
+          'Menerapkan role-based access control sampai level fungsi (modul → submodul → komponen → fungsi), terhubung dengan SSO perusahaan dan master data karyawan/organisasi (MDM).',
+          'Membuat sistem notifikasi email berbasis template untuk 20+ jenis event, serta pembuatan dokumen pengiriman dan kepabeanan dalam format PDF/Word secara otomatis.',
+          'Membangun fitur import/export data lewat Excel, serta integrasi dengan stored procedure Oracle dan API perdagangan eksternal (GLT).',
           'Merapikan pengelolaan data dan mengoptimalkan query SQL yang rumit agar sistem lebih efisien.',
           'Menjadi technical lead di beberapa sprint: menyusun estimasi SOW, milestone, dan pembagian tugas developer.',
           'Membuat kerangka aplikasi dan library bersama yang dipakai seluruh tim supaya kode tetap konsisten.'
         ],
-        tags: ['Ruby on Rails', 'SQL Server']
+        tags: ['Ruby on Rails', 'SQL Server', 'Oracle', 'RBAC / SSO']
       },
       {
         period: 'Jan 2014 — Agu 2015',
