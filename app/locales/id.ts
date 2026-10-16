@@ -57,8 +57,8 @@ const id: typeof en = {
     note: 'Tampak elevasi: posisi terbaru di paling atas.',
     items: [
       {
-        period: 'Mar 2026 – sekarang',
-        role: 'Solo Founder & Engineer',
+        period: 'Mar 2026 — sekarang',
+        role: 'Senior Backend Developer',
         company: 'PT Giradia Solusi Digital',
         current: true,
         description: [

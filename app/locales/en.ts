@@ -57,8 +57,8 @@ export default {
     note: 'Elevation view: most recent position at the top.',
     items: [
       {
-        period: 'Mar 2026 – present',
-        role: 'Solo Founder & Engineer',
+        period: 'Mar 2026 — present',
+        role: 'Senior Backend Developer',
         company: 'PT Giradia Solusi Digital',
         current: true,
         description: [
