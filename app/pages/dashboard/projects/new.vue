@@ -1,12 +1,12 @@
 <template>
-  <div class="max-w-[1100px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <NuxtLink to="/dashboard/projects" class="group inline-flex items-center min-h-11 gap-2 mb-4 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors">
+  <div class="max-w-4xl mx-auto px-4 py-12 lg:py-16">
+    <NuxtLink to="/dashboard/projects" class="group inline-flex items-center min-h-11 gap-2 mb-4 text-sm font-medium text-secondary hover:text-primary transition-colors">
       <BaseIcon class="text-base group-hover:-translate-x-1 transition-transform" aria-hidden="true">arrow_back</BaseIcon>
       Back to projects
     </NuxtLink>
     <AdminHeading code="ADM · 02" title="New project" />
 
-    <form @submit.prevent="handleSubmit" class="space-y-7 border border-outline-variant/55 bg-surface-container/40 p-5 sm:p-8">
+    <form @submit.prevent="handleSubmit" class="space-y-7 glass p-5 sm:p-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="space-y-2 md:col-span-2">
           <div class="flex justify-between items-center">
@@ -98,7 +98,7 @@
           <button
             type="button"
             @click="triggerFileInput"
-            class="w-full h-48 border border-dashed border-outline-variant/70 flex flex-col items-center justify-center hover:border-primary transition-colors overflow-hidden bg-background/50 group"
+            class="w-full h-48 rounded-2xl border-2 border-dashed border-outline-variant/50 flex flex-col items-center justify-center hover:border-primary transition-colors overflow-hidden bg-background/50 group"
           >
             <span v-if="previewUrl" class="block w-full h-full relative">
               <img :src="previewUrl" alt="Cover preview" class="w-full h-full object-cover" />
@@ -126,14 +126,14 @@
             style="min-height: 200px;"
           />
           <template #fallback>
-            <div class="w-full h-[200px] bg-background border border-outline-variant/60 flex items-center justify-center text-mono text-[0.8125rem] text-outline">
+            <div class="w-full h-[200px] rounded-xl bg-background/50 border border-outline-variant/40 flex items-center justify-center text-mono text-[0.8125rem] text-outline">
               Loading editor…
             </div>
           </template>
         </ClientOnly>
       </div>
 
-      <div v-if="errorMsg" role="alert" class="border border-error/60 bg-error/10 px-4 py-3 text-mono text-[0.8125rem] text-error">
+      <div v-if="errorMsg" role="alert" class="rounded-xl border border-error/50 bg-error/10 px-4 py-3 text-sm text-error">
         {{ errorMsg }}
       </div>
 
@@ -141,7 +141,7 @@
         <button 
           type="submit" 
           :disabled="loading"
-          class="inline-flex items-center justify-center gap-2 min-h-11 px-6 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] font-medium transition-colors disabled:opacity-60"
+          class="btn-primary min-h-11 disabled:opacity-60 disabled:hover:translate-y-0"
         >
           <BaseIcon v-if="loading" class="text-base animate-spin" aria-hidden="true">progress_activity</BaseIcon>
           <span v-if="loading">Saving…</span>

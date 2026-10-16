@@ -97,16 +97,16 @@
 }
 
 @layer components {
-  /* Square 44px icon action used in the admin tables */
+  /* 44px icon action used in the admin tables */
   .admin-icon-btn {
-    @apply grid place-items-center w-11 h-11 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors;
+    @apply grid place-items-center w-11 h-11 rounded-xl border border-outline-variant/40 bg-surface-container/40 text-on-surface-variant hover:text-primary hover:border-primary/50 transition-colors;
   }
   /* Form fields in login and the dashboard editors; focus uses the global :focus-visible ring */
   .admin-label {
-    @apply block text-mono text-[0.6875rem] tracking-[0.1em] text-on-surface-variant;
+    @apply block text-xs font-semibold tracking-wider text-on-surface-variant;
   }
   .admin-input {
-    @apply w-full min-h-11 bg-background border border-outline-variant/60 px-3.5 py-2.5 text-on-surface placeholder:text-outline focus:border-primary transition-colors;
+    @apply w-full min-h-11 rounded-xl bg-background/50 border border-outline-variant/40 px-4 py-2.5 text-on-surface placeholder:text-outline focus:border-primary transition-colors;
   }
 }
 

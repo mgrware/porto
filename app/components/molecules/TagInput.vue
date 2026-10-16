@@ -2,13 +2,13 @@
   <div class="relative w-full tag-input-container">
     <!-- Selected Tags Display -->
     <div 
-      class="min-h-11 w-full bg-background border border-outline-variant/60 px-2 py-1 flex flex-wrap gap-1.5 items-center focus-within:border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary transition-colors cursor-text"
+      class="min-h-11 w-full rounded-xl bg-background/50 border border-outline-variant/40 px-2 py-1 flex flex-wrap gap-1.5 items-center focus-within:border-primary focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary transition-colors cursor-text"
       @click="focusInput"
     >
       <span 
         v-for="tag in modelValue" 
         :key="tag"
-        class="text-secondary text-mono text-[0.6875rem] tracking-[0.04em] pl-2 flex items-center border border-outline-variant/55"
+        class="chip !py-0 !pr-0"
       >
         {{ tag }}
         <button 
@@ -52,7 +52,7 @@
     >
       <div 
         v-if="isOpen && (filteredSuggestions.length > 0 || (query.trim() && !isCurrentTagInValue))"
-        class="absolute z-[100] w-full mt-1 bg-surface-container border border-outline-variant/60 overflow-hidden"
+        class="absolute z-[100] w-full mt-1 rounded-xl bg-surface-container border border-outline-variant/40 shadow-xl overflow-hidden"
       >
         <ul v-if="filteredSuggestions.length > 0" role="listbox" class="divide-y divide-outline-variant/[0.28] max-h-60 overflow-y-auto">
           <li 

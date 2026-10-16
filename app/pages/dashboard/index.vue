@@ -1,20 +1,26 @@
 <template>
-  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <AdminHeading code="ADMIN" title="Dashboard" note="Everything published on the public sheets is managed here." />
+  <div class="max-w-6xl mx-auto px-4 py-12 lg:py-16">
+    <AdminHeading code="ADMIN" title="Dashboard" note="Everything published on the public site is managed here." />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 border-t border-l border-outline-variant/50">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <NuxtLink
         v-for="module in modules"
         :key="module.to"
         :to="module.to"
-        class="group border-r border-b border-outline-variant/50 px-6 pt-6 pb-7 bg-surface-container/35 hover:bg-outline-variant/[0.12] transition-colors min-w-0"
+        class="group relative overflow-hidden glass glass-hover p-8 min-w-0"
       >
-        <div class="flex items-center justify-between gap-3 mb-5">
-          <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ module.code }}</span>
-          <BaseIcon class="text-xl text-primary" aria-hidden="true">{{ module.icon }}</BaseIcon>
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/15 to-secondary/15 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+        <div class="relative">
+          <div class="w-14 h-14 mb-6 rounded-2xl grid place-items-center bg-gradient-to-br from-primary/20 to-secondary/20 border border-outline-variant/30 text-primary group-hover:scale-110 transition-transform duration-500">
+            <BaseIcon class="text-3xl" aria-hidden="true">{{ module.icon }}</BaseIcon>
+          </div>
+          <h2 class="font-headline text-2xl font-bold text-on-surface group-hover:text-primary transition-colors mb-2">{{ module.title }}</h2>
+          <p class="text-on-surface-variant leading-relaxed mb-6">{{ module.body }}</p>
+          <span class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+            Open
+            <BaseIcon class="text-base group-hover:translate-x-1 transition-transform" aria-hidden="true">arrow_forward</BaseIcon>
+          </span>
         </div>
-        <h2 class="font-headline text-xl font-semibold text-on-surface group-hover:text-primary transition-colors mb-2">{{ module.title }}</h2>
-        <p class="text-[0.9375rem] leading-[1.6] text-on-surface-variant">{{ module.body }}</p>
       </NuxtLink>
     </div>
   </div>

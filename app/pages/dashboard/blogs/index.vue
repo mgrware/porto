@@ -1,9 +1,9 @@
 <template>
-  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+  <div class="max-w-6xl mx-auto px-4 py-12 lg:py-16">
     <AdminHeading code="ADM · 01" title="Blog entries" note="Draft, publish, and edit field notes.">
       <NuxtLink
         to="/dashboard/blogs/new"
-        class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
+        class="btn-primary min-h-11"
       >
         <BaseIcon class="text-base">add</BaseIcon>
         New entry
@@ -12,17 +12,17 @@
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="error" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
+    <div v-else-if="error" class="rounded-xl border border-error/50 bg-error/10 px-4 py-3.5 text-sm text-error">
       Could not load entries: {{ error.message }}
     </div>
 
     <template v-else>
       <AdminSearch v-model="searchQuery" placeholder="Search by title or tag" />
 
-      <div class="border border-outline-variant/55 bg-surface-container/40 overflow-x-auto">
+      <div class="glass overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="border-b border-outline-variant/55 text-mono text-[0.625rem] tracking-[0.12em] text-outline">
+            <tr class="border-b border-outline-variant/30 text-xs font-semibold tracking-wider text-outline">
               <th class="px-4 py-3 font-normal">TITLE</th>
               <th class="px-4 py-3 font-normal">STATUS</th>
               <th class="px-4 py-3 font-normal hidden md:table-cell">VIEWS</th>
@@ -31,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="post in filteredPosts" :key="post.id" class="border-b border-outline-variant/[0.28] last:border-b-0 hover:bg-outline-variant/[0.08] transition-colors">
+            <tr v-for="post in filteredPosts" :key="post.id" class="border-b border-outline-variant/20 last:border-b-0 hover:bg-primary/5 transition-colors">
               <td class="px-4 py-4 min-w-[14rem]">
                 <div class="font-headline font-semibold text-on-surface">{{ post.title }}</div>
                 <div class="text-mono text-xs text-outline mt-1">/blog/{{ post.slug }}</div>
@@ -49,11 +49,11 @@
                   @click="toggleBlogStatus(post, refresh)"
                 >
                   <span
-                    class="relative inline-flex w-9 h-5 border transition-colors"
+                    class="relative inline-flex w-9 h-5 rounded-full border transition-colors"
                     :class="post.status === 'published' ? 'border-primary bg-primary/20' : 'border-outline-variant'"
                   >
                     <span
-                      class="absolute top-[3px] w-3 h-3 transition-transform"
+                      class="absolute top-[3px] w-3 h-3 rounded-full transition-transform"
                       :class="post.status === 'published' ? 'bg-primary translate-x-[19px]' : 'bg-outline translate-x-[3px]'"
                     ></span>
                   </span>
@@ -77,7 +77,7 @@
               </td>
             </tr>
             <tr v-if="filteredPosts.length === 0">
-              <td colspan="5" class="px-4 py-16 text-center text-mono text-[0.8125rem] text-outline">
+              <td colspan="5" class="px-4 py-16 text-center text-sm text-outline">
                 {{ posts?.length ? 'No entries match that search.' : 'No entries yet. Start with “New entry”.' }}
               </td>
             </tr>

@@ -1,6 +1,6 @@
 <template>
-  <div class="max-w-[1100px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
-    <NuxtLink to="/dashboard/blogs" class="group inline-flex items-center min-h-11 gap-2 mb-4 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors">
+  <div class="max-w-4xl mx-auto px-4 py-12 lg:py-16">
+    <NuxtLink to="/dashboard/blogs" class="group inline-flex items-center min-h-11 gap-2 mb-4 text-sm font-medium text-secondary hover:text-primary transition-colors">
       <BaseIcon class="text-base group-hover:-translate-x-1 transition-transform" aria-hidden="true">arrow_back</BaseIcon>
       Back to blog entries
     </NuxtLink>
@@ -8,11 +8,11 @@
 
     <BaseLoader v-if="pending" />
 
-    <div v-else-if="loadError" role="alert" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
+    <div v-else-if="loadError" role="alert" class="rounded-xl border border-error/50 bg-error/10 px-4 py-3.5 text-sm text-error">
       Could not load this entry: {{ loadError.message }}
     </div>
 
-    <form v-else @submit.prevent="handleSubmit" class="space-y-7 border border-outline-variant/55 bg-surface-container/40 p-5 sm:p-8">
+    <form v-else @submit.prevent="handleSubmit" class="space-y-7 glass p-5 sm:p-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <label class="block space-y-2 md:col-span-1">
           <span class="admin-label">TITLE</span>
@@ -67,7 +67,7 @@
           <button
             type="button"
             @click="triggerFileInput"
-            class="w-full h-48 border border-dashed border-outline-variant/70 flex flex-col items-center justify-center hover:border-primary transition-colors overflow-hidden bg-background/50 group"
+            class="w-full h-48 rounded-2xl border-2 border-dashed border-outline-variant/50 flex flex-col items-center justify-center hover:border-primary transition-colors overflow-hidden bg-background/50 group"
           >
             <span v-if="previewUrl || form.image_url" class="block w-full h-full relative">
               <img :src="previewUrl || form.image_url" alt="Cover preview" class="w-full h-full object-cover" />
@@ -95,29 +95,29 @@
             style="min-height: 300px;"
           />
           <template #fallback>
-            <div class="w-full h-[300px] bg-background border border-outline-variant/60 flex items-center justify-center text-mono text-[0.8125rem] text-outline">
+            <div class="w-full h-[300px] rounded-xl bg-background/50 border border-outline-variant/40 flex items-center justify-center text-mono text-[0.8125rem] text-outline">
               Loading editor…
             </div>
           </template>
         </ClientOnly>
       </div>
 
-      <div v-if="errorMsg" role="alert" class="border border-error/60 bg-error/10 px-4 py-3 text-mono text-[0.8125rem] text-error">
+      <div v-if="errorMsg" role="alert" class="rounded-xl border border-error/50 bg-error/10 px-4 py-3 text-sm text-error">
         {{ errorMsg }}
       </div>
 
       <div class="flex flex-wrap justify-end gap-3">
-        <NuxtLink to="/dashboard/blogs" class="inline-flex items-center min-h-11 px-5 border border-transparent hover:border-outline-variant/60 text-mono text-[0.8125rem] text-on-surface-variant hover:text-on-surface transition-colors">
+        <NuxtLink to="/dashboard/blogs" class="inline-flex items-center min-h-11 px-5 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-on-surface/5 transition-colors">
           Cancel
         </NuxtLink>
-        <NuxtLink v-if="form.slug" :to="`/blog/${form.slug}`" target="_blank" class="inline-flex items-center min-h-11 gap-2 px-5 border border-outline-variant/70 hover:border-secondary text-mono text-[0.8125rem] text-on-background hover:text-on-surface transition-colors">
+        <NuxtLink v-if="form.slug" :to="`/blog/${form.slug}`" target="_blank" class="btn-ghost min-h-11">
           <BaseIcon class="text-base" aria-hidden="true">visibility</BaseIcon>
           Preview
         </NuxtLink>
         <button 
           type="submit" 
           :disabled="loading"
-          class="inline-flex items-center justify-center gap-2 min-h-11 px-6 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] font-medium transition-colors disabled:opacity-60"
+          class="btn-primary min-h-11 disabled:opacity-60 disabled:hover:translate-y-0"
         >
           <BaseIcon v-if="loading" class="text-base animate-spin" aria-hidden="true">progress_activity</BaseIcon>
           <span v-if="loading">Saving…</span>
