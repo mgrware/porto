@@ -10,7 +10,7 @@
   <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
     <NuxtLink
       to="/blog"
-      class="group inline-flex items-center gap-2 mb-7 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors"
+      class="group inline-flex items-center min-h-11 gap-2 mb-4 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors"
     >
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
         <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
@@ -25,7 +25,7 @@
       <p class="text-mono text-[0.8125rem] text-outline mb-6">{{ m.blog.notFoundBody }}</p>
       <NuxtLink
         to="/blog"
-        class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
+        class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
       >{{ m.blog.backToBlog }}</NuxtLink>
     </div>
 
@@ -45,7 +45,7 @@
         <NuxtLink
           v-if="user"
           :to="`/dashboard/blogs/edit/${post.id}`"
-          class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+          class="inline-flex items-center min-h-11 gap-2 px-3 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
         >
           <BaseIcon class="text-sm">edit</BaseIcon>
           {{ m.blog.edit }}
@@ -72,17 +72,17 @@
         <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant z-10"></span>
         <img v-if="post.image_url" :src="post.image_url" :alt="post.title" class="w-full aspect-[21/9] object-cover" />
         <div v-else class="bp-hatch aspect-[21/9] flex items-center justify-center">
-          <span class="text-mono text-xs tracking-[0.12em] text-outline">{{ m.blog.plate }} {{ sheet }} — {{ m.blog.coverMissing }}</span>
+          <span class="text-mono text-xs tracking-[0.12em] text-outline">{{ m.blog.plate }} {{ sheet }} · {{ m.blog.coverMissing }}</span>
         </div>
         <div class="flex flex-wrap justify-between gap-x-4 gap-y-2 px-4 py-2.5 border-t border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
-          <span class="truncate max-w-[70%]">{{ m.blog.fig }} — {{ post.title.toUpperCase() }}</span>
+          <span class="truncate max-w-[70%]">{{ m.blog.fig }} · {{ post.title.toUpperCase() }}</span>
           <span>{{ m.blog.scale }}</span>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
         <article class="lg:col-span-2 min-w-0 max-w-[46rem]">
-          <div ref="contentEl" class="prose prose-invert max-w-none" v-html="post.content"></div>
+          <div ref="contentEl" class="prose max-w-none" v-html="post.content"></div>
 
           <div class="flex items-stretch gap-5 mt-10 lg:mt-14 pt-7 border-t-2 border-outline-variant/55">
             <div class="relative shrink-0 w-[72px] h-[72px] border border-outline-variant/60 p-1 bg-surface-container/60">
@@ -109,7 +109,7 @@
               v-for="(item, index) in toc"
               :key="item.id"
               :href="`#${item.id}`"
-              class="flex gap-3 px-4 py-2.5 border-b border-outline-variant/[0.28] last:border-b-0 text-sm leading-[1.45] text-on-surface-variant hover:text-on-surface hover:bg-outline-variant/[0.14] transition-colors"
+              class="flex items-center min-h-11 gap-3 px-4 py-2.5 border-b border-outline-variant/[0.28] last:border-b-0 text-sm leading-[1.45] text-on-surface-variant hover:text-on-surface hover:bg-outline-variant/[0.14] transition-colors"
             >
               <span class="text-mono text-[0.6875rem] text-primary shrink-0">{{ String(index + 1).padStart(2, '0') }}</span>
               {{ item.text }}

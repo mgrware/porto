@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div v-reveal class="flex items-center gap-3 border border-outline-variant/60 bg-surface-container/50 px-3.5 max-w-[34rem] mb-7">
+    <div v-reveal class="flex items-center gap-3 border border-outline-variant/60 bg-surface-container/50 px-3.5 max-w-[34rem] mb-7 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-primary">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="text-outline shrink-0" aria-hidden="true">
         <circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" />
       </svg>
@@ -76,7 +76,7 @@
               <span class="flex-1"></span>
               <NuxtLink
                 :to="`/blog/${post.slug}`"
-                class="group inline-flex items-center gap-[0.4375rem] text-mono text-xs tracking-[0.06em] text-primary"
+                class="group inline-flex items-center min-h-11 gap-[0.4375rem] text-mono text-xs tracking-[0.06em] text-primary"
               >
                 {{ m.blog.readEntry }}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:translate-x-1 transition-transform" aria-hidden="true">
@@ -89,13 +89,13 @@
       </div>
 
       <div v-else class="border border-dashed border-outline-variant/60 px-6 py-16 text-center text-mono text-[0.8125rem] text-outline mt-6">
-        {{ m.blog.noMatch }}
+        {{ posts?.length ? m.blog.noMatch : m.blog.empty }}
       </div>
 
       <div class="pt-8">
         <NuxtLink
           to="/#hero"
-          class="inline-flex items-center gap-2 px-[1.125rem] py-3 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
+          class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
             <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />

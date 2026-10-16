@@ -2,7 +2,7 @@
   <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
     <NuxtLink
       to="/projects"
-      class="group inline-flex items-center gap-2 mb-7 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors"
+      class="group inline-flex items-center min-h-11 gap-2 mb-4 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors"
     >
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" class="group-hover:-translate-x-1 transition-transform" aria-hidden="true">
         <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
@@ -17,7 +17,7 @@
       <p class="text-mono text-[0.8125rem] text-outline mb-6">{{ m.projects.notFoundBody }}</p>
       <NuxtLink
         to="/projects"
-        class="inline-flex items-center gap-2 px-[1.125rem] py-3 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
+        class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
       >{{ m.projects.backToProjects }}</NuxtLink>
     </div>
 
@@ -32,7 +32,7 @@
         <NuxtLink
           v-if="user"
           :to="`/dashboard/projects/edit/${project.id}`"
-          class="inline-flex items-center gap-2 px-2.5 py-1.5 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
+          class="inline-flex items-center min-h-11 gap-2 px-3 border border-outline-variant/60 text-on-surface-variant hover:text-primary hover:border-primary/60 transition-colors"
         >
           <BaseIcon class="text-sm">edit</BaseIcon>
           {{ m.projects.edit }}
@@ -59,10 +59,10 @@
         <span class="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-outline-variant z-10"></span>
         <img v-if="project.image_url" :src="project.image_url" :alt="project.title" class="w-full aspect-[21/9] object-cover" />
         <div v-else class="bp-hatch aspect-[21/9] flex items-center justify-center">
-          <span class="text-mono text-xs tracking-[0.12em] text-outline">{{ m.projects.plate }} {{ sheet }} — {{ m.projects.screenshotMissing }}</span>
+          <span class="text-mono text-xs tracking-[0.12em] text-outline">{{ m.projects.plate }} {{ sheet }} · {{ m.projects.screenshotMissing }}</span>
         </div>
         <div class="flex flex-wrap justify-between gap-x-4 gap-y-2 px-4 py-2.5 border-t border-outline-variant/45 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
-          <span class="truncate max-w-[70%]">{{ m.projects.fig }} — {{ project.title.toUpperCase() }}</span>
+          <span class="truncate max-w-[70%]">{{ m.projects.fig }} · {{ project.title.toUpperCase() }}</span>
           <span>{{ m.projects.scale }}</span>
         </div>
       </div>
@@ -102,7 +102,13 @@
             <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ m.projects.generalNotes }}</span>
           </div>
 
-          <div class="prose prose-invert max-w-none" v-html="project.description" @click="handleContentClick"></div>
+          <div
+            ref="contentEl"
+            class="prose max-w-none"
+            v-html="project.description"
+            @click="handleContentClick"
+            @keydown.enter.space="handleContentClick"
+          ></div>
         </div>
 
         <aside class="min-w-0 lg:sticky lg:top-[88px] flex flex-col gap-5">
@@ -150,11 +156,19 @@
     </template>
 
     <Teleport to="body">
-      <div v-if="selectedImage" class="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 p-4" @click="closeLightbox">
+      <!-- Native modal dialog: Escape, inert background and focus return come from the browser. -->
+      <dialog
+        ref="lightbox"
+        :aria-label="m.projects.imageViewer"
+        class="fixed inset-0 w-screen h-screen max-w-none max-h-none m-0 p-4 bg-background/95 backdrop:bg-transparent"
+        @close="closeLightbox"
+        @click="lightbox?.close()"
+      >
+        <template v-if="selectedImage">
         <div class="absolute top-6 right-6 flex items-center gap-3 z-50">
           <div class="flex items-center gap-1 border border-outline-variant/60 bg-surface-container/90 p-1" @click.stop>
             <button
-              class="grid place-items-center w-8 h-8 text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
+              class="grid place-items-center w-11 h-11 text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
               :disabled="zoomLevel <= 0.5"
               :aria-label="m.projects.zoomOut"
               @click="zoomOut"
@@ -163,7 +177,7 @@
             </button>
             <span class="text-mono text-[0.6875rem] text-on-surface min-w-[4ch] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
             <button
-              class="grid place-items-center w-8 h-8 text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
+              class="grid place-items-center w-11 h-11 text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
               :disabled="zoomLevel >= 3"
               :aria-label="m.projects.zoomIn"
               @click="zoomIn"
@@ -173,9 +187,10 @@
           </div>
 
           <button
-            class="grid place-items-center w-10 h-10 border border-outline-variant/60 bg-surface-container/90 text-on-surface-variant hover:text-primary transition-colors"
+            autofocus
+            class="grid place-items-center w-11 h-11 border border-outline-variant/60 bg-surface-container/90 text-on-surface-variant hover:text-primary transition-colors"
             :aria-label="m.projects.close"
-            @click="closeLightbox"
+            @click.stop="lightbox?.close()"
           >
             <BaseIcon class="text-base">close</BaseIcon>
           </button>
@@ -199,7 +214,8 @@
             draggable="false"
           />
         </div>
-      </div>
+        </template>
+      </dialog>
     </Teleport>
   </div>
 </template>
@@ -236,10 +252,10 @@ const spec = computed(() => {
   return [
     { label: m.value.projects.spec.drawingNo, value: drawingRef.value },
     { label: m.value.projects.spec.sheet, value: sheet.value },
-    { label: m.value.projects.spec.year, value: project.value.year || '—' },
+    { label: m.value.projects.spec.year, value: project.value.year || 'N/A' },
     { label: m.value.projects.spec.discipline, value: m.value.projects.spec.disciplineValue },
-    { label: m.value.projects.spec.demo, value: project.value.demo_link ? m.value.projects.spec.available : '—' },
-    { label: m.value.projects.spec.source, value: project.value.repo_link ? m.value.projects.spec.available : '—' }
+    { label: m.value.projects.spec.demo, value: project.value.demo_link ? m.value.projects.spec.available : 'N/A' },
+    { label: m.value.projects.spec.source, value: project.value.repo_link ? m.value.projects.spec.available : 'N/A' }
   ]
 })
 
@@ -252,7 +268,19 @@ watchEffect(() => {
   }
 })
 
+const lightbox = ref<HTMLDialogElement | null>(null)
+const contentEl = ref<HTMLElement | null>(null)
 const selectedImage = ref<string | null>(null)
+
+// Images arrive through v-html, so make them keyboard-operable after each render.
+watchEffect(() => {
+  void project.value?.description // re-run when the rendered HTML changes
+  contentEl.value?.querySelectorAll('img').forEach((img) => {
+    img.tabIndex = 0
+    img.setAttribute('role', 'button')
+    img.setAttribute('aria-label', img.alt ? `${m.value.projects.enlargeImage}: ${img.alt}` : m.value.projects.enlargeImage)
+  })
+}, { flush: 'post' })
 const zoomLevel = ref(1)
 const pan = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
@@ -294,11 +322,13 @@ const stopDrag = () => {
   isDragging.value = false
 }
 
-const handleContentClick = (event: MouseEvent) => {
+const handleContentClick = async (event: Event) => {
   const target = event.target as HTMLElement
-  if (target.tagName.toLowerCase() === 'img') {
-    selectedImage.value = (target as HTMLImageElement).src
-  }
+  if (target.tagName.toLowerCase() !== 'img') return
+  event.preventDefault()
+  selectedImage.value = (target as HTMLImageElement).src
+  await nextTick()
+  lightbox.value?.showModal()
 }
 </script>
 

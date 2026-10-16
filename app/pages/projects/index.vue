@@ -49,7 +49,7 @@
                 class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
               />
               <div v-else class="bp-hatch w-full h-full flex items-center justify-center">
-                <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ m.projects.plate }} — {{ drawingNo(project, index) }}</span>
+                <span class="text-mono text-[0.625rem] tracking-[0.12em] text-outline">{{ m.projects.plate }} · {{ drawingNo(project, index) }}</span>
               </div>
             </NuxtLink>
             <div class="flex justify-between gap-4 pt-2 text-mono text-[0.625rem] tracking-[0.1em] text-outline">
@@ -80,7 +80,7 @@
             <div class="flex flex-wrap gap-2.5 pt-1">
               <NuxtLink
                 :to="`/projects/${project.slug || project.id}`"
-                class="inline-flex items-center gap-2 px-4 py-[0.6875rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
+                class="inline-flex items-center min-h-11 gap-2 px-4 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
               >
                 {{ m.projects.details }}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
@@ -92,7 +92,7 @@
                 :href="project.demo_link"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center gap-2 px-4 py-[0.6875rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
+                class="inline-flex items-center min-h-11 gap-2 px-4 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
               >
                 {{ m.projects.liveDemo }}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
@@ -104,7 +104,7 @@
                 :href="project.repo_link"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center gap-2 px-4 py-[0.6875rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
+                class="inline-flex items-center min-h-11 gap-2 px-4 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-xs transition-colors"
               >
                 {{ m.projects.sourceCode }}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
@@ -119,7 +119,7 @@
       <div class="pt-8">
         <NuxtLink
           to="/#hero"
-          class="inline-flex items-center gap-2 px-[1.125rem] py-3 border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
+          class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] border border-outline-variant/70 hover:border-secondary hover:bg-outline-variant/[0.14] text-on-background hover:text-on-surface text-mono text-[0.8125rem] transition-colors"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
             <path d="M20 12H5" /><path d="M11 18l-6-6 6-6" />
