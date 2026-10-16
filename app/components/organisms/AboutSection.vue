@@ -14,23 +14,22 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <div
-          v-for="stat in m.hero.stats"
-          :key="stat.label"
+          v-for="figure in m.hero.figures"
+          :key="figure.value + figure.source"
           v-reveal
-          class="group relative overflow-hidden glass glass-hover p-6 md:p-8 text-center"
+          class="group relative overflow-hidden glass glass-hover p-6 flex flex-col"
         >
           <div class="absolute inset-0 bg-gradient-to-br from-primary/15 to-secondary/15 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-          <div class="relative">
-            <div class="font-headline text-2xl md:text-4xl font-bold text-gradient mb-2 inline-flex items-center gap-2">
-              <span v-if="stat.running" class="w-2.5 h-2.5 rounded-full bg-secondary animate-bp-pulse"></span>
-              {{ stat.value }}
-            </div>
-            <div class="text-xs md:text-sm font-medium tracking-wider text-on-surface-variant">{{ stat.label }}</div>
+          <div class="relative flex flex-col flex-1">
+            <div class="font-headline text-3xl md:text-4xl font-bold text-gradient mb-2">{{ figure.value }}</div>
+            <p class="text-sm leading-relaxed text-on-surface-variant mb-4">{{ figure.label }}</p>
+            <p class="mt-auto text-xs text-outline">{{ figure.source }}</p>
           </div>
         </div>
       </div>
+      <p class="text-center text-xs text-outline mt-6">{{ m.hero.figuresNote }}</p>
     </div>
   </section>
 </template>

@@ -1,130 +1,98 @@
 <template>
-  <div class="max-w-4xl mx-auto px-6 py-12">
-    <header class="mb-12">
-      <NuxtLink to="/dashboard/projects" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors mb-6 group">
-        <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
-        <span class="text-xs font-mono uppercase tracking-widest">RETURN_TO_PROJECTS</span>
-      </NuxtLink>
-      <h1 class="text-4xl font-bold font-headline tracking-tighter">EDIT<span class="text-primary">_PROJECT</span></h1>
-    </header>
+  <div class="max-w-[1100px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <NuxtLink to="/dashboard/projects" class="group inline-flex items-center min-h-11 gap-2 mb-4 text-mono text-xs tracking-[0.08em] text-secondary hover:text-primary transition-colors">
+      <BaseIcon class="text-base group-hover:-translate-x-1 transition-transform" aria-hidden="true">arrow_back</BaseIcon>
+      Back to projects
+    </NuxtLink>
+    <AdminHeading code="ADM · 02" title="Edit project" />
 
-    <div v-if="pending" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    <BaseLoader v-if="pending" />
+
+    <div v-else-if="!loaded" role="alert" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
+      {{ errorMsg || 'Could not load this project.' }}
     </div>
 
-    <form v-else @submit.prevent="handleSubmit" class="space-y-8 bg-surface-container border border-surface-container-high p-8 rounded-3xl shadow-xl">
+    <form v-else @submit.prevent="handleSubmit" class="space-y-7 border border-outline-variant/55 bg-surface-container/40 p-5 sm:p-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="space-y-2 md:col-span-2">
           <div class="flex justify-between items-center">
-            <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_TITLE</label>
-            <button type="button" @click="generateSlug" class="text-[10px] text-primary font-mono uppercase tracking-widest hover:underline">
-              AUTO-GENERATE SLUG
+            <label for="project-title" class="admin-label">TITLE</label>
+            <button type="button" @click="generateSlug" class="min-h-11 px-1 text-mono text-[0.6875rem] tracking-[0.08em] text-primary hover:underline">
+              Generate slug from title
             </button>
           </div>
           <input 
+            id="project-title"
             v-model="form.title" 
             type="text" 
             placeholder="e.g. E-Commerce Microservices Architecture"
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            class="admin-input"
             required
           />
         </div>
 
-        <div class="space-y-2 md:col-span-2">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_SLUG</label>
+        <label class="block space-y-2 md:col-span-2">
+          <span class="admin-label">SLUG</span>
           <input 
             v-model="form.slug" 
             type="text" 
             placeholder="e-commerce-microservices-architecture"
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            class="admin-input"
             required
           />
-        </div>
+        </label>
 
-        <div class="space-y-2 md:col-span-1">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">RELEASE_YEAR</label>
+        <label class="block space-y-2 md:col-span-1">
+          <span class="admin-label">YEAR</span>
           <input 
             v-model="form.year" 
             type="text" 
             placeholder="e.g. 2025"
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            class="admin-input"
             required
           />
-        </div>
+        </label>
 
-        <div class="space-y-2 md:col-span-1">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">MATERIAL_ICON</label>
-          <div class="flex items-center gap-4">
-            <input 
-              v-model="form.icon" 
-              type="text" 
-              placeholder="e.g. shopping_cart"
-              class="flex-1 bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
-              required
-            />
-            <div class="w-12 h-12 bg-background border border-surface-container-high rounded-xl flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-primary">{{ form.icon || 'help' }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-2 md:col-span-1">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PRIORITY</label>
+        <label class="block space-y-2 md:col-span-1">
+          <span class="admin-label">PRIORITY</span>
           <input 
             v-model.number="form.priority" 
             type="number" 
             placeholder="e.g. 0"
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            class="admin-input"
             min="0"
             required
           />
-        </div>
+        </label>
 
-        <div class="space-y-2 md:col-span-2">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">COLOR_THEME_CLASS</label>
-          <select 
-            v-model="form.color_class" 
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors appearance-none"
-            required
-          >
-            <option value="from-blue-600 to-cyan-400">Blue to Cyan</option>
-            <option value="from-purple-600 to-pink-500">Purple to Pink</option>
-            <option value="from-red-600 to-orange-500">Red to Orange</option>
-            <option value="from-emerald-600 to-teal-400">Emerald to Teal</option>
-            <option value="from-indigo-600 to-blue-500">Indigo to Blue</option>
-            <option value="from-yellow-500 to-orange-400">Yellow to Orange</option>
-          </select>
-          <div class="mt-2 h-4 rounded-full bg-gradient-to-r" :class="form.color_class"></div>
-        </div>
-        
-        <div class="space-y-2 md:col-span-1">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">DEMO_LINK (OPTIONAL)</label>
+        <label class="block space-y-2 md:col-span-1">
+          <span class="admin-label">DEMO LINK (OPTIONAL)</span>
           <input 
             v-model="form.demo_link" 
             type="url" 
             placeholder="https://..."
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            class="admin-input"
           />
-        </div>
+        </label>
 
-        <div class="space-y-2 md:col-span-1">
-          <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">REPO_LINK (OPTIONAL)</label>
+        <label class="block space-y-2 md:col-span-1">
+          <span class="admin-label">REPOSITORY LINK (OPTIONAL)</span>
           <input 
             v-model="form.repo_link" 
             type="url" 
             placeholder="https://github.com/..."
-            class="w-full bg-background border border-surface-container-high rounded-xl px-4 py-3 text-on-background focus:outline-none focus:border-primary transition-colors"
+            class="admin-input"
           />
-        </div>
+        </label>
       </div>
 
       <div class="space-y-2">
-        <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_TAGS (MULTI_SELECT)</label>
-        <MoleculesTagInput v-model="form.tags" />
+        <p class="admin-label">TAGS</p>
+        <MoleculesTagInput v-model="form.tags" label="Tags" />
       </div>
 
       <div class="space-y-2">
-        <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_IMAGE</label>
+        <p class="admin-label">COVER IMAGE</p>
         <div class="flex flex-col gap-4">
           <input 
             type="file" 
@@ -133,26 +101,27 @@
             ref="fileInput"
             @change="onFileSelected"
           />
-          <div 
+          <button
+            type="button"
             @click="triggerFileInput"
-            class="w-full h-48 border-2 border-dashed border-surface-container-high rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-all overflow-hidden bg-background/50 group"
+            class="w-full h-48 border border-dashed border-outline-variant/70 flex flex-col items-center justify-center hover:border-primary transition-colors overflow-hidden bg-background/50 group"
           >
-            <div v-if="previewUrl" class="w-full h-full relative">
-              <img :src="previewUrl" class="w-full h-full object-cover" />
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                <span class="material-symbols-outlined text-white">edit</span>
-              </div>
-            </div>
-            <div v-else class="flex flex-col items-center gap-2 text-on-surface-variant">
-              <span class="material-symbols-outlined text-4xl">add_photo_alternate</span>
-              <span class="text-[10px] font-mono uppercase tracking-widest">UPLOAD_PROJECT_IMAGE</span>
-            </div>
-          </div>
+            <span v-if="previewUrl" class="block w-full h-full relative">
+              <img :src="previewUrl" alt="Cover preview" class="w-full h-full object-cover" />
+              <span class="absolute inset-0 bg-background/70 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 flex items-center justify-center transition-opacity">
+                <span class="text-mono text-xs text-on-surface">Replace image</span>
+              </span>
+            </span>
+            <span v-else class="flex flex-col items-center gap-2 text-on-surface-variant">
+              <BaseIcon class="text-3xl" aria-hidden="true">add_photo_alternate</BaseIcon>
+              <span class="text-mono text-xs">Upload cover image</span>
+            </span>
+          </button>
         </div>
       </div>
 
       <div class="space-y-2">
-        <label class="text-xs font-mono uppercase tracking-widest text-on-surface-variant ml-1">PROJECT_DESCRIPTION (HTML_SUPPORTED)</label>
+        <p class="admin-label">DESCRIPTION</p>
         <ClientOnly>
           <QuillEditor 
             v-model:content="form.description" 
@@ -163,14 +132,14 @@
             style="min-height: 200px;"
           />
           <template #fallback>
-            <div class="w-full h-[200px] bg-background border border-surface-container-high rounded-xl flex items-center justify-center text-on-surface-variant font-mono text-sm">
-              LOADING_EDITOR...
+            <div class="w-full h-[200px] bg-background border border-outline-variant/60 flex items-center justify-center text-mono text-[0.8125rem] text-outline">
+              Loading editor…
             </div>
           </template>
         </ClientOnly>
       </div>
 
-      <div v-if="errorMsg" class="text-error text-xs font-mono bg-error/10 p-4 rounded-xl border border-error/20">
+      <div v-if="errorMsg" role="alert" class="border border-error/60 bg-error/10 px-4 py-3 text-mono text-[0.8125rem] text-error">
         {{ errorMsg }}
       </div>
 
@@ -178,10 +147,11 @@
         <button 
           type="submit" 
           :disabled="loading"
-          class="bg-primary text-on-primary px-10 py-4 rounded-xl font-bold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-2"
+          class="inline-flex items-center justify-center gap-2 min-h-11 px-6 bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] font-medium transition-colors disabled:opacity-60"
         >
-          <span v-if="loading" class="animate-spin material-symbols-outlined">sync</span>
-          <span v-else class="font-mono tracking-widest">SAVE_CHANGES</span>
+          <BaseIcon v-if="loading" class="text-base animate-spin" aria-hidden="true">progress_activity</BaseIcon>
+          <span v-if="loading">Saving…</span>
+          <span v-else>Save changes</span>
         </button>
       </div>
     </form>
@@ -189,6 +159,9 @@
 </template>
 
 <script setup lang="ts">
+import BaseIcon from '~/components/atoms/BaseIcon.vue'
+import BaseLoader from '~/components/atoms/BaseLoader.vue'
+import AdminHeading from '~/components/molecules/AdminHeading.vue'
 import { useProjectActions } from '~/composables/useProjectActions'
 
 const { fetchProjectById, updateProject, uploadImage } = useProjectActions()
@@ -235,7 +208,7 @@ const onFileSelected = (event: Event) => {
   }
 }
 
-const { pending } = await useAsyncData(`project-${route.params.id}`, async () => {
+const { data: loaded, pending } = await useAsyncData(`project-${route.params.id}`, async () => {
   try {
     const data = await fetchProjectById(route.params.id as string)
     form.value = {

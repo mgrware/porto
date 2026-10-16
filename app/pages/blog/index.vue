@@ -69,7 +69,7 @@
       </div>
 
       <div v-else class="glass px-6 py-16 text-center text-outline">
-        {{ m.blog.noMatch }}
+        {{ posts?.length ? m.blog.noMatch : m.blog.empty }}
       </div>
 
       <div class="pt-12 text-center">

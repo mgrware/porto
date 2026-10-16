@@ -1,106 +1,103 @@
 <template>
-  <div class="max-w-6xl mx-auto px-6 py-12">
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-      <div>
-        <h1 class="text-4xl font-bold font-headline tracking-tighter mb-2">PROJECTS<span class="text-primary">_PANEL</span></h1>
-        <p class="text-on-surface-variant text-sm font-mono uppercase tracking-widest">PROJECT_MANAGEMENT_MODULE</p>
-      </div>
-      <NuxtLink to="/dashboard/projects/new">
-        <button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
-          <span class="material-symbols-outlined text-sm">add</span>
-          <span class="font-mono tracking-widest">NEW_PROJECT</span>
-        </button>
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-10 lg:py-16">
+    <AdminHeading code="ADM · 02" title="Projects" note="File, order, and edit the drawing index.">
+      <NuxtLink
+        to="/dashboard/projects/new"
+        class="inline-flex items-center min-h-11 gap-2 px-[1.125rem] bg-primary hover:bg-primary-container text-on-primary text-mono text-[0.8125rem] transition-colors"
+      >
+        <BaseIcon class="text-base">add</BaseIcon>
+        New project
       </NuxtLink>
-    </header>
+    </AdminHeading>
 
     <BaseLoader v-if="pending" />
 
-    <div v-else class="space-y-6">
-      <div class="mb-8 relative max-w-md">
-        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
-        <input 
-          v-model="searchQuery" 
-          type="text" 
-          placeholder="SEARCH_BY_TITLE_OR_TAG..."
-          class="w-full bg-surface-container border border-surface-container-high rounded-2xl pl-12 pr-4 py-3 text-sm font-mono focus:outline-none focus:border-primary transition-colors"
-        />
-      </div>
-
-      <div class="bg-surface-container border border-surface-container-high rounded-3xl overflow-hidden shadow-xl">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="bg-surface-container-high/50 border-b border-surface-container-high">
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant">TITLE</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">YEAR</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">PRIORITY</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant hidden md:table-cell">CREATED_AT</th>
-            <th class="px-6 py-4 text-xs font-mono uppercase tracking-widest text-on-surface-variant text-right">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-surface-container-high">
-          <tr v-for="project in filteredProjects" :key="project.id" class="hover:bg-surface-container-high/20 transition-colors">
-            <td class="px-6 py-5">
-              <div class="font-bold text-on-background flex items-center gap-3">
-                <img v-if="project.image_url" :src="project.image_url" class="w-10 h-10 rounded-lg object-cover border border-surface-container-high shrink-0" />
-                <span v-else class="material-symbols-outlined text-xl text-primary w-10 h-10 flex items-center justify-center bg-surface-container-high rounded-lg shrink-0">{{ project.icon || 'folder' }}</span>
-                {{ project.title }}
-              </div>
-              <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-1 mt-2">
-                <span v-for="tag in project.tags" :key="tag" class="text-[9px] font-mono text-primary/70">#{{ tag }}</span>
-              </div>
-            </td>
-            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
-              {{ project.year }}
-            </td>
-            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
-              {{ project.priority !== undefined ? project.priority : 0 }}
-            </td>
-            <td class="px-6 py-5 text-sm text-on-surface-variant font-mono hidden md:table-cell">
-              {{ new Date(project.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) }}
-            </td>
-            <td class="px-6 py-5 text-right space-x-2">
-              <NuxtLink :to="project.demo_link || '#'" target="_blank">
-                <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Preview Demo">
-                  <span class="material-symbols-outlined">visibility</span>
-                </button>
-              </NuxtLink>
-              <NuxtLink :to="`/dashboard/projects/edit/${project.id}`">
-                <button class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit">
-                  <span class="material-symbols-outlined">edit</span>
-                </button>
-              </NuxtLink>
-              <button @click="deleteProjectWithConfirm(project.id, refresh)" class="p-2 text-error hover:bg-error/10 rounded-lg transition-colors" title="Delete">
-                <span class="material-symbols-outlined">delete</span>
-              </button>
-            </td>
-          </tr>
-          <tr v-if="filteredProjects.length === 0">
-            <td colspan="4" class="px-6 py-20 text-center text-on-surface-variant font-mono">
-              NO_PROJECTS_FOUND
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-else-if="error" class="border border-error/60 bg-error/10 px-4 py-3.5 text-mono text-[0.8125rem] text-error">
+      Could not load projects: {{ error.message }}
     </div>
+
+    <template v-else>
+      <AdminSearch v-model="searchQuery" placeholder="Search by title or tag" />
+
+      <div class="border border-outline-variant/55 bg-surface-container/40 overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-outline-variant/55 text-mono text-[0.625rem] tracking-[0.12em] text-outline">
+              <th class="px-4 py-3 font-normal">TITLE</th>
+              <th class="px-4 py-3 font-normal hidden md:table-cell">YEAR</th>
+              <th class="px-4 py-3 font-normal hidden md:table-cell">PRIORITY</th>
+              <th class="px-4 py-3 font-normal hidden md:table-cell">FILED</th>
+              <th class="px-4 py-3 font-normal text-right">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="project in filteredProjects" :key="project.id" class="border-b border-outline-variant/[0.28] last:border-b-0 hover:bg-outline-variant/[0.08] transition-colors">
+              <td class="px-4 py-4 min-w-[14rem]">
+                <div class="flex items-center gap-3">
+                  <img v-if="project.image_url" :src="project.image_url" alt="" class="w-10 h-10 object-cover border border-outline-variant/55 shrink-0" />
+                  <span v-else class="bp-hatch w-10 h-10 border border-outline-variant/55 shrink-0" aria-hidden="true"></span>
+                  <span class="font-headline font-semibold text-on-surface">{{ project.title }}</span>
+                </div>
+                <div v-if="project.tags && project.tags.length" class="flex flex-wrap gap-x-2 gap-y-1 mt-2">
+                  <span v-for="tag in project.tags" :key="tag" class="text-mono text-[0.6875rem] text-secondary">#{{ tag }}</span>
+                </div>
+              </td>
+              <td class="px-4 py-4 text-mono text-[0.8125rem] text-on-surface-variant hidden md:table-cell">{{ project.year }}</td>
+              <td class="px-4 py-4 text-mono text-[0.8125rem] text-on-surface-variant hidden md:table-cell">{{ project.priority ?? 0 }}</td>
+              <td class="px-4 py-4 text-mono text-[0.8125rem] text-on-surface-variant hidden md:table-cell">{{ sheetDate(project.created_at) }}</td>
+              <td class="px-4 py-4">
+                <div class="flex justify-end gap-1.5">
+                  <a
+                    v-if="project.demo_link"
+                    :href="project.demo_link"
+                    target="_blank"
+                    rel="noopener"
+                    :aria-label="`Open live demo of ${project.title}`"
+                    title="Live demo"
+                    class="admin-icon-btn"
+                  >
+                    <BaseIcon class="text-lg">open_in_new</BaseIcon>
+                  </a>
+                  <NuxtLink :to="`/dashboard/projects/edit/${project.id}`" :aria-label="`Edit ${project.title}`" title="Edit" class="admin-icon-btn text-primary">
+                    <BaseIcon class="text-lg">edit</BaseIcon>
+                  </NuxtLink>
+                  <button :aria-label="`Delete ${project.title}`" title="Delete" class="admin-icon-btn text-error hover:border-error" @click="deleteProjectWithConfirm(project.id, refresh)">
+                    <BaseIcon class="text-lg">delete</BaseIcon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="filteredProjects.length === 0">
+              <td colspan="5" class="px-4 py-16 text-center text-mono text-[0.8125rem] text-outline">
+                {{ projects?.length ? 'No projects match that search.' : 'No projects yet. Start with “New project”.' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
+import BaseIcon from '~/components/atoms/BaseIcon.vue'
 import BaseLoader from '~/components/atoms/BaseLoader.vue'
+import AdminHeading from '~/components/molecules/AdminHeading.vue'
+import AdminSearch from '~/components/molecules/AdminSearch.vue'
 import { useProjectActions } from '~/composables/useProjectActions'
+import { sheetDate } from '~/composables/useSheetRefs'
 
 const { fetchProjects, deleteProjectWithConfirm } = useProjectActions()
 
-const { data: projects, pending, refresh } = await useAsyncData('dashboard-projects', () => fetchProjects())
+const { data: projects, pending, error, refresh } = await useAsyncData('dashboard-projects', () => fetchProjects())
 
 const searchQuery = ref('')
 const filteredProjects = computed(() => {
   if (!projects.value) return []
   if (!searchQuery.value) return projects.value
   const query = searchQuery.value.toLowerCase()
-  return projects.value.filter(project => 
-    project.title.toLowerCase().includes(query) || 
+  return projects.value.filter(project =>
+    project.title.toLowerCase().includes(query) ||
     project.tags?.some(tag => tag.toLowerCase().includes(query))
   )
 })

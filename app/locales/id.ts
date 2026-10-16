@@ -25,6 +25,7 @@ const id: typeof en = {
     toggleNav: 'Buka/tutup menu'
   },
   sheet: 'BAGIAN',
+  loading: 'MEMUAT',
   hero: {
     caption: 'GAMBARAN UMUM',
     location: 'Bandung, Indonesia · UTC+7 · remote',
@@ -35,12 +36,14 @@ const id: typeof en = {
     viewProjects: 'Lihat proyek',
     experienceLog: 'Lihat pengalaman',
     scale: 'SKALA 1:1',
-    stats: [
-      { label: 'STATUS', value: 'aktif', running: true },
-      { label: 'UPTIME', value: '99,99%', running: false },
-      { label: 'TPS PUNCAK', value: '1.000', running: false },
-      { label: 'LATENSI p95', value: '<150ms', running: false }
-    ]
+    detail: 'Angka yang tercatat',
+    figures: [
+      { value: '1.000 TPS', label: 'dengan uptime 99,9% saat puncak pembayaran tagihan', source: 'Weyland · super-app fintech · 2017–2019' },
+      { value: '181.000+', label: 'transaksi per bulan, volume Rp 8,6 miliar per bulan, dalam dua tahun setelah rilis', source: 'Weyland · super-app fintech · 2017–2019' },
+      { value: '154.000', label: 'transaksi per bulan dengan 92% pengiriman berhasil', source: 'AtozGo · pesan-antar makanan · 2019–2022' },
+      { value: '1.000+', label: 'koneksi WebSocket bersamaan di AnyCable, saat pengujian', source: 'Virtual Spirit · marketplace · 2022–2026' }
+    ],
+    figuresNote: 'Semua angka diambil dari riwayat pengalaman.'
   },
   about: {
     title: 'Tentang saya',
@@ -66,7 +69,7 @@ const id: typeof en = {
     note: 'Diurutkan dari yang terbaru.',
     items: [
       {
-        period: 'Mar 2026 — sekarang',
+        period: 'Mar 2026 – sekarang',
         role: 'Senior Backend Developer',
         company: 'PT Giradia Solusi Digital',
         current: true,
@@ -82,7 +85,7 @@ const id: typeof en = {
         tags: ['NestJS', 'PostgreSQL', 'Redis', 'BullMQ', 'Docker', 'Traefik', 'Flutter']
       },
       {
-        period: 'Mar 2022 — Feb 2026',
+        period: 'Mar 2022 – Feb 2026',
         role: 'Senior Backend Developer',
         company: 'Virtual Spirit',
         current: false,
@@ -99,7 +102,7 @@ const id: typeof en = {
         tags: ['Ruby on Rails', 'PostgreSQL', 'Stripe Connect', 'AnyCable', 'Redis', 'Docker']
       },
       {
-        period: 'Nov 2019 — Feb 2022',
+        period: 'Nov 2019 – Feb 2022',
         role: 'Engineering Manager',
         company: 'PT Weyland Indonesia Perkasa',
         current: false,
@@ -112,7 +115,7 @@ const id: typeof en = {
         tags: ['Ruby on Rails', 'AnyCable', 'Microservices', 'Team leadership']
       },
       {
-        period: 'Nov 2017 — Nov 2019',
+        period: 'Nov 2017 – Nov 2019',
         role: 'Senior Backend Developer',
         company: 'PT Weyland Indonesia Perkasa',
         current: false,
@@ -123,7 +126,7 @@ const id: typeof en = {
         tags: ['Ruby on Rails', 'MySQL', 'Nginx', 'Payments']
       },
       {
-        period: 'Okt 2015 — Des 2017',
+        period: 'Okt 2015 – Des 2017',
         role: 'Backend Developer',
         company: 'Walden Global Services',
         current: false,
@@ -140,7 +143,7 @@ const id: typeof en = {
         tags: ['Ruby on Rails', 'SQL Server', 'Oracle', 'RBAC / SSO']
       },
       {
-        period: 'Jan 2014 — Agu 2015',
+        period: 'Jan 2014 – Agu 2015',
         role: 'Backend Developer',
         company: 'Politeknik Piksi Ganesha',
         current: false,
@@ -201,10 +204,11 @@ const id: typeof en = {
     views: 'KALI DIBACA',
     readEntry: 'Baca selengkapnya',
     noMatch: 'Tidak ada tulisan yang cocok.',
+    empty: 'Belum ada tulisan.',
     backHome: 'Kembali ke beranda',
     seoTitle: 'Blog | Gilang Ramadan',
     seoDescription: 'Tulisan seputar arsitektur software dan backend engineering.',
-    preview: 'PRATINJAU — DRAF, BELUM TERBIT',
+    preview: 'PRATINJAU · DRAF, BELUM TERBIT',
     back: 'Kembali ke blog',
     notFound: 'Tulisan tidak ditemukan',
     notFoundBody: 'Tulisan ini mungkin sudah dihapus atau belum diterbitkan.',
@@ -259,7 +263,9 @@ const id: typeof en = {
     nextSheet: 'PROYEK BERIKUTNYA',
     zoomOut: 'Perkecil',
     zoomIn: 'Perbesar',
-    close: 'Tutup'
+    close: 'Tutup',
+    imageViewer: 'Penampil gambar',
+    enlargeImage: 'Perbesar gambar'
   }
 }
 

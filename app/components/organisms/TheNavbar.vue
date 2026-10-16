@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-3 z-50 px-4 sm:px-6">
+  <header class="sticky top-3 z-50 px-4 sm:px-6" @keydown.esc="isMobileMenuOpen = false">
     <nav class="max-w-6xl mx-auto glass bg-surface-container/70 backdrop-blur-xl shadow-lg shadow-primary/5">
       <div class="h-16 px-4 sm:px-5 flex items-center justify-between gap-4">
         <NuxtLink to="/" class="flex items-center gap-3 shrink-0">
@@ -60,7 +60,7 @@
               <BaseIcon class="text-lg">{{ colorMode.value === 'dark' ? 'light_mode' : 'dark_mode' }}</BaseIcon>
             </button>
             <template #fallback>
-              <span class="w-10 h-10"></span>
+              <span class="w-11 h-11"></span>
             </template>
           </ClientOnly>
 

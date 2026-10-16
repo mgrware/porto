@@ -63,7 +63,13 @@
           <h2 class="font-headline text-2xl font-bold text-on-surface mb-6">
             {{ m.projects.about }}
           </h2>
-          <div class="prose prose-invert max-w-none" v-html="project.description" @click="handleContentClick"></div>
+          <div
+            ref="contentEl"
+            class="prose max-w-none"
+            v-html="project.description"
+            @click="handleContentClick"
+            @keydown.enter.space="handleContentClick"
+          ></div>
         </div>
 
         <aside class="min-w-0 lg:sticky lg:top-28 flex flex-col gap-6">
@@ -102,11 +108,19 @@
     </template>
 
     <Teleport to="body">
-      <div v-if="selectedImage" class="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 backdrop-blur-md p-4" @click="closeLightbox">
+      <!-- Native modal dialog: Escape, inert background and focus return come from the browser. -->
+      <dialog
+        ref="lightbox"
+        :aria-label="m.projects.imageViewer"
+        class="fixed inset-0 w-screen h-screen max-w-none max-h-none m-0 p-4 bg-background/95 backdrop-blur-md backdrop:bg-transparent"
+        @close="closeLightbox"
+        @click="lightbox?.close()"
+      >
+        <template v-if="selectedImage">
         <div class="absolute top-6 right-6 flex items-center gap-3 z-50">
           <div class="flex items-center gap-1 glass bg-surface-container/90 p-1" @click.stop>
             <button
-              class="grid place-items-center w-8 h-8 rounded-lg text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
+              class="grid place-items-center w-11 h-11 rounded-lg text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
               :disabled="zoomLevel <= 0.5"
               :aria-label="m.projects.zoomOut"
               @click="zoomOut"
@@ -115,7 +129,7 @@
             </button>
             <span class="text-xs text-on-surface min-w-[4ch] text-center">{{ Math.round(zoomLevel * 100) }}%</span>
             <button
-              class="grid place-items-center w-8 h-8 rounded-lg text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
+              class="grid place-items-center w-11 h-11 rounded-lg text-on-surface-variant hover:text-primary disabled:opacity-40 transition-colors"
               :disabled="zoomLevel >= 3"
               :aria-label="m.projects.zoomIn"
               @click="zoomIn"
@@ -124,7 +138,7 @@
             </button>
           </div>
 
-          <button class="icon-btn" :aria-label="m.projects.close" @click="closeLightbox">
+          <button autofocus class="icon-btn" :aria-label="m.projects.close" @click.stop="lightbox?.close()">
             <BaseIcon class="text-base">close</BaseIcon>
           </button>
         </div>
@@ -147,7 +161,8 @@
             draggable="false"
           />
         </div>
-      </div>
+        </template>
+      </dialog>
     </Teleport>
   </div>
 </template>
@@ -184,10 +199,10 @@ const spec = computed(() => {
   return [
     { label: m.value.projects.spec.drawingNo, value: drawingRef.value },
     { label: m.value.projects.spec.sheet, value: sheet.value },
-    { label: m.value.projects.spec.year, value: project.value.year || '—' },
+    { label: m.value.projects.spec.year, value: project.value.year || 'N/A' },
     { label: m.value.projects.spec.discipline, value: m.value.projects.spec.disciplineValue },
-    { label: m.value.projects.spec.demo, value: project.value.demo_link ? m.value.projects.spec.available : '—' },
-    { label: m.value.projects.spec.source, value: project.value.repo_link ? m.value.projects.spec.available : '—' }
+    { label: m.value.projects.spec.demo, value: project.value.demo_link ? m.value.projects.spec.available : 'N/A' },
+    { label: m.value.projects.spec.source, value: project.value.repo_link ? m.value.projects.spec.available : 'N/A' }
   ]
 })
 
@@ -200,7 +215,19 @@ watchEffect(() => {
   }
 })
 
+const lightbox = ref<HTMLDialogElement | null>(null)
+const contentEl = ref<HTMLElement | null>(null)
 const selectedImage = ref<string | null>(null)
+
+// Images arrive through v-html, so make them keyboard-operable after each render.
+watchEffect(() => {
+  void project.value?.description // re-run when the rendered HTML changes
+  contentEl.value?.querySelectorAll('img').forEach((img) => {
+    img.tabIndex = 0
+    img.setAttribute('role', 'button')
+    img.setAttribute('aria-label', img.alt ? `${m.value.projects.enlargeImage}: ${img.alt}` : m.value.projects.enlargeImage)
+  })
+}, { flush: 'post' })
 const zoomLevel = ref(1)
 const pan = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
@@ -242,11 +269,13 @@ const stopDrag = () => {
   isDragging.value = false
 }
 
-const handleContentClick = (event: MouseEvent) => {
+const handleContentClick = async (event: Event) => {
   const target = event.target as HTMLElement
-  if (target.tagName.toLowerCase() === 'img') {
-    selectedImage.value = (target as HTMLImageElement).src
-  }
+  if (target.tagName.toLowerCase() !== 'img') return
+  event.preventDefault()
+  selectedImage.value = (target as HTMLImageElement).src
+  await nextTick()
+  lightbox.value?.showModal()
 }
 </script>
 
