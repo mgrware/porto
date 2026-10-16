@@ -57,15 +57,9 @@ export default <Partial<Config>>{
         "secondary-fixed-dim": "rgb(var(--secondary) / <alpha-value>)",
         "inverse-primary": "rgb(var(--primary-container) / <alpha-value>)"
       },
-      borderRadius: {
-        "DEFAULT": "0px",
-        "lg": "0px",
-        "xl": "0px",
-        "full": "0px"
-      },
       fontFamily: {
-        "headline": ["Space Grotesk", "sans-serif"],
-        "body": ["IBM Plex Sans", "sans-serif"],
+        "headline": ["Poppins", "sans-serif"],
+        "body": ["Poppins", "sans-serif"],
         "label": ["IBM Plex Mono", "monospace"],
         "mono": ["IBM Plex Mono", "monospace"]
       }

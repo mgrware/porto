@@ -1,21 +1,20 @@
 <template>
-  <div v-reveal class="flex flex-wrap items-end gap-x-6 gap-y-4 mb-8">
-    <div class="min-w-0">
-      <div class="text-mono text-[0.6875rem] tracking-[0.14em] text-primary mb-2.5">{{ m.sheet }} {{ sheet }}</div>
-      <h2 class="font-headline text-[clamp(1.75rem,3.2vw,2.5rem)] font-semibold -tracking-[0.02em] text-on-surface">
-        {{ title }}
-      </h2>
-    </div>
-    <span class="flex-1 basis-24 h-px bg-outline-variant/45 mb-3"></span>
-    <p class="text-[0.9375rem] text-outline max-w-sm mb-2">{{ note }}</p>
+  <div v-reveal class="text-center mb-12 lg:mb-16">
+    <h2 class="font-headline text-4xl md:text-6xl font-bold text-on-surface mb-4">
+      {{ head }} <span class="text-gradient">{{ tail }}</span>
+    </h2>
+    <p v-if="note" class="text-lg text-on-surface-variant max-w-2xl mx-auto">{{ note }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-const { m } = useLocale()
-defineProps<{
-  sheet: string
+const props = defineProps<{
   title: string
-  note: string
+  note?: string
 }>()
+
+// Last word gets the gradient accent, like "About <Me>" in the mock.
+const words = computed(() => props.title.trim().split(' '))
+const head = computed(() => words.value.slice(0, -1).join(' '))
+const tail = computed(() => words.value.at(-1))
 </script>

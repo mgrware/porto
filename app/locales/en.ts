@@ -4,9 +4,12 @@ export default {
     tagline: '/ backend systems',
     sheets: [
       { code: '01', label: 'Overview', href: '#hero' },
-      { code: '02', label: 'Tech stack', href: '#stack' },
-      { code: '03', label: 'Experience', href: '#experience' },
-      { code: '04', label: 'Practice', href: '#architecture' }
+      { code: '02', label: 'About', href: '#about' },
+      { code: '03', label: 'Tech stack', href: '#stack' },
+      { code: '04', label: 'Experience', href: '#experience' },
+      { code: '05', label: 'Projects', href: '#projects' },
+      { code: '06', label: 'Practice', href: '#architecture' },
+      { code: '07', label: 'Contact', href: '#contact' }
     ],
     pages: [
       { label: 'Projects', href: '/projects' },
@@ -28,7 +31,7 @@ export default {
     open: 'Open to senior IC roles',
     title: ['Backend systems,', 'drawn to spec.'],
     subtitle: 'SENIOR BACKEND ENGINEER · 10+ YEARS',
-    bio: 'Ten years building fintech-grade marketplace and payment platforms on Ruby on Rails, Go, and PostgreSQL. Deep specialization in Stripe Connect infrastructure (split payments, escrow, subscriptions, automated payouts), owned end to end from technical design to production. Previously an Engineering Manager behind a system sustaining 1,000 TPS at 99.9% uptime; most recently took an early-stage rental and services marketplace from zero to launch. Now focused on hands-on senior IC work with distributed teams.',
+    bio: 'Ten years building fintech-grade marketplace and payment platforms on Ruby on Rails, Go, and PostgreSQL. My core expertise is backend systems. I have delivered projects for one of the largest FMCG manufacturers in Indonesia, for startups, and for international companies. Most recently, I helped take an early-stage rental and services marketplace from zero to launch. Now focused on hands-on senior IC work with distributed teams.',
     viewProjects: 'View projects',
     experienceLog: 'Experience log',
     scale: 'SCALE 1:1',
@@ -41,6 +44,15 @@ export default {
       { value: '1,000+', label: 'concurrent WebSocket connections on AnyCable, under test', source: 'Virtual Spirit · marketplace · 2022–2026' }
     ],
     figuresNote: 'Each figure is taken from the experience log.'
+  },
+  about: {
+    title: 'About me',
+    note: 'Who I am and what I have shipped.'
+  },
+  featured: {
+    title: 'Featured projects',
+    note: 'A selection of recent work and the systems behind it.',
+    viewAll: 'View all projects'
   },
   stack: {
     title: 'Tech stack',
@@ -57,7 +69,7 @@ export default {
     note: 'Elevation view: most recent position at the top.',
     items: [
       {
-        period: 'Mar 2026 — present',
+        period: 'Mar 2026 – present',
         role: 'Senior Backend Developer',
         company: 'PT Giradia Solusi Digital',
         current: true,
@@ -119,12 +131,16 @@ export default {
         company: 'Walden Global Services',
         current: false,
         description: [
-          'Developed and maintained the Nutrifood Shipping Export & Import system using Ruby on Rails and SQL Server.',
+          'Core backend developer of ShippingNet, an end-to-end export/import and customs document management platform for a major Indonesian FMCG manufacturer, with 80+ features across export (27), import (23), document handling (7), and master data (23).',
+          'Built the Import module: PO-based import orders, purchase request (PBI) forms, customs declarations (PIB/PIBK), BPOM and quarantine documents, delivery orders, cargo delivery, freight-rate approval, insurance claims, and SLA/dwelling-time tracking.',
+          'Implemented role-based access control down to function level (module → submodule → component → function), integrated with the company SSO and the employee/organization master database (MDM).',
+          'Developed a template-driven email notification engine (20+ event types) and automated PDF/Word generation for shipping and customs documents.',
+          'Built Excel data import/export and integrations with Oracle stored procedures and an external trade (GLT) API.',
           'Improved data management efficiency by implementing database best practices and optimizing complex SQL queries.',
           'Served as a technical lead for specific sprints, managing SOW estimations, milestones, and developer assignments.',
           'Authored core application skeletons and shared libraries to be utilized by the wider development team to ensure consistency.'
         ],
-        tags: ['Ruby on Rails', 'SQL Server']
+        tags: ['Ruby on Rails', 'SQL Server', 'Oracle', 'RBAC / SSO']
       },
       {
         period: 'Jan 2014 – Aug 2015',
